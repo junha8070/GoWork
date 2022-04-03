@@ -10,14 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.gowork.R;
 import com.example.gowork.viewmodel.LoggedInViewModel;
-import com.example.gowork.viewmodel.LoginRegisterViewModel;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
