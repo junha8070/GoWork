@@ -19,6 +19,8 @@ import com.example.gowork.viewmodel.LoggedInViewModel;
 import com.example.gowork.viewmodel.LoginRegisterViewModel;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
+
 public class LoggedinFragment extends Fragment {
 
     private TextView tv_status;
@@ -30,22 +32,16 @@ public class LoggedinFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-        loggedInViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(LoggedInViewModel.class);
-        loggedInViewModel.getUserMutableLiveData().observe(this, new Observer<FirebaseUser>() {
-            @Override
-            public void onChanged(FirebaseUser firebaseUser) {
-                if(firebaseUser != null){
-                    tv_status.setText("Logged In User : "+firebaseUser.getEmail());
-                }
+        loggedInViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(requireActivity().getApplication())).get(LoggedInViewModel.class);
+        loggedInViewModel.getUserMutableLiveData().observe(this, firebaseUser -> {
+            if(firebaseUser != null){
+                tv_status.setText(firebaseUser.getEmail());
             }
         });
 
-        loggedInViewModel.getLoggenOutMutableLiveData().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean loggedOut) {
-                if(loggedOut){
-                    Navigation.findNavController(getView()).navigate(R.id.action_loggedinFragment_to_loginRegisterFragment);
-                }
+        loggedInViewModel.getLogOutMutableLiveData().observe(this, loggedOut -> {
+            if(loggedOut){
+                Navigation.findNavController(requireView()).navigate(R.id.action_loggedinFragment_to_loginRegisterFragment);
             }
         });
     }
@@ -58,12 +54,7 @@ public class LoggedinFragment extends Fragment {
         tv_status = view.findViewById(R.id.tv_status);
         btn_logout = view.findViewById(R.id.btn_logout);
 
-        btn_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loggedInViewModel.logOut();
-            }
-        });
+        btn_logout.setOnClickListener(view1 -> loggedInViewModel.logOut());
 
         return view;
     }

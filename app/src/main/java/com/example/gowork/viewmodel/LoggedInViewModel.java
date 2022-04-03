@@ -12,14 +12,14 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoggedInViewModel extends AndroidViewModel {
     private AppRepository appRepository;
     private MutableLiveData<FirebaseUser> userMutableLiveData;
-    private MutableLiveData<Boolean> loggenOutMutableLiveData;
+    private MutableLiveData<Boolean> logOutMutableLiveData;
 
     public LoggedInViewModel(@NonNull Application application){
         super(application);
 
         appRepository = new AppRepository(application);
         userMutableLiveData = appRepository.getUserMutableLiveData();
-        loggenOutMutableLiveData = appRepository.getLoggoutMutableLiveData();
+        logOutMutableLiveData = appRepository.getLoggoutMutableLiveData();
 
     }
 
@@ -31,7 +31,7 @@ public class LoggedInViewModel extends AndroidViewModel {
         return userMutableLiveData;
     }
 
-    public MutableLiveData<Boolean> getLoggenOutMutableLiveData() {
-        return loggenOutMutableLiveData;
+    public MutableLiveData<Boolean> getLogOutMutableLiveData() {
+        return logOutMutableLiveData;
     }
 }

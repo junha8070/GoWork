@@ -1,22 +1,21 @@
 package com.example.gowork.model;
 
 import android.app.Application;
+import android.os.Build;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
+
 public class AppRepository {
-    private Application application;
-    private FirebaseAuth firebaseAuth;
-    private MutableLiveData<FirebaseUser> userMutableLiveData;
-    private MutableLiveData<Boolean> loggoutMutableLiveData;
+    private final Application application;
+    private final FirebaseAuth firebaseAuth;
+    private final MutableLiveData<FirebaseUser> userMutableLiveData;
+    private final MutableLiveData<Boolean> logoutMutableLiveData;
 
 
     public AppRepository(Application application) {
@@ -24,50 +23,67 @@ public class AppRepository {
 
         firebaseAuth = FirebaseAuth.getInstance();
         userMutableLiveData = new MutableLiveData<>();
-        loggoutMutableLiveData = new MutableLiveData<>();
+        logoutMutableLiveData = new MutableLiveData<>();
 
-        if(firebaseAuth.getCurrentUser() != null){
+        if (firebaseAuth.getCurrentUser() != null) {
             userMutableLiveData.postValue(firebaseAuth.getCurrentUser());
-            loggoutMutableLiveData.postValue(false);
+            logoutMutableLiveData.postValue(false);
         }
 
     }
 
 
     public void register(String email, String password) {
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(application.getMainExecutor(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            firebaseAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(application.getMainExecutor(), task -> {
                         if (task.isSuccessful()) {
                             userMutableLiveData.postValue(firebaseAuth.getCurrentUser());
                         } else {
-                            Toast.makeText(application, "Registration Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(application, "Registration Failed: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
                         }
-                    }
-                });
+                    });
+        } else {
+            firebaseAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            userMutableLiveData.postValue(firebaseAuth.getCurrentUser());
+                        } else {
+                            Toast.makeText(application, "Registration Failed: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
 
     }
 
     public void login(String email, String password) {
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(application.getMainExecutor(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            firebaseAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(application.getMainExecutor(), task -> {
                         if (task.isSuccessful()) {
                             userMutableLiveData.postValue(firebaseAuth.getCurrentUser());
 
                         } else {
-                            Toast.makeText(application, "Login Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(application, "Login Failed: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
 
                         }
-                    }
-                });
+                    });
+        }else{
+            firebaseAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            userMutableLiveData.postValue(firebaseAuth.getCurrentUser());
+
+                        } else {
+                            Toast.makeText(application, "Login Failed: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
 
     public void logOut() {
         firebaseAuth.signOut();
-        loggoutMutableLiveData.postValue(true);
+        logoutMutableLiveData.postValue(true);
     }
 
     public MutableLiveData<FirebaseUser> getUserMutableLiveData() {
@@ -76,6 +92,8 @@ public class AppRepository {
 
 
     public MutableLiveData<Boolean> getLoggoutMutableLiveData() {
-        return loggoutMutableLiveData;
+        return logoutMutableLiveData;
     }
+
+
 }
