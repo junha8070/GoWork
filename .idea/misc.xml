@@ -5,7 +5,8 @@
       <map>
         <entry key="app/src/main/res/drawable/btn_login.xml" value="0.156" />
         <entry key="app/src/main/res/drawable/btn_register.xml" value="0.156" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.24814814814814815" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.15185185185185185" />
+        <entry key="app/src/main/res/layout/fragment_loggedinfragment.xml" value="0.24814814814814815" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.2953125" />
         <entry key="app/src/main/res/layout/fragment_login_register.xml" value="0.309375" />
       </map>

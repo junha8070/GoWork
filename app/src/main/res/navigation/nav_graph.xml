@@ -9,5 +9,17 @@
         android:id="@+id/loginRegisterFragment"
         android:name="com.example.gowork.views.LoginRegisterFragment"
         android:label="fragment_login_register"
-        tools:layout="@layout/fragment_login_register" />
+        tools:layout="@layout/fragment_login_register" >
+        <action
+            android:id="@+id/action_loginRegisterFragment_to_loggedinFragment"
+            app:destination="@id/loggedinFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loggedinFragment"
+        android:name="com.example.gowork.views.LoggedinFragment"
+        android:label="LoggedinFragment" >
+        <action
+            android:id="@+id/action_loggedinFragment_to_loginRegisterFragment"
+            app:destination="@id/loginRegisterFragment" />
+    </fragment>
 </navigation>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,12 +32,12 @@ public class LoginRegisterFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        loginRegisterViewModel = new ViewModelProvider(this, viewModelFactory).get(LoginRegisterViewModel.class);
+        loginRegisterViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(LoginRegisterViewModel.class);
         loginRegisterViewModel.getUserMutableLiveData().observe(this, new Observer<FirebaseUser>() {
             @Override
             public void onChanged(FirebaseUser firebaseUser) {
                 if(firebaseUser != null){
-                    Toast.makeText(getContext(), "User created", Toast.LENGTH_SHORT).show();
+                    Navigation.findNavController(getView()).navigate(R.id.action_loginRegisterFragment_to_loggedinFragment);
                 }
             }
         });
@@ -59,8 +60,23 @@ public class LoginRegisterFragment extends Fragment {
                 String email = edt_id.getText().toString();
                 String password = edt_pw.getText().toString();
 
+                Toast.makeText(getContext(), email+password, Toast.LENGTH_SHORT).show();
+
                 if(email.length() > 0 && password.length() > 0){
                     loginRegisterViewModel.register(email, password);
+                }
+
+            }
+        });
+
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = edt_id.getText().toString();
+                String password = edt_pw.getText().toString();
+
+                if(email.length() > 0 && password.length() > 0){
+                    loginRegisterViewModel.login(email, password);
                 }
 
             }
