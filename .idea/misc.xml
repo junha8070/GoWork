@@ -5,10 +5,20 @@
       <map>
         <entry key="app/src/main/res/drawable/btn_login.xml" value="0.156" />
         <entry key="app/src/main/res/drawable/btn_register.xml" value="0.156" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.15185185185185185" />
+        <entry key="app/src/main/res/drawable/ic_tab_chat.xml" value="0.156" />
+        <entry key="app/src/main/res/drawable/ic_tab_first.xml" value="0.156" />
+        <entry key="app/src/main/res/drawable/ic_tab_list.xml" value="0.156" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2796335290979456" />
+        <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.3333333333333333" />
         <entry key="app/src/main/res/layout/fragment_loggedinfragment.xml" value="0.24814814814814815" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.2953125" />
         <entry key="app/src/main/res/layout/fragment_login_register.xml" value="0.309375" />
+        <entry key="app/src/main/res/layout/fragment_more.xml" value="0.3333333333333333" />
+        <entry key="app/src/main/res/layout/fragment_pay_calcfragment.xml" value="0.17135416666666667" />
+        <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.17135416666666667" />
+        <entry key="app/src/main/res/layout/fragment_workfragment.xml" value="0.3333333333333333" />
+        <entry key="app/src/main/res/menu/menu_bottom_nav.xml" value="0.31109364827473956" />
+        <entry key="app/src/main/res/menu/menu_side_drawer.xml" value="0.3333333333333333" />
       </map>
     </option>
   </component>
