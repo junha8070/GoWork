@@ -9,17 +9,17 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.gowork.model.AppRepository;
 import com.google.firebase.auth.FirebaseUser;
 
-public class LoggedInViewModel extends AndroidViewModel {
+public class WorkViewModel extends AndroidViewModel {
     private AppRepository appRepository;
     private MutableLiveData<FirebaseUser> userMutableLiveData;
     private MutableLiveData<Boolean> logOutMutableLiveData;
 
-    public LoggedInViewModel(@NonNull Application application){
+    public WorkViewModel(@NonNull Application application){
         super(application);
 
         appRepository = new AppRepository(application);
         userMutableLiveData = appRepository.getUserMutableLiveData();
-        logOutMutableLiveData = appRepository.getLoggoutMutableLiveData();
+        logOutMutableLiveData = appRepository.getLogoutMutableLiveData();
 
     }
 
