@@ -3,20 +3,30 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/calendar_shape.xml" value="0.1445" />
         <entry key="app/src/main/res/drawable/btn_login.xml" value="0.156" />
         <entry key="app/src/main/res/drawable/btn_register.xml" value="0.156" />
+        <entry key="app/src/main/res/drawable/ic_arrow_down.xml" value="0.1445" />
         <entry key="app/src/main/res/drawable/ic_tab_chat.xml" value="0.156" />
         <entry key="app/src/main/res/drawable/ic_tab_first.xml" value="0.156" />
+        <entry key="app/src/main/res/drawable/ic_tab_home.xml" value="0.1445" />
         <entry key="app/src/main/res/drawable/ic_tab_list.xml" value="0.156" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2796335290979456" />
+        <entry key="app/src/main/res/drawable/spinner.xml" value="0.1445" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.19479166666666667" />
+        <entry key="app/src/main/res/layout/calendar_shape.xml" value="0.1796875" />
         <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.3333333333333333" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.19479166666666667" />
         <entry key="app/src/main/res/layout/fragment_loggedinfragment.xml" value="0.24814814814814815" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.2953125" />
-        <entry key="app/src/main/res/layout/fragment_login_register.xml" value="0.309375" />
+        <entry key="app/src/main/res/layout/fragment_login_register.xml" value="0.1859375" />
         <entry key="app/src/main/res/layout/fragment_more.xml" value="0.3333333333333333" />
         <entry key="app/src/main/res/layout/fragment_pay_calcfragment.xml" value="0.17135416666666667" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.17135416666666667" />
-        <entry key="app/src/main/res/layout/fragment_workfragment.xml" value="0.3333333333333333" />
+        <entry key="app/src/main/res/layout/fragment_workfragment.xml" value="0.19479166666666667" />
+        <entry key="app/src/main/res/layout/item_calendar_header.xml" value="0.19479166666666667" />
+        <entry key="app/src/main/res/layout/item_day.xml" value="0.19479166666666667" />
+        <entry key="app/src/main/res/layout/item_day_empty.xml" value="0.19479166666666667" />
+        <entry key="app/src/main/res/layout/spinner.xml" value="0.1796875" />
         <entry key="app/src/main/res/menu/menu_bottom_nav.xml" value="0.31109364827473956" />
         <entry key="app/src/main/res/menu/menu_side_drawer.xml" value="0.3333333333333333" />
       </map>

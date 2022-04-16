@@ -11,22 +11,23 @@
         android:label="fragment_login_register"
         tools:layout="@layout/fragment_login_register" >
         <action
-            android:id="@+id/action_loginRegisterFragment_to_loggedinFragment"
-            app:destination="@id/workFragment" />
+            android:id="@+id/action_loginRegisterFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/workFragment"
-        android:name="com.example.gowork.views.WorkFragment"
-        android:label="LoggedinFragment" >
-        <action
-            android:id="@+id/action_loggedinFragment_to_loginRegisterFragment"
-            app:destination="@id/loginRegisterFragment" />
-    </fragment>
+        android:name="com.example.gowork.views.work.WorkFragment"
+        android:label="LoggedinFragment" />
     <fragment
         android:id="@+id/payCalcFragment"
         android:name="com.example.gowork.views.PayCalcFragment"
         android:label="fragment_pay_calcfragment"
         tools:layout="@layout/fragment_pay_calcfragment" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.gowork.views.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/chatFragment"
         android:name="com.example.gowork.views.ChatFragment"
@@ -36,11 +37,24 @@
         android:id="@+id/moreFragment"
         android:name="com.example.gowork.views.MoreFragment"
         android:label="fragment_more"
-        tools:layout="@layout/fragment_more" />
+        tools:layout="@layout/fragment_more" >
+        <action
+            android:id="@+id/action_moreFragment_to_loginRegisterFragment"
+            app:destination="@id/loginRegisterFragment"
+            app:popUpTo="@+id/loginRegisterFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_moreFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.example.gowork.views.SettingFragment"
         android:label="fragment_setting"
-        tools:layout="@layout/fragment_setting" />
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_settingFragment_to_moreFragment"
+            app:destination="@id/moreFragment" />
+    </fragment>
 
 </navigation>

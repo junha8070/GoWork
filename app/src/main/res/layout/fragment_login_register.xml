@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".views.LoginRegisterFragment">
 
     <LinearLayout
-        android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
         android:orientation="vertical">
 
         <LinearLayout
@@ -17,31 +17,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@color/white">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autofillHints="no"
                     android:hint="@string/Email"
-                    android:inputType="textEmailAddress"/>
+                    android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/layout_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_layout_pw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:boxBackgroundColor="@color/white">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_pw"
                     android:layout_width="match_parent"
@@ -55,7 +61,9 @@
                 android:id="@+id/input_layout_repw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:boxBackgroundColor="@color/white">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_pw_check"
                     android:layout_width="match_parent"
@@ -71,18 +79,21 @@
             android:id="@+id/layout_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
+
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@color/white">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autofillHints="no"
                     android:hint="@string/Name"
-                    android:inputType="textPersonName"/>
+                    android:inputType="textPersonName" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
@@ -91,11 +102,14 @@
             android:id="@+id/layout_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
+
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@color/white">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_phone"
                     android:layout_width="match_parent"
@@ -109,30 +123,38 @@
     </LinearLayout>
 
 
-
     <LinearLayout
-        android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:orientation="horizontal">
+
         <Button
-            android:id="@+id/btn_register"
-            android:layout_width="0dp"
+            android:id="@+id/btn_SignInOrUP"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/SignUp" />
+            android:text="@string/SignInOrUP" />
+
         <Button
             android:id="@+id/btn_login"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/SignIn" />
+            android:text="@string/SignIn"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/SignUp"
+            android:visibility="gone" />
+
         <Button
             android:id="@+id/btn_next"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="다음"/>
+            android:text="다음"
+            android:visibility="gone" />
     </LinearLayout>
 
 </FrameLayout>

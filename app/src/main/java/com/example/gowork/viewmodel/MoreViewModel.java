@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.gowork.model.AppRepository;
@@ -11,15 +12,15 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MoreViewModel extends AndroidViewModel {
     private AppRepository appRepository;
-    private MutableLiveData<FirebaseUser> userMutableLiveData;
-    private MutableLiveData<Boolean> logOutMutableLiveData;
+    private LiveData<FirebaseUser> userData;
+    private LiveData<Boolean> logOutData;
 
     public MoreViewModel(@NonNull Application application) {
         super(application);
 
         appRepository = new AppRepository(application);
-        userMutableLiveData = appRepository.getUserMutableLiveData();
-        logOutMutableLiveData = appRepository.getLogoutMutableLiveData();
+        userData = appRepository.getUserData();
+        logOutData = appRepository.getLogoutData();
 
     }
 
@@ -27,11 +28,11 @@ public class MoreViewModel extends AndroidViewModel {
         appRepository.logOut();
     }
 
-    public MutableLiveData<FirebaseUser> getUserMutableLiveData() {
-        return userMutableLiveData;
+    public LiveData<FirebaseUser> getUserData() {
+        return userData;
     }
 
-    public MutableLiveData<Boolean> getLogOutMutableLiveData() {
-        return logOutMutableLiveData;
+    public LiveData<Boolean> getLogOutData() {
+        return logOutData;
     }
 }

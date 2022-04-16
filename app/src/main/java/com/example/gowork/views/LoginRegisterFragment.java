@@ -1,5 +1,6 @@
 package com.example.gowork.views;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +25,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginRegisterFragment extends Fragment {
 
-    private Button btn_login, btn_register, btn_next;
+    private Button btn_SignInOrUP, btn_login, btn_next, btn_register;
     private EditText edt_id, edt_pw, edt_repw, edt_name, edt_phone;
     private TextInputLayout input_layout_pw, input_layout_repw;
     private LinearLayout layout_email, layout_password, layout_name, layout_phone;
@@ -36,19 +39,23 @@ public class LoginRegisterFragment extends Fragment {
     private ViewModelProvider.AndroidViewModelFactory viewModelFactory;
     private LoginRegisterViewModel loginRegisterViewModel;
 
+    private ProgressDialog mDialog;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         loginRegisterViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(LoginRegisterViewModel.class);
-        loginRegisterViewModel.getUserMutableLiveData().observe(this, new Observer<FirebaseUser>() {
+        loginRegisterViewModel.getUserData().observe(this, new Observer<FirebaseUser>() {
             @Override
             public void onChanged(FirebaseUser firebaseUser) {
-                if(firebaseUser != null){
-                    Navigation.findNavController(getView()).navigate(R.id.action_loginRegisterFragment_to_loggedinFragment);
+                if (firebaseUser != null) {
+                    Navigation.findNavController(getView()).navigate(R.id.action_loginRegisterFragment_to_homeFragment);
                 }
             }
         });
+
     }
 
     @Override
@@ -58,6 +65,7 @@ public class LoginRegisterFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_login_register, container, false);
 
         init(view);
+        mDialog = new ProgressDialog(getContext());
 
         hideBottomNavigation(true);
 
@@ -69,6 +77,10 @@ public class LoginRegisterFragment extends Fragment {
         layout_email.setVisibility(View.VISIBLE);
         layout_email.setAnimation(animation);
 
+        // 핸드폰 번호 자릿수 마다 하이픈(-) 넣어줌
+        edt_phone.setInputType(android.text.InputType.TYPE_CLASS_PHONE);
+        edt_phone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,18 +88,36 @@ public class LoginRegisterFragment extends Fragment {
             }
         });
 
-        btn_register.setOnClickListener(new View.OnClickListener() {
+        btn_SignInOrUP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String email = edt_id.getText().toString();
                 String password = edt_pw.getText().toString();
 
-                Toast.makeText(getContext(), email+password, Toast.LENGTH_SHORT).show();
-
-                if(email.length() > 0 && password.length() > 0){
-                    loginRegisterViewModel.register(email, password);
+                if (email.length() > 0 && password.length() > 0) {
+                    loginRegisterViewModel.login(email, password);
                 }
-
+                mDialog.setMessage("확인중입니다");
+                mDialog.show();
+                loginRegisterViewModel.isEmailExist(edt_id.getText().toString());
+                loginRegisterViewModel.getIsEmailExistData().observe(getActivity(), new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(Boolean aBoolean) {
+                        if (aBoolean != null) {
+                            mDialog.dismiss();
+                            if (aBoolean) {
+                                input_layout_pw.setVisibility(View.VISIBLE);
+                                btn_SignInOrUP.setVisibility(View.GONE);
+                                btn_login.setVisibility(View.VISIBLE);
+                            } else {
+                                input_layout_pw.setVisibility(View.VISIBLE);
+                                input_layout_repw.setVisibility(View.VISIBLE);
+                                btn_SignInOrUP.setVisibility(View.GONE);
+                                btn_next.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+                });
             }
         });
 
@@ -97,10 +127,59 @@ public class LoginRegisterFragment extends Fragment {
                 String email = edt_id.getText().toString();
                 String password = edt_pw.getText().toString();
 
-                if(email.length() > 0 && password.length() > 0){
+                Toast.makeText(getContext(), email + password, Toast.LENGTH_SHORT).show();
+
+                if (email.length() > 0 && password.length() > 0) {
                     loginRegisterViewModel.login(email, password);
                 }
 
+            }
+        });
+
+        btn_next.setOnClickListener(view1 -> {
+            if (!(edt_pw.getText().toString().equals(edt_repw.getText().toString()))) {
+                Toast.makeText(getContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            loginRegisterViewModel.login(edt_id.getText().toString(), edt_pw.getText().toString());
+            loginRegisterViewModel.getUserData().observe(getActivity(), new Observer<FirebaseUser>() {
+                @Override
+                public void onChanged(FirebaseUser firebaseUser) {
+                    if (firebaseUser != null) {
+                        Navigation.findNavController(getView()).navigate(R.id.action_loginRegisterFragment_to_homeFragment);
+                        return;
+                    }
+                }
+            });
+            layout_name.setVisibility(View.VISIBLE);
+            if (edt_name.getText().toString().isEmpty()) {
+                Toast.makeText(getContext(), "이름을 입렫해주세요", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (layout_name.getVisibility() == View.VISIBLE && !edt_name.getText().toString().isEmpty()) {
+                layout_phone.setVisibility(View.VISIBLE);
+                btn_next.setVisibility(View.GONE);
+                btn_register.setVisibility(View.VISIBLE);
+            }
+        });
+
+        btn_register.setOnClickListener(register -> {
+            String email = edt_id.getText().toString();
+            String password = edt_pw.getText().toString();
+            String name = edt_name.getText().toString();
+            String phoneNum = edt_phone.getText().toString();
+
+            Toast.makeText(getContext(), email + password, Toast.LENGTH_SHORT).show();
+
+            if (email.length() > 0 && password.length() > 0) {
+                loginRegisterViewModel.register(email, password);
+                loginRegisterViewModel.uploadUserInfo(email, name, phoneNum);
+//                loginRegisterViewModel.getUserInfoMutableLiveData().observe(getActivity(), new Observer<FirebaseFirestore>() {
+//                    @Override
+//                    public void onChanged(FirebaseFirestore firebaseFirestore) {
+//
+//                    }
+//                });
             }
         });
 
@@ -121,10 +200,11 @@ public class LoginRegisterFragment extends Fragment {
             bottomNavigation.setVisibility(View.VISIBLE);
     }
 
-    private void init(View view){
+    private void init(View view) {
+        btn_SignInOrUP = view.findViewById(R.id.btn_SignInOrUP);
         btn_login = view.findViewById(R.id.btn_login);
-        btn_register = view.findViewById(R.id.btn_register);
         btn_next = view.findViewById(R.id.btn_next);
+        btn_register = view.findViewById(R.id.btn_register);
         edt_id = view.findViewById(R.id.edt_id);
         input_layout_pw = view.findViewById(R.id.input_layout_pw);
         edt_pw = view.findViewById(R.id.edt_pw);
@@ -133,6 +213,12 @@ public class LoginRegisterFragment extends Fragment {
         edt_name = view.findViewById(R.id.edt_name);
         edt_phone = view.findViewById(R.id.edt_phone);
         layout_email = view.findViewById(R.id.layout_email);
+        layout_password = view.findViewById(R.id.layout_password);
+        input_layout_pw = view.findViewById(R.id.input_layout_pw);
+        input_layout_repw = view.findViewById(R.id.input_layout_repw);
+        layout_name = view.findViewById(R.id.layout_name);
+        layout_phone = view.findViewById(R.id.layout_phone);
+
     }
 
 }

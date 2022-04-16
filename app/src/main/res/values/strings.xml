@@ -5,11 +5,14 @@
     <string name="RePassword">비밀번호 확인</string>
     <string name="Phone">핸드폰 번호</string>
     <string name="Name">이름</string>
+    <string name="SignInOrUP">로그인 or 회원가입</string>
     <string name="SignIn">로그인</string>
     <string name="SignUp">회원가입</string>
     <string name="Work">근무</string>
     <string name="Chatting">채팅</string>
     <string name="PayCalc">급여계산</string>
+    <string name="WorkPlan">근무 일정</string>
+    <string name="Home">홈</string>
     <string name="LogOut">로그아웃</string>
     <string name="Setting">환경설정</string>
     <string name="More">더보기</string>

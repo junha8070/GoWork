@@ -1,6 +1,6 @@
 package com.example.gowork.model;
 
-public class User {
+public class UserInfo {
 
     String name;
     String email;
@@ -30,9 +30,9 @@ public class User {
         this.phone = phone;
     }
 
-    public User(String email, String phone, String name){
+    public UserInfo(String email, String name, String phone){
         this.email = email;
-        this.phone = phone;
         this.name = name;
+        this.phone = phone;
     }
 }

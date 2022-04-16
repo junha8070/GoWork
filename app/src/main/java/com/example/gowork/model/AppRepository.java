@@ -5,11 +5,11 @@ import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -36,6 +36,11 @@ public class AppRepository {
         logoutMutableLiveData = new MutableLiveData<>();
         userInfoMutableLiveData = new MutableLiveData<>();
         isEmailExistMutableLiveData = new MutableLiveData<>();
+
+//        userMutableLiveData.postValue(null);
+//        logoutMutableLiveData.postValue(null);
+//        userInfoMutableLiveData.postValue(null);
+        isEmailExistMutableLiveData.postValue(null);
 
         if (firebaseAuth.getCurrentUser() != null) {
             userMutableLiveData.postValue(firebaseAuth.getCurrentUser());
@@ -74,7 +79,6 @@ public class AppRepository {
                     .addOnCompleteListener(application.getMainExecutor(), task -> {
                         if (task.isSuccessful()) {
                             userMutableLiveData.postValue(firebaseAuth.getCurrentUser());
-
                         } else {
                             Toast.makeText(application, "Login Failed: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
 
@@ -98,10 +102,11 @@ public class AppRepository {
         logoutMutableLiveData.postValue(true);
     }
 
-    public void uploadUserInfo(User user) {
+    public void uploadUserInfo(String email, String name, String phoneNum) {
+        UserInfo userInfo = new UserInfo(email, name, phoneNum);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             firestore.collection("User")
-                    .add(user)
+                    .add(userInfo)
                     .addOnCompleteListener(application.getMainExecutor(), task -> {
                         if (task.isSuccessful()) {
                             userInfoMutableLiveData.postValue(firestore);
@@ -112,7 +117,7 @@ public class AppRepository {
                     });
         } else {
             firestore.collection("User")
-                    .add(user)
+                    .add(userInfo)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             userInfoMutableLiveData.postValue(firestore);
@@ -125,36 +130,68 @@ public class AppRepository {
     }
 
     public void isEmailExist(String email){
-        firestore.collection("User")
-                .whereEqualTo("email",email)
-                .get()
-                .addOnCompleteListener(application.getMainExecutor(), task -> {
-            if(task.isSuccessful()){
-                for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
-                    Toast.makeText(application,"toast",Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, documentSnapshot.getId());
-                    isEmailExistMutableLiveData.postValue(true);
-                }
-                if(task.getResult().isEmpty()){
-                    Toast.makeText(application,"null",Toast.LENGTH_SHORT).show();
-                }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            firestore.collection("User")
+                    .whereEqualTo("email",email)
+                    .get()
+                    .addOnCompleteListener(application.getMainExecutor(), task -> {
+                if(task.isSuccessful()){
+                    for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                        Toast.makeText(application,"toast",Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, documentSnapshot.getId());
+                        isEmailExistMutableLiveData.postValue(true);
+                    }
+                    if(task.getResult().isEmpty()){
+                        isEmailExistMutableLiveData.postValue(false);
+                        Toast.makeText(application,"null",Toast.LENGTH_SHORT).show();
+                    }
 
-            }else{
-                Log.d(TAG, task.getException().getMessage());
-            }
-        });
+                }else{
+                    Log.d(TAG, task.getException().getMessage());
+                }
+            });
+        }
+        else{
+            firestore.collection("User")
+                    .whereEqualTo("email",email)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                                Toast.makeText(application,"toast",Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, documentSnapshot.getId());
+                                isEmailExistMutableLiveData.postValue(true);
+                            }
+                            if(task.getResult().isEmpty()){
+                                isEmailExistMutableLiveData.postValue(false);
+                                Toast.makeText(application,"null",Toast.LENGTH_SHORT).show();
+                            }
+
+                        }else{
+                            Log.d(TAG, task.getException().getMessage());
+                        }
+                    });
+        }
     }
 
-    public MutableLiveData<FirebaseUser> getUserMutableLiveData() {
+    public LiveData<FirebaseUser> getUserData() {
         return userMutableLiveData;
     }
 
 
-    public MutableLiveData<Boolean> getLogoutMutableLiveData() {
+    public LiveData<Boolean> getLogoutData() {
         return logoutMutableLiveData;
     }
 
-    public MutableLiveData<Boolean> getIsEmailExistMutableLiveData() {
+    public LiveData<Boolean> getIsEmailExistData() {
         return isEmailExistMutableLiveData;
+    }
+
+    public LiveData<FirebaseFirestore> getUserInfoData() {
+        return userInfoMutableLiveData;
+    }
+
+    public void isLoading(){
+
     }
 }
