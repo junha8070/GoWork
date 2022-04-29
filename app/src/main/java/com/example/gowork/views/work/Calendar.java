@@ -17,6 +17,8 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 
+import org.threeten.bp.LocalDate;
+
 import java.util.Date;
 
 public class Calendar implements DayViewDecorator {
@@ -40,7 +42,7 @@ public class Calendar implements DayViewDecorator {
         view.addSpan(new BackgroundColorSpan(Color.rgb(162, 160, 255)));
     }
 
-    public void setToday(Date date) {
+    public void setToday(LocalDate date) {
         this.today = CalendarDay.from(date);
     }
 

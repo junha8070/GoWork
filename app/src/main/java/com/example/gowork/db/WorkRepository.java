@@ -10,11 +10,13 @@ import java.util.List;
 public class WorkRepository {
     private WorkDao workDao;
     private LiveData<List<Work>> allWorks;
+    private LiveData<List<String>> getAllTitle;
 
     public WorkRepository(Application application) {
         WorkDatabase database = WorkDatabase.getInstance(application);
         workDao = database.workDao();
         allWorks = workDao.getAllWorks();
+        getAllTitle = workDao.getAllTitle();
     }
 
     public void insert(Work work) {
@@ -35,6 +37,10 @@ public class WorkRepository {
 
     public LiveData<List<Work>> getAllWorks() {
         return allWorks;
+    }
+
+    public LiveData<List<String>> getAllTitle(){
+        return getAllTitle;
     }
 
     private static class InsertWorkAsyncTask extends AsyncTask<Work, Void, Void> {

@@ -17,7 +17,11 @@
     <fragment
         android:id="@+id/workFragment"
         android:name="com.example.gowork.views.work.WorkFragment"
-        android:label="LoggedinFragment" />
+        android:label="LoggedinFragment" >
+        <action
+            android:id="@+id/action_workFragment_to_addWorkFragment"
+            app:destination="@id/addWorkFragment" />
+    </fragment>
     <fragment
         android:id="@+id/payCalcFragment"
         android:name="com.example.gowork.views.PayCalcFragment"
@@ -46,6 +50,9 @@
         <action
             android:id="@+id/action_moreFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_moreFragment_to_addWorkFragment"
+            app:destination="@id/addWorkFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
@@ -55,6 +62,18 @@
         <action
             android:id="@+id/action_settingFragment_to_moreFragment"
             app:destination="@id/moreFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addWorkFragment"
+        android:name="com.example.gowork.views.AddWork.AddWorkFragment"
+        android:label="fragment_add_work"
+        tools:layout="@layout/fragment_add_work" >
+        <action
+            android:id="@+id/action_addWorkFragment_to_moreFragment"
+            app:destination="@id/moreFragment" />
+        <action
+            android:id="@+id/action_addWorkFragment_to_workFragment"
+            app:destination="@id/workFragment" />
     </fragment>
 
 </navigation>

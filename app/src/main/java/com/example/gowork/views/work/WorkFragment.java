@@ -1,5 +1,6 @@
 package com.example.gowork.views.work;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,58 +38,66 @@ public class WorkFragment extends Fragment {
     private MaterialCalendarView mcv;
     private Calendar calendar;
     private Spinner sp_work;
-    private TextView tv_test;
+    private TextView tv_test, tb_title;
 
     private ArrayAdapter<Work> adapter;
-    private ArrayList workTitle;
+    private List workTitle;
     private List<Work> works;
     private StringBuilder entire;
     private int size;
+    StringBuilder sb = new StringBuilder();
+
+    private ProgressDialog mDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        works = new ArrayList<>();
+
         workTitle = new ArrayList();
-        workTitle.add("전체 일정");
+        works = new ArrayList<>();
+
         workViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(requireActivity().getApplication())).get(WorkViewModel.class);
         workViewModel.getAllWorks().observe(this, new Observer<List<Work>>() {
             @Override
             public void onChanged(List<Work> dbWorks) {
-                works = dbWorks;
-                for(int i=0;i<works.size();i++){
-                    workTitle.add(works.get(i).getWorkTitle());
+                if(dbWorks == null){
+                    mDialog.setMessage("확인중입니다");
+                    mDialog.show();
+                }else{
+                    works = dbWorks;
+                    mDialog.dismiss();
+                    int listSize = dbWorks.size();
+                    workTitle.add("전체보기");
+                    for(int i =0; i<listSize;i++){
+                        workTitle.add(dbWorks.get(i).getWorkTitle().toString());
+                        sb.append(dbWorks.get(i).getHourMoney());
+                        Toast.makeText(getActivity(), workTitle.get(0).toString(), Toast.LENGTH_SHORT).show();
+                    }
+                    adapter = new ArrayAdapter<Work>(getContext(), android.R.layout.simple_spinner_item, workTitle);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    sp_work.setAdapter(adapter);
+
+
+                    mDialog.dismiss();
                 }
-                workTitle.add("근무지 추가");
-
-                adapter = new ArrayAdapter<Work>(getContext(), android.R.layout.simple_spinner_item, workTitle);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                sp_work.setAdapter(adapter);
-                sp_work.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                        if(position==0){
-                            entire = new StringBuilder();
-                            for(int i=0;i<works.size();i++){
-                                entire.append(works.get(i).getTime());
-                                entire.append("\n");
-                            }
-                            tv_test.setText(entire);
-                        }
-                        else if(position>0 && position<size-1){
-                            tv_test.setText(works.get(position-1).getTime());
-                        }
-                        else if(position == size-1){
-                            tv_test.setText("근무지 추가");
-                        }
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-                    }
-                });
             }
         });
+
+//        workViewModel.getAllTitle().observe(this, new Observer<List>() {
+//            @Override
+//            public void onChanged(List list) {
+//                if(list == null){
+//                    mDialog.setMessage("확인중입니다");
+//                    mDialog.show();
+//                }else{
+//
+//
+//                }
+//
+//            }
+//        });
+
+
 
 
     }
@@ -99,15 +108,16 @@ public class WorkFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_workfragment, container,false);
 
         init(view);
-
+        mDialog = new ProgressDialog(getContext());
         mcv.setTopbarVisible(false);
         mcv.addDecorator(calendar);
         mcv.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-                toolbar.setTitle(mcv.getCurrentDate().getYear() +"년 "+ (mcv.getCurrentDate().getMonth() + 1) +"월");
+                tb_title.setText(mcv.getCurrentDate().getYear() +"년 "+ (mcv.getCurrentDate().getMonth()) +"월 근무일정");
             }
         });
+
 
         return view;
     }
@@ -118,13 +128,56 @@ public class WorkFragment extends Fragment {
         mcv = view.findViewById(R.id.calendar);
         sp_work = view.findViewById(R.id.sp_work);
         tv_test = view.findViewById(R.id.tv_test);
+        tb_title = view.findViewById(R.id.tb_title);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        toolbar.setTitle(mcv.getCurrentDate().getYear() +"년 "+ (mcv.getCurrentDate().getMonth() + 1) +"월");
+        tb_title.setText(mcv.getCurrentDate().getYear() +"년 "+ (mcv.getCurrentDate().getMonth()) +"월 근무일정");
+        Log.d("WorkFragment", String.valueOf(tb_title.getTextSize()));
         size = getWorkTitleSize();
+        StringBuilder sb = new StringBuilder();
+        sp_work.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if(position == 0){
+                    tv_test.setText(sb);
+                    for(int i = 1; i<size;i++){
+//                        sb.append(String.valueOf(works.get(i-1).getHourMoney()));
+                    }
+//                    tv_test.setText(sb);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        sp_work.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+
+                if(position == 0){
+                    tv_test.setText(sb);
+                    for(int i = 1; i<size;i++){
+//                        sb.append(String.valueOf(works.get(i-1).getHourMoney()));\
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
     }
 
     public int getWorkTitleSize(){

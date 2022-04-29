@@ -17,10 +17,12 @@ import android.widget.TextView;
 import com.example.gowork.R;
 import com.example.gowork.viewmodel.MoreViewModel;
 import com.example.gowork.viewmodel.WorkViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
 
 public class MoreFragment extends Fragment {
 
-    private Button btn_logout;
+    private MaterialButton btn_addWork, btn_setting, btn_logout;
     private MoreViewModel moreViewModel;
     private TextView tv_name, tv_email;
     FragmentManager fragmentManager;
@@ -52,9 +54,13 @@ public class MoreFragment extends Fragment {
         // Inflate the layout for this fragment
         View view  = inflater.inflate(R.layout.fragment_more, container, false);
 
+        btn_addWork = view.findViewById(R.id.btn_addWork);
+        btn_setting = view.findViewById(R.id.btn_setting);
         btn_logout = view.findViewById(R.id.btn_logout);
         tv_name = view.findViewById(R.id.tv_name);
         tv_email = view.findViewById(R.id.tv_name);
+
+        btn_addWork.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_moreFragment_to_addWorkFragment, null));
 
         fragmentManager = getChildFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();

@@ -13,10 +13,34 @@
     <string name="PayCalc">급여계산</string>
     <string name="WorkPlan">근무 일정</string>
     <string name="Home">홈</string>
+    <string name="AddWork">근무지 추가</string>
+    <string name="WorkTitle">근무지 이름</string>
     <string name="LogOut">로그아웃</string>
     <string name="Setting">환경설정</string>
     <string name="More">더보기</string>
+    <string name="Require">필수</string>
+    <string name="HourlyMoney">시급</string>
+    <string name="workAddFinish">추가하기</string>
+
+<!--    AddWorkFragment-->
+    <string name="TypeWorkTitle">근무지 이름을 적어주세요</string>
+    <string name="TypeWhenWork">근무를 언제하시나요?</string>
+    <string name="TypeMoney">시급을 적어주세요</string>
+    <string name="MinimumHourly">9,160</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="Sunday">일</string>
+    <string name="Monday">월</string>
+    <string name="Tuesday">화</string>
+    <string name="Wednesday">수</string>
+    <string name="Thursday">목</string>
+    <string name="Friday">금</string>
+    <string name="Saturday">토</string>
+
+    <string name="everyday">매일</string>
+    <string name="weekly">매주</string>
+    <string name="monthly">매달</string>
 </resources>

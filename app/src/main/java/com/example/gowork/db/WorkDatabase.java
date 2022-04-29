@@ -45,9 +45,9 @@ public abstract class WorkDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            workDao.insert(new Work("Title1", "mon"));
-            workDao.insert(new Work("Title2", "tue"));
-            workDao.insert(new Work("Title3", "wed"));
+//            workDao.insert(new Work("Title1", "mon"));
+//            workDao.insert(new Work("Title2", "tue"));
+//            workDao.insert(new Work("Title3", "wed"));
             return null;
         }
     }
