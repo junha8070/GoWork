@@ -1,66 +1,119 @@
 package com.example.gowork.views;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.example.gowork.MyService;
 import com.example.gowork.R;
+import com.example.gowork.viewmodel.HomeViewModel;
+import com.example.gowork.viewmodel.WorkViewModel;
+import com.google.android.material.button.MaterialButton;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class HomeFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private TextView tv_money, tv_workplace, tv_startTime, tv_endTime;
+    private MaterialButton btn_start;
+    private HomeViewModel homeViewModel;
+    private String CurrentTime = null;
+    private Boolean Work_State = false;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    public Intent serviceIntent;
 
-    public HomeFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+        homeViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(requireActivity().getApplication())).get(HomeViewModel.class);
+        homeViewModel.getTime().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.d("HomeFragment", s);
+                CurrentTime = s;
+                if (Work_State) {
+                    tv_startTime.setText(CurrentTime.substring(11) + "에 출근하셨습니다");
+                } else {
+                    tv_endTime.setText(CurrentTime.substring(11) + "에 퇴근하셨습니다");
+                }
+            }
+        });
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        init(view);
+
+        btn_start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Work_State) {
+                    onStopForegroundService(view);
+                    serviceIntent = new Intent(getContext(), MyService.class);
+                    Work_State = false;
+                    homeViewModel.currentTime();
+                    btn_start.setText("출퇴근하기");
+                    tv_endTime.setVisibility(View.VISIBLE);
+                } else {
+                    onStartForegroundService(view);
+                    Work_State = true;
+                    homeViewModel.currentTime();
+                    btn_start.setText("근무중");
+                    tv_startTime.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        return view;
+    }
+
+    private void init(View view) {
+        tv_money = view.findViewById(R.id.tv_money);
+        tv_startTime = view.findViewById(R.id.tv_startTime);
+        tv_endTime = view.findViewById(R.id.tv_endTime);
+        tv_workplace = view.findViewById(R.id.tv_workplace);
+        btn_start = view.findViewById(R.id.btn_start);
+    }
+
+    public void onStartService(View view) {
+        Intent intent = new Intent(getContext(), MyService.class);
+        getActivity().startService(intent);
+    }
+
+    public void onStopService(View view) {
+        Intent intent = new Intent(getContext(), MyService.class);
+        getActivity().startService(intent);
+    }
+
+    public void onStartForegroundService(View view) {
+        Intent intent = new Intent(getContext(), MyService.class);
+        intent.setAction("startForeground");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            getActivity().startForegroundService(intent);
+        } else {
+            getActivity().startService(intent);
+        }
+    }
+
+    public void onStopForegroundService(View view) {
+        Intent intent = new Intent(getContext(), MyService.class);
+        intent.setAction("stopForeground");
+        getActivity().stopService(intent);
     }
 }
