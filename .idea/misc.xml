@@ -4,7 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/menu_selector_color.xml" value="0.1605" />
+        <entry key="app/src/main/res/drawable/progress_bg.xml" value="0.1605" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.17135416666666667" />
+        <entry key="app/src/main/res/layout/dialog_progress.xml" value="0.1703125" />
         <entry key="app/src/main/res/layout/fragment_community.xml" value="0.17135416666666667" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.17135416666666667" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.2564814814814815" />

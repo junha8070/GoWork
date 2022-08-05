@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".RegisterFragment"
-    android:background="@color/basic">
+    android:background="@color/basic"
+    tools:context=".RegisterFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -40,6 +40,7 @@
             app:layout_constraintTop_toTopOf="@+id/guideLine_hor_1">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/textField"
@@ -71,6 +72,7 @@
             app:layout_constraintTop_toTopOf="@+id/guideLine_hor_2">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_pw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/textField"
@@ -87,7 +89,7 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.4" />
 
-         <com.google.android.material.textfield.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textField3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -102,6 +104,7 @@
             app:layout_constraintTop_toTopOf="@+id/guideLine_hor_3">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_repw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/textField"
@@ -131,6 +134,7 @@
             app:layout_constraintTop_toTopOf="@+id/guideLine_hor_4">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/textField"
@@ -155,6 +159,7 @@
             app:layout_constraintGuide_percent="0.8" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_finish"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="회원가입 완료"

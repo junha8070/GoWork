@@ -12,5 +12,8 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
+        <!--        화면 전환시 잠깐 나타나는 흰색 변경하는 코드-->
+        <item name="android:windowBackground">@color/basic</item>
     </style>
 </resources>

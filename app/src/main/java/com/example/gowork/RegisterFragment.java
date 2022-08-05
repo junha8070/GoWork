@@ -3,12 +3,22 @@ package com.example.gowork;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +26,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  * create an instance of this fragment.
  */
 public class RegisterFragment extends Fragment {
+
+    ProgressDialog loadingDialog;
+
+    private TextInputEditText edt_id, edt_pw, edt_repw, edt_phone;
+    private MaterialButton btn_finish;
+
+    private AuthViewModel authViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,6 +68,9 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        authViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(AuthViewModel.class);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -62,7 +82,55 @@ public class RegisterFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_register, container, false);
+
 //        hideBottomNavigation(true);
+
+        init(view);
+
+        btn_finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                loadingDialog.show();
+
+                String id = edt_id.getText().toString();
+                String pw = edt_pw.getText().toString();
+                String repw = edt_repw.getText().toString();
+                String phone = edt_phone.getText().toString();
+
+                if(id.isEmpty()||pw.isEmpty()||repw.isEmpty()||phone.isEmpty()){
+                    Toast.makeText(getContext(), "빈 칸을 채워주세요.", Toast.LENGTH_SHORT).show();
+                    loadingDialog.cancel();
+                }else if(!pw.equals(repw)){
+                    Toast.makeText(getContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                    loadingDialog.cancel();
+                }else if(phone.length()!=11){
+                    Toast.makeText(getContext(), "전화번호를 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
+                    loadingDialog.cancel();
+                }else{
+                   authViewModel.register(id, pw);
+                   authViewModel.getRegisterSuccess().observe(getActivity(), new Observer<Task>() {
+                    @Override
+                    public void onChanged(Task task) {
+                        if (task.isComplete()) {
+                            loadingDialog.cancel();
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getContext(), "회원가입 성공", Toast.LENGTH_SHORT).show();
+                                Navigation.findNavController(getView()).navigate(R.id.action_registerFragment_to_loginFragment);
+                            } else {
+                                Toast.makeText(getContext(), "회원가입 오류", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(getContext(), "회원가입 취소", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                }
+
+
+
+            }
+        });
         return view;
     }
 
@@ -73,4 +141,13 @@ public class RegisterFragment extends Fragment {
 //        else
 //            bottomNavigation.setVisibility(View.VISIBLE);
 //    }
+
+    private void init(View view) {
+        loadingDialog = new ProgressDialog(getContext());
+        edt_id = view.findViewById(R.id.edt_id);
+        edt_pw = view.findViewById(R.id.edt_pw);
+        edt_repw = view.findViewById(R.id.edt_repw);
+        edt_phone = view.findViewById(R.id.edt_phone);
+        btn_finish = view.findViewById(R.id.btn_finish);
+    }
 }
