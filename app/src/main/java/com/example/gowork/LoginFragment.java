@@ -3,15 +3,22 @@ package com.example.gowork;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,8 +27,15 @@ import com.google.android.material.textview.MaterialTextView;
  */
 public class LoginFragment extends Fragment {
 
+    String TAG = "LoginFragment";
+
+    ProgressDialog loadingDialog;
+
     private MaterialButton btn_login;
     private MaterialTextView tv_register;
+    private TextInputEditText edt_id, edt_pw;
+
+    private AuthViewModel authViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -57,6 +71,9 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        authViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(AuthViewModel.class);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -76,7 +93,55 @@ public class LoginFragment extends Fragment {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
+
+                loadingDialog.show();
+
+                String id = edt_id.getText().toString();
+                String pw = edt_pw.getText().toString();
+
+                if (id.isEmpty() && pw.isEmpty()) {
+                    Toast.makeText(getContext(), "아이디와 비밀번호를 확인해주세요.", Toast.LENGTH_SHORT).show();
+                    loadingDialog.cancel();
+                } else {
+                    Log.d(TAG, "id: " + id + " pw: " + pw);
+                    authViewModel.login(id, pw);
+
+                    authViewModel.getLoginSuccess().observe(getActivity(), new Observer<Task>() {
+                        @Override
+                        public void onChanged(Task task) {
+                            loadingDialog.cancel();
+                            if (task.isComplete()) {
+//                                authViewModel.getFirebaseUserLiveData().observe(getActivity(), new Observer<FirebaseUser>() {
+//                                    @Override
+//                                    public void onChanged(FirebaseUser firebaseUser) {
+//                                        if (firebaseUser != null) {
+//                                            Toast.makeText(getContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
+//                                            Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
+//                                        }
+//                                    }
+//                                });
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(getContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
+                                    Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
+                                } else {
+                                    Toast.makeText(getContext(), "아이디와 비밀번호를 다시 한번 확인해주세요.", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(getContext(), "로그인 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+//                    authViewModel.getFirebaseUserLiveData().observe(getActivity(), new Observer<FirebaseUser>() {
+//                        @Override
+//                        public void onChanged(FirebaseUser firebaseUser) {
+//                            loadingDialog.cancel();
+//                            if(firebaseUser!=null){
+//                                Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
+//                            }
+//                        }
+//                    });
+                }
             }
         });
 
@@ -99,6 +164,9 @@ public class LoginFragment extends Fragment {
     }
 
     private void init(View view) {
+        loadingDialog = new ProgressDialog(getContext());
+        edt_id = view.findViewById(R.id.edt_id);
+        edt_pw = view.findViewById(R.id.edt_pw);
         btn_login = view.findViewById(R.id.btn_login);
         tv_register = view.findViewById(R.id.tv_register);
     }
