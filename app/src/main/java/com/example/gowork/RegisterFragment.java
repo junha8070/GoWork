@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,13 +27,15 @@ import com.google.firebase.auth.FirebaseUser;
  * create an instance of this fragment.
  */
 public class RegisterFragment extends Fragment {
+    private String TAG = "RegisterFragment";
 
     ProgressDialog loadingDialog;
 
-    private TextInputEditText edt_id, edt_pw, edt_repw, edt_phone;
+    private TextInputEditText edt_name, edt_id, edt_pw, edt_repw, edt_phone;
     private MaterialButton btn_finish;
 
     private AuthViewModel authViewModel;
+    private DBViewModel dbViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,6 +73,7 @@ public class RegisterFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         authViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(AuthViewModel.class);
+        dbViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(DBViewModel.class);
 
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -93,40 +97,53 @@ public class RegisterFragment extends Fragment {
 
                 loadingDialog.show();
 
+                String name = edt_name.getText().toString();
                 String id = edt_id.getText().toString();
                 String pw = edt_pw.getText().toString();
                 String repw = edt_repw.getText().toString();
                 String phone = edt_phone.getText().toString();
 
-                if(id.isEmpty()||pw.isEmpty()||repw.isEmpty()||phone.isEmpty()){
+                UserDTO userDTO = new UserDTO(name, id, phone);
+
+                if (name.isEmpty() || id.isEmpty() || pw.isEmpty() || repw.isEmpty() || phone.isEmpty()) {
                     Toast.makeText(getContext(), "빈 칸을 채워주세요.", Toast.LENGTH_SHORT).show();
                     loadingDialog.cancel();
-                }else if(!pw.equals(repw)){
+                } else if (!pw.equals(repw)) {
                     Toast.makeText(getContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
                     loadingDialog.cancel();
-                }else if(phone.length()!=11){
+                } else if (phone.length() != 11) {
                     Toast.makeText(getContext(), "전화번호를 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
                     loadingDialog.cancel();
-                }else{
-                   authViewModel.register(id, pw);
-                   authViewModel.getRegisterSuccess().observe(getActivity(), new Observer<Task>() {
-                    @Override
-                    public void onChanged(Task task) {
-                        if (task.isComplete()) {
-                            loadingDialog.cancel();
-                            if (task.isSuccessful()) {
-                                Toast.makeText(getContext(), "회원가입 성공", Toast.LENGTH_SHORT).show();
-                                Navigation.findNavController(getView()).navigate(R.id.action_registerFragment_to_loginFragment);
+                } else {
+                    authViewModel.register(id, pw);
+                    authViewModel.getRegisterSuccess().observe(getActivity(), new Observer<Task>() {
+                        @Override
+                        public void onChanged(Task task) {
+                            if (task.isComplete()) {
+                                loadingDialog.cancel();
+                                if (task.isSuccessful()) {
+                                    Log.d(TAG, task.getResult().toString());
+                                    authViewModel.getFirebaseUserLiveData().observe(getActivity(), new Observer<FirebaseUser>() {
+                                        @Override
+                                        public void onChanged(FirebaseUser firebaseUser) {
+                                            if (firebaseUser != null) {
+                                                Log.d(TAG, firebaseUser.getUid());
+                                                Log.d(TAG, userDTO.id);
+                                                dbViewModel.uploadUserInfo(firebaseUser, userDTO);
+                                                Toast.makeText(getContext(), "회원가입 성공", Toast.LENGTH_SHORT).show();
+                                                Navigation.findNavController(getView()).navigate(R.id.action_registerFragment_to_loginFragment);
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    Toast.makeText(getContext(), "회원가입 오류", Toast.LENGTH_SHORT).show();
+                                }
                             } else {
-                                Toast.makeText(getContext(), "회원가입 오류", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "회원가입 취소", Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            Toast.makeText(getContext(), "회원가입 취소", Toast.LENGTH_SHORT).show();
                         }
-                    }
-                });
+                    });
                 }
-
 
 
             }
@@ -144,6 +161,7 @@ public class RegisterFragment extends Fragment {
 
     private void init(View view) {
         loadingDialog = new ProgressDialog(getContext());
+        edt_name = view.findViewById(R.id.edt_name);
         edt_id = view.findViewById(R.id.edt_id);
         edt_pw = view.findViewById(R.id.edt_pw);
         edt_repw = view.findViewById(R.id.edt_repw);

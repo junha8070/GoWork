@@ -13,7 +13,7 @@ public class AuthViewModel extends AndroidViewModel {
     private AuthModel authModel;
     private LiveData<Task> registerSuccess;
     private SingleLiveEvent<Task> loginSuccess;
-    private LiveData<FirebaseUser> firebaseUserLiveData;
+    private SingleLiveEvent<FirebaseUser> firebaseUserLiveData;
 
     public AuthViewModel(@NonNull Application application) {
         super(application);
@@ -36,5 +36,5 @@ public class AuthViewModel extends AndroidViewModel {
 
     public SingleLiveEvent<Task> getLoginSuccess(){ return loginSuccess; }
 
-    public LiveData<FirebaseUser> getFirebaseUserLiveData() { return firebaseUserLiveData; }
+    public SingleLiveEvent<FirebaseUser> getFirebaseUserLiveData() { return firebaseUserLiveData; }
 }

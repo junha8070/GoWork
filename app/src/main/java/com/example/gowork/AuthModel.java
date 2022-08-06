@@ -20,7 +20,7 @@ public class AuthModel {
     private FirebaseDatabase db;
     private Application application;
     private MutableLiveData<Task> registerSuccess;
-    private MutableLiveData<FirebaseUser> firebaseUserMutableLiveData;
+    private SingleLiveEvent<FirebaseUser> firebaseUserMutableLiveData;
 //    private MutableLiveData<Task> loginSuccess;
     private SingleLiveEvent<Task> loginSuccess;
 
@@ -31,7 +31,7 @@ public class AuthModel {
         db = FirebaseDatabase.getInstance();
         registerSuccess = new MutableLiveData<>();
         loginSuccess = new SingleLiveEvent<>();
-        firebaseUserMutableLiveData = new MutableLiveData<>();
+        firebaseUserMutableLiveData = new SingleLiveEvent<>();
     }
 
     public void register(String id, String pw){
@@ -40,6 +40,7 @@ public class AuthModel {
             public void onComplete(@NonNull Task<AuthResult> task) {
 
                 registerSuccess.postValue(task);
+                firebaseUserMutableLiveData.postValue(auth.getCurrentUser());
 
                 // task 완료
 //                if(task.isComplete()){
@@ -86,5 +87,5 @@ public class AuthModel {
 
     public SingleLiveEvent<Task> getLoginSuccessful(){ return loginSuccess; }
 
-    public LiveData<FirebaseUser> getFirebaseUser() {return firebaseUserMutableLiveData;}
+    public SingleLiveEvent<FirebaseUser> getFirebaseUser() {return firebaseUserMutableLiveData;}
 }
