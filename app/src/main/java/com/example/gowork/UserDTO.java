@@ -2,9 +2,13 @@ package com.example.gowork;
 
 public class UserDTO {
 
-    String name;
-    String id;
-    String phone;
+    String name = "";
+    String id = "";
+    String phone = "";
+
+    public UserDTO(){
+
+    }
 
     public String getName() {
         return name;

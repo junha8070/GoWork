@@ -9,16 +9,21 @@ import androidx.lifecycle.LiveData;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.HashMap;
+
 public class AuthViewModel extends AndroidViewModel {
     private AuthModel authModel;
     private LiveData<Task> registerSuccess;
     private SingleLiveEvent<Task> loginSuccess;
     private SingleLiveEvent<FirebaseUser> firebaseUserLiveData;
+    private HashMap<String, Object> loginInfo;
 
     public AuthViewModel(@NonNull Application application) {
         super(application);
 
         authModel = new AuthModel(application);
+
+        loginInfo = authModel.getPreferenceString();
         registerSuccess = authModel.getRegisterSuccessful();
         loginSuccess = authModel.getLoginSuccessful();
         firebaseUserLiveData = authModel.getFirebaseUser();
@@ -30,6 +35,14 @@ public class AuthViewModel extends AndroidViewModel {
 
     public void login(String id, String pw) { authModel.login(id, pw); }
 
+    public void setLoginInfo(HashMap<String, Object> loginInfo){
+        authModel.setPreference(loginInfo);
+    }
+
+    public void logout(){
+        authModel.logout();
+    }
+
     public LiveData<Task> getRegisterSuccess(){
         return registerSuccess;
     }
@@ -37,4 +50,8 @@ public class AuthViewModel extends AndroidViewModel {
     public SingleLiveEvent<Task> getLoginSuccess(){ return loginSuccess; }
 
     public SingleLiveEvent<FirebaseUser> getFirebaseUserLiveData() { return firebaseUserLiveData; }
+
+    public HashMap<String, Object> getLoginInfo(){
+        return loginInfo;
+    }
 }

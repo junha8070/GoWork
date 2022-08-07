@@ -1,14 +1,220 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".SettingFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+        <variable
+            name="DBViewModel"
+            type="com.example.gowork.DBViewModel" />
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="setting" />
+        tools:context=".SettingFragment">
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/materialToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:title="설정"
+                app:titleTextColor="@color/white" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideLine_ver_1"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.05" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideLine_ver_2"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.95" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_1"
+                app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+                app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
+                app:layout_constraintTop_toBottomOf="@+id/materialToolbar">
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{DBViewModel.userInfoLiveData.name}"
+                    android:textColor="@color/white"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{DBViewModel.userInfoLiveData.id}"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideLine_hor_1"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.2" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/btn_add_work"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideLine_hor_2"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.25" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_add_work"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:outlineProvider="none"
+                android:text="근무지 추가"
+                android:textAlignment="viewStart"
+                app:icon="@drawable/ic_add_business_24"
+                app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_3"
+                app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+                app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
+                app:layout_constraintTop_toTopOf="@+id/guideLine_hor_2" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideLine_hor_3"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.35" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_edit_work"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:outlineProvider="none"
+                android:text="근무지 수정"
+                android:textAlignment="viewStart"
+                app:icon="@drawable/ic_edit_24"
+                app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_4"
+                app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+                app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
+                app:layout_constraintTop_toTopOf="@+id/guideLine_hor_3" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideLine_hor_4"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.45" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_edit_work" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideLine_hor_5"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.50" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_edit_profile"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:outlineProvider="none"
+                android:text="회원정보 수정"
+                android:textAlignment="viewStart"
+                app:icon="@drawable/ic_person_24"
+                app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_6"
+                app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+                app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
+                app:layout_constraintTop_toTopOf="@+id/guideLine_hor_5" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideLine_hor_6"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.60" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_logout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:outlineProvider="none"
+                android:text="로그아웃"
+                android:textAlignment="viewStart"
+                app:icon="@drawable/ic_logout_24"
+                app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_7"
+                app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+                app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
+                app:layout_constraintTop_toTopOf="@+id/guideLine_hor_6" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideLine_hor_7"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.70" />
+
+            <!--        <ListView-->
+            <!--            android:id="@+id/menu_top"-->
+            <!--            android:layout_width="0dp"-->
+            <!--            android:layout_height="0dp"-->
+            <!--            android:divider="@color/basic"-->
+            <!--            android:dividerHeight="20dp"-->
+            <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"-->
+            <!--            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"-->
+            <!--            app:layout_constraintTop_toTopOf="@+id/guideLine_hor_2" />-->
+
+            <!--        <com.google.android.material.divider.MaterialDivider-->
+            <!--            android:id="@+id/materialDivider"-->
+            <!--            android:layout_width="0dp"-->
+            <!--            android:layout_height="15dp"-->
+            <!--            app:layout_constraintEnd_toEndOf="parent"-->
+            <!--            app:layout_constraintStart_toStartOf="parent"-->
+            <!--            app:layout_constraintTop_toBottomOf="@+id/menu_top" />-->
+
+            <!--        <ListView-->
+            <!--            android:id="@+id/menu_bottom"-->
+            <!--            android:layout_width="0dp"-->
+            <!--            android:layout_height="0dp"-->
+            <!--            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"-->
+            <!--            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"-->
+            <!--            app:layout_constraintTop_toBottomOf="@+id/materialDivider" />-->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</layout>

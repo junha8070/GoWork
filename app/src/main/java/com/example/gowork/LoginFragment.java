@@ -20,6 +20,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link LoginFragment#newInstance} factory method to
@@ -36,6 +38,7 @@ public class LoginFragment extends Fragment {
     private TextInputEditText edt_id, edt_pw;
 
     private AuthViewModel authViewModel;
+    private DBViewModel dbViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -73,6 +76,8 @@ public class LoginFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         authViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(AuthViewModel.class);
+//        dbViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(DBViewModel.class);
+        dbViewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
 
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -109,38 +114,36 @@ public class LoginFragment extends Fragment {
                     authViewModel.getLoginSuccess().observe(getActivity(), new Observer<Task>() {
                         @Override
                         public void onChanged(Task task) {
-                            loadingDialog.cancel();
                             if (task.isComplete()) {
-//                                authViewModel.getFirebaseUserLiveData().observe(getActivity(), new Observer<FirebaseUser>() {
-//                                    @Override
-//                                    public void onChanged(FirebaseUser firebaseUser) {
-//                                        if (firebaseUser != null) {
-//                                            Toast.makeText(getContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
-//                                            Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
-//                                        }
-//                                    }
-//                                });
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(getContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
-                                    Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
+                                    authViewModel.getFirebaseUserLiveData().observe(getActivity(), new Observer<FirebaseUser>() {
+                                        @Override
+                                        public void onChanged(FirebaseUser firebaseUser) {
+                                            if (firebaseUser != null) {
+                                                dbViewModel.userInfoLiveData(firebaseUser);
+                                                dbViewModel.getUserInfoLiveData().observe(getActivity(), new Observer<UserDTO>() {
+                                                    @Override
+                                                    public void onChanged(UserDTO userDTO) {
+                                                        if (userDTO != null) {
+                                                            loadingDialog.cancel();
+//                                                            Toast.makeText(getContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
+                                                            Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_homeFragment);
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
                                 } else {
+                                    loadingDialog.cancel();
                                     Toast.makeText(getContext(), "아이디와 비밀번호를 다시 한번 확인해주세요.", Toast.LENGTH_SHORT).show();
                                 }
                             } else {
+                                loadingDialog.cancel();
                                 Toast.makeText(getContext(), "로그인 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
-
-//                    authViewModel.getFirebaseUserLiveData().observe(getActivity(), new Observer<FirebaseUser>() {
-//                        @Override
-//                        public void onChanged(FirebaseUser firebaseUser) {
-//                            loadingDialog.cancel();
-//                            if(firebaseUser!=null){
-//                                Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
-//                            }
-//                        }
-//                    });
                 }
             }
         });

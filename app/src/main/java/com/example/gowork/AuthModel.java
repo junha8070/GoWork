@@ -14,6 +14,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+
 public class AuthModel {
 
     private FirebaseAuth auth;
@@ -21,11 +23,17 @@ public class AuthModel {
     private Application application;
     private MutableLiveData<Task> registerSuccess;
     private SingleLiveEvent<FirebaseUser> firebaseUserMutableLiveData;
+    private HashMap<String, Object> loginInfo;
 //    private MutableLiveData<Task> loginSuccess;
     private SingleLiveEvent<Task> loginSuccess;
 
+    private PreferenceHelper preferenceHelper;
+
     public AuthModel(Application application){
         this.application = application;
+
+        preferenceHelper = new PreferenceHelper(application);
+        loginInfo = new HashMap<>();
 
         auth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance();
@@ -81,8 +89,23 @@ public class AuthModel {
         });
     }
 
+    //데이터를 내부 저장소에 저장하기
+    public void setPreference(HashMap<String, Object> loginInfo) {
+        preferenceHelper.saveAutoLogin((Boolean) loginInfo.get("autologin"));
+        preferenceHelper.saveUserid(String.valueOf(loginInfo.get("id")));
+        preferenceHelper.savePassword(String.valueOf(loginInfo.get("password")));
+    }
+
+    public void logout(){
+        auth.getInstance().signOut();
+    }
+
     public LiveData<Task> getRegisterSuccessful(){
         return registerSuccess;
+    }
+
+    public HashMap<String, Object> getPreferenceString() {
+        return loginInfo;
     }
 
     public SingleLiveEvent<Task> getLoginSuccessful(){ return loginSuccess; }
