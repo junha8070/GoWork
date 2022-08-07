@@ -83,6 +83,23 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLine_hor_8"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.58" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cb_autologin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="자동 로그인"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
+            app:layout_constraintTop_toTopOf="@+id/guideLine_hor_8" />
+
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideLine_ver_2"
             android:layout_width="wrap_content"
             android:layout_height="1dp"

@@ -1,6 +1,7 @@
 package com.example.gowork;
 
 import android.app.Application;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 
 public class AuthModel {
+    private String TAG = "AuthModel";
 
     private FirebaseAuth auth;
     private FirebaseDatabase db;
@@ -91,6 +93,7 @@ public class AuthModel {
 
     //데이터를 내부 저장소에 저장하기
     public void setPreference(HashMap<String, Object> loginInfo) {
+//        Log.d(TAG, loginInfo.get("id").toString());
         preferenceHelper.saveAutoLogin((Boolean) loginInfo.get("autologin"));
         preferenceHelper.saveUserid(String.valueOf(loginInfo.get("id")));
         preferenceHelper.savePassword(String.valueOf(loginInfo.get("password")));
@@ -105,6 +108,9 @@ public class AuthModel {
     }
 
     public HashMap<String, Object> getPreferenceString() {
+        loginInfo.put("autologin", preferenceHelper.getAutoLogin());
+        loginInfo.put("id", preferenceHelper.getUserid());
+        loginInfo.put("password", preferenceHelper.getPassword());
         return loginInfo;
     }
 

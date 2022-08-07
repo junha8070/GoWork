@@ -37,6 +37,8 @@ public class SettingFragment extends Fragment {
     private TextView tv_name, tv_email;
     private MaterialButton btn_add_work, btn_edit_work, btn_edit_profile, btn_logout;
 
+    private HashMap<String, Object> loginInfo;
+
 //    FragmentSettingBinding settingBinding;
     AuthViewModel authViewModel;
     DBViewModel dbViewModel;
@@ -111,6 +113,12 @@ public class SettingFragment extends Fragment {
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                /*TODO : 로그아웃시 정보 삭제 다시 점검*/
+                                loginInfo = new HashMap<>();
+                                loginInfo.put("autologin",false);
+                                loginInfo.put("id", null);
+                                loginInfo.put("password", null);
+                                authViewModel.setLoginInfo(loginInfo);
                                 authViewModel.logout();
                                 getActivity().finish();
 //                                Navigation.findNavController(getView()).navigate(R.id.action_settingFragment_to_loginFragment);

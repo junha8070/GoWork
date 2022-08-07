@@ -16,10 +16,12 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -36,6 +38,9 @@ public class LoginFragment extends Fragment {
     private MaterialButton btn_login;
     private MaterialTextView tv_register;
     private TextInputEditText edt_id, edt_pw;
+    private MaterialCheckBox cb_autologin;
+
+    private HashMap<String, Object> loginInfo;
 
     private AuthViewModel authViewModel;
     private DBViewModel dbViewModel;
@@ -93,6 +98,18 @@ public class LoginFragment extends Fragment {
 
         init(view);
 
+        Log.d(TAG, String.valueOf(authViewModel.getLoginInfo().get("autologin")));
+
+        if((Boolean)authViewModel.getLoginInfo().get("autologin")!=null){
+            if((Boolean)authViewModel.getLoginInfo().get("autologin")==true){
+                cb_autologin.setChecked(true);
+                String id = authViewModel.getLoginInfo().get("id").toString();
+                String pw = authViewModel.getLoginInfo().get("password").toString();
+                login(id, pw);
+
+            }
+        }
+
         hideBottomNavigation(true);
 
         btn_login.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +126,23 @@ public class LoginFragment extends Fragment {
                     loadingDialog.cancel();
                 } else {
                     Log.d(TAG, "id: " + id + " pw: " + pw);
-                    authViewModel.login(id, pw);
+                    login(id, pw);
+                }
+            }
+        });
+
+        tv_register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_registerFragment);
+            }
+        });
+
+        return view;
+    }
+
+    public void login(String id, String pw){
+        authViewModel.login(id, pw);
 
                     authViewModel.getLoginSuccess().observe(getActivity(), new Observer<Task>() {
                         @Override
@@ -120,6 +153,13 @@ public class LoginFragment extends Fragment {
                                         @Override
                                         public void onChanged(FirebaseUser firebaseUser) {
                                             if (firebaseUser != null) {
+                                                if(cb_autologin.isChecked()){
+                                                    loginInfo = new HashMap<>();
+                                                    loginInfo.put("autologin",true);
+                                                    loginInfo.put("id", id);
+                                                    loginInfo.put("password", pw);
+                                                    authViewModel.setLoginInfo(loginInfo);
+                                                }
                                                 dbViewModel.userInfoLiveData(firebaseUser);
                                                 dbViewModel.getUserInfoLiveData().observe(getActivity(), new Observer<UserDTO>() {
                                                     @Override
@@ -144,18 +184,6 @@ public class LoginFragment extends Fragment {
                             }
                         }
                     });
-                }
-            }
-        });
-
-        tv_register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_registerFragment);
-            }
-        });
-
-        return view;
     }
 
     public void hideBottomNavigation(Boolean bool) {
@@ -170,6 +198,7 @@ public class LoginFragment extends Fragment {
         loadingDialog = new ProgressDialog(getContext());
         edt_id = view.findViewById(R.id.edt_id);
         edt_pw = view.findViewById(R.id.edt_pw);
+        cb_autologin = view.findViewById(R.id.cb_autologin);
         btn_login = view.findViewById(R.id.btn_login);
         tv_register = view.findViewById(R.id.tv_register);
     }
