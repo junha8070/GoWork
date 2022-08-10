@@ -104,6 +104,13 @@ public class SettingFragment extends Fragment {
 
 //        return settingBinding.getRoot();
 
+        btn_edit_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(getView()).navigate(R.id.action_settingFragment_to_edit_UserInfo);
+            }
+        });
+
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

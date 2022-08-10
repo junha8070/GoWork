@@ -65,5 +65,17 @@
             app:exitAnim="@anim/exit_to_right"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_settingFragment_to_edit_UserInfo"
+            app:destination="@id/edit_UserInfo" />
+    </fragment>
+    <fragment
+        android:id="@+id/edit_UserInfo"
+        android:name="com.example.gowork.Edit_UserInfo"
+        android:label="fragment_edit__user_info"
+        tools:layout="@layout/fragment_edit__user_info" >
+        <action
+            android:id="@+id/action_edit_UserInfo_to_settingFragment"
+            app:destination="@id/settingFragment" />
     </fragment>
 </navigation>
