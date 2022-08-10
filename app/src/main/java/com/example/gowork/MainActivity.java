@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     private NavHostFragment navHostFragment;
     private NavController navController;
     private BottomNavigationView bottomNav;
+    OnBackPressedListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,4 +26,18 @@ public class MainActivity extends AppCompatActivity {
         bottomNav = findViewById(R.id.bottomNavigationView);
         NavigationUI.setupWithNavController(bottomNav, navController);
     }
+
+    public void setOnBackPressedListener(OnBackPressedListener listener){
+        this.listener = listener;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(listener!=null){
+            listener.onBackPressed();
+        }else{
+            super.onBackPressed();
+        }
+    }
+
 }

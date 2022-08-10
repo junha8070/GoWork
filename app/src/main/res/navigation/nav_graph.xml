@@ -27,6 +27,10 @@
             app:exitAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right" />
         <action
+            app:enterAnim="@anim/exit_to_right"
+            app:exitAnim="@anim/exit_to_right"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
@@ -76,6 +80,10 @@
         tools:layout="@layout/fragment_edit__user_info" >
         <action
             android:id="@+id/action_edit_UserInfo_to_settingFragment"
-            app:destination="@id/settingFragment" />
+            app:destination="@id/settingFragment"
+            app:enterAnim="@anim/exit_to_right"
+            app:exitAnim="@anim/exit_to_right"
+            app:popUpTo="@id/settingFragment"
+            />
     </fragment>
 </navigation>

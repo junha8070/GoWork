@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -17,9 +18,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements OnBackPressedListener{
 
     DBViewModel dbViewModel;
+
+    MainActivity mainActivity;
+
+    long backKeyPressedTime;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,9 +75,32 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        mainActivity = (MainActivity) getActivity();
+
         Log.d("TAG",dbViewModel.getUserInfoLiveData().getValue().phone);
 
         return view;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        //터치간 시간을 줄이거나 늘리고 싶다면 2000을 원하는 시간으로 변경해서 사용하시면 됩니다.
+        if(System.currentTimeMillis() > backKeyPressedTime + 2000){
+            backKeyPressedTime = System.currentTimeMillis();
+            Toast.makeText(getContext(),"한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(System.currentTimeMillis() <= backKeyPressedTime + 2000){
+            getActivity().finish();
+            Toast.makeText(getContext(),"한번 더 누르면 종료됩니다.",Toast.LENGTH_SHORT).cancel();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivity.setOnBackPressedListener(this);
     }
 
     @Override
