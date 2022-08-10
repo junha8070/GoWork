@@ -101,12 +101,12 @@ public class LoginFragment extends Fragment {
         Log.d(TAG, String.valueOf(authViewModel.getLoginInfo().get("autologin")));
 
         if((Boolean)authViewModel.getLoginInfo().get("autologin")!=null){
+            loadingDialog.show();
             if((Boolean)authViewModel.getLoginInfo().get("autologin")==true){
                 cb_autologin.setChecked(true);
                 String id = authViewModel.getLoginInfo().get("id").toString();
                 String pw = authViewModel.getLoginInfo().get("password").toString();
                 login(id, pw);
-
             }
         }
 

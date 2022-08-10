@@ -47,7 +47,7 @@
             android:id="@+id/layout_id"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="ID"
+            android:hint="ID(변경 불가)"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             app:endIconMode="clear_text"
@@ -108,7 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.3" />
+            app:layout_constraintGuide_percent="0.33" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_newpw"
@@ -140,7 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.4" />
+            app:layout_constraintGuide_percent="0.43" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_repw"
@@ -171,7 +171,7 @@
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.5" />
+            app:layout_constraintGuide_percent="0.53" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_name"
