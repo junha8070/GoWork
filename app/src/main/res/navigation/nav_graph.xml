@@ -48,9 +48,7 @@
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment"
             app:enterAnim="@anim/exit_to_right"
-            app:exitAnim="@anim/exit_to_right"
-            app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true" />
+            app:exitAnim="@anim/exit_to_right" />
     </fragment>
     <fragment
         android:id="@+id/scheduleFragment"
@@ -66,9 +64,7 @@
             android:id="@+id/action_settingFragment_to_loginFragment"
             app:destination="@id/loginFragment"
             app:enterAnim="@anim/exit_to_right"
-            app:exitAnim="@anim/exit_to_right"
-            app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true"/>
+            app:exitAnim="@anim/exit_to_right"/>
         <action
             android:id="@+id/action_settingFragment_to_edit_UserInfo"
             app:destination="@id/edit_UserInfo" />
@@ -83,7 +79,6 @@
             app:destination="@id/settingFragment"
             app:enterAnim="@anim/exit_to_right"
             app:exitAnim="@anim/exit_to_right"
-            app:popUpTo="@id/settingFragment"
             />
     </fragment>
 </navigation>

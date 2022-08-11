@@ -77,7 +77,7 @@ public class HomeFragment extends Fragment implements OnBackPressedListener{
 
         mainActivity = (MainActivity) getActivity();
 
-        Log.d("TAG",dbViewModel.getUserInfoLiveData().getValue().phone);
+//        Log.d("TAG",dbViewModel.getUserInfoLiveData().getValue().phone);
 
         return view;
     }

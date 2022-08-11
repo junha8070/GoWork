@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
@@ -15,7 +16,7 @@ public class AuthViewModel extends AndroidViewModel {
     private AuthModel authModel;
     private LiveData<Task> registerSuccess;
     private SingleLiveEvent<Task> loginSuccess;
-    private SingleLiveEvent<FirebaseUser> firebaseUserLiveData;
+    private LiveData<FirebaseUser> firebaseUserLiveData;
     private HashMap<String, Object> loginInfo;
 
     public AuthViewModel(@NonNull Application application) {
@@ -47,9 +48,9 @@ public class AuthViewModel extends AndroidViewModel {
         return registerSuccess;
     }
 
-    public SingleLiveEvent<Task> getLoginSuccess(){ return loginSuccess; }
+    public LiveData<Task> getLoginSuccess(){ return loginSuccess; }
 
-    public SingleLiveEvent<FirebaseUser> getFirebaseUserLiveData() { return firebaseUserLiveData; }
+    public LiveData<FirebaseUser> getFirebaseUserLiveData() { return firebaseUserLiveData; }
 
     public HashMap<String, Object> getLoginInfo(){
         return loginInfo;

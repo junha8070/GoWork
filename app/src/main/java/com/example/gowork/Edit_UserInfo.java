@@ -6,14 +6,17 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,15 +24,16 @@ import com.google.android.material.textfield.TextInputEditText;
  * create an instance of this fragment.
  */
 public class Edit_UserInfo extends Fragment {
+    private String TAG = "Edit_UserInfo";
 
     private MaterialToolbar materialToolbar;
-    private TextInputEditText edt_id, edt_pw, edt_newpw, edt_repw, edt_name;
+    private TextInputEditText edt_id, edt_pw, edt_newpw, edt_repw, edt_name, edt_phone;
     private MaterialButton btn_finish;
 
     private AuthViewModel authViewModel;
     private DBViewModel dbViewModel;
 
-    private String id, pw, newPw, rePw, name;
+    private String id, pw, newPw, rePw, name, phone;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -87,9 +91,12 @@ public class Edit_UserInfo extends Fragment {
 
         id = dbViewModel.getUserInfoLiveData().getValue().id;
         name = dbViewModel.getUserInfoLiveData().getValue().name;
+        phone = dbViewModel.getUserInfoLiveData().getValue().phone;
+
 
         edt_id.setText(id);
         edt_name.setText(name);
+        edt_phone.setText(phone);
 
         materialToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +108,28 @@ public class Edit_UserInfo extends Fragment {
         btn_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                String id = edt_id.getText().toString();
+                String pw = edt_pw.getText().toString();
+                String newPw = edt_newpw.getText().toString();
+                String newRePw = edt_repw.getText().toString();
+                String newName = edt_name.getText().toString();
+                String newPhone = edt_phone.getText().toString();
 
+                if (pw.isEmpty()) {
+                    Toast.makeText(getContext(), "정보 변경을 위해서는 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                } else if (!newPw.isEmpty() || !newRePw.isEmpty()) {
+                    if (newPw.equals(newRePw)) {
+                        Toast.makeText(getContext(), "새로운 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    UserDTO new_userDTO = new UserDTO();
+                    FirebaseUser firebaseUser = authViewModel.getFirebaseUserLiveData().getValue();
+//                    Log.d(TAG, authViewModel.getFirebaseUserLiveData().getValue().getUid());
+                    new_userDTO.setId(id);
+                    new_userDTO.setName(newName);
+                    new_userDTO.setPhone(newPhone);
+                    dbViewModel.updateUserInfo(firebaseUser, new_userDTO);
+                }
             }
         });
 
@@ -122,13 +150,14 @@ public class Edit_UserInfo extends Fragment {
             bottomNavigation.setVisibility(View.VISIBLE);
     }
 
-    private void init(View view){
+    private void init(View view) {
         materialToolbar = view.findViewById(R.id.materialToolbar);
         edt_id = view.findViewById(R.id.edt_id);
         edt_pw = view.findViewById(R.id.edt_pw);
         edt_newpw = view.findViewById(R.id.edt_newpw);
         edt_repw = view.findViewById(R.id.edt_repw);
         edt_name = view.findViewById(R.id.edt_name);
+        edt_phone = view.findViewById(R.id.edt_phone);
         btn_finish = view.findViewById(R.id.btn_finish);
     }
 }

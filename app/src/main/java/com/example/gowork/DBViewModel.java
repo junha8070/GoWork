@@ -17,6 +17,7 @@ public class DBViewModel extends AndroidViewModel {
 
     private SingleLiveEvent<Task> uploadUserInfoSuccessful;
     private LiveData<UserDTO> userInfoData;
+    private SingleLiveEvent<Task> updateUserInfoTask;
 
     public DBViewModel(@NonNull Application application) {
         super(application);
@@ -24,6 +25,7 @@ public class DBViewModel extends AndroidViewModel {
         dbRepository = new DBRepository(application);
         uploadUserInfoSuccessful = dbRepository.getUploadUserInfoSuccessful();
         userInfoData = dbRepository.getUserInfoLiveData();
+        updateUserInfoTask = dbRepository.getUpdateUserInfoTask();
     }
 
     public void uploadUserInfo(FirebaseUser user, UserDTO userDTO) {
@@ -34,11 +36,19 @@ public class DBViewModel extends AndroidViewModel {
         dbRepository.getUserInfo(firebaseUser);
     }
 
+    public void updateUserInfo(FirebaseUser firebaseUser, UserDTO userDto){
+        dbRepository.updateUserInfo(firebaseUser, userDto);
+    }
+
     public SingleLiveEvent<Task> getUploadUserInfoSuccessful() {
         return uploadUserInfoSuccessful;
     }
 
     public LiveData<UserDTO> getUserInfoLiveData(){
         return userInfoData;
+    }
+
+    public SingleLiveEvent<Task> getUpdateUserInfoTask(){
+        return updateUserInfoTask;
     }
 }
