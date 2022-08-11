@@ -80,8 +80,11 @@ public class LoginFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        authViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(AuthViewModel.class);
-//        dbViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(DBViewModel.class);
+//        authViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(AuthViewModel.class);
+////        dbViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(DBViewModel.class);
+//        dbViewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
+
+        authViewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
         dbViewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
 
         if (getArguments() != null) {
@@ -167,10 +170,10 @@ public class LoginFragment extends Fragment {
                                                         if (userDTO != null) {
                                                             loadingDialog.cancel();
 //                                                            Toast.makeText(getContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
-                                                            Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_homeFragment);
                                                         }
                                                     }
                                                 });
+                                                Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
                                             }
                                         }
                                     });
