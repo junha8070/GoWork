@@ -1,12 +1,13 @@
-package com.example.gowork;
+package com.example.gowork.ViewModel;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
+import com.example.gowork.Model.AuthModel;
+import com.example.gowork.SingleLiveEvent;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 

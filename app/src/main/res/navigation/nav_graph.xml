@@ -68,6 +68,9 @@
         <action
             android:id="@+id/action_settingFragment_to_edit_UserInfo"
             app:destination="@id/edit_UserInfo" />
+        <action
+            android:id="@+id/action_settingFragment_to_addWorkFragment"
+            app:destination="@id/addWorkFragment" />
     </fragment>
     <fragment
         android:id="@+id/edit_UserInfo"
@@ -80,5 +83,26 @@
             app:enterAnim="@anim/exit_to_right"
             app:exitAnim="@anim/exit_to_right"
             />
+    </fragment>
+    <fragment
+        android:id="@+id/addWorkFragment"
+        android:name="com.example.gowork.AddWorkFragment"
+        android:label="fragment_add_work"
+        tools:layout="@layout/fragment_add_work" >
+        <action
+            android:id="@+id/action_addWorkFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_addWorkFragment_to_searchAddressFragment"
+            app:destination="@id/searchAddressFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchAddressFragment"
+        android:name="com.example.gowork.ViewModel.SearchAddressFragment"
+        android:label="fragment_search_address"
+        tools:layout="@layout/fragment_search_address" >
+        <action
+            android:id="@+id/action_searchAddressFragment_to_addWorkFragment"
+            app:destination="@id/addWorkFragment" />
     </fragment>
 </navigation>

@@ -1,4 +1,4 @@
-package com.example.gowork;
+package com.example.gowork.Model;
 
 import android.content.Context;
 import android.content.SharedPreferences;

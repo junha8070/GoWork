@@ -4,25 +4,19 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.gowork.databinding.FragmentSettingBinding;
+import com.example.gowork.ViewModel.AuthViewModel;
 import com.google.android.material.button.MaterialButton;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -39,7 +33,7 @@ public class SettingFragment extends Fragment {
 
     private HashMap<String, Object> loginInfo;
 
-//    FragmentSettingBinding settingBinding;
+    //    FragmentSettingBinding settingBinding;
     AuthViewModel authViewModel;
     DBViewModel dbViewModel;
 
@@ -99,10 +93,25 @@ public class SettingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
 //        settingBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_setting, container, false);
         init(view);
-        fetch();
+//        UserDTO userDTO = dbViewModel.getUserInfoLiveData().getValue();
+        dbViewModel.getUserInfoLiveData().observe(getActivity(), new Observer<UserDTO>() {
+            @Override
+            public void onChanged(UserDTO userDTO) {
+                name = userDTO.name;
+                email = userDTO.id;
+                updateUI(name, email);
+            }
+        });
 //        updateUI();
 
 //        return settingBinding.getRoot();
+
+        btn_add_work.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(getView()).navigate(R.id.action_settingFragment_to_addWorkFragment);
+            }
+        });
 
         btn_edit_profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +131,7 @@ public class SettingFragment extends Fragment {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 /*TODO : 로그아웃시 정보 삭제 다시 점검*/
                                 loginInfo = new HashMap<>();
-                                loginInfo.put("autologin",false);
+                                loginInfo.put("autologin", false);
                                 loginInfo.put("id", null);
                                 loginInfo.put("password", null);
                                 authViewModel.setLoginInfo(loginInfo);
@@ -131,7 +140,7 @@ public class SettingFragment extends Fragment {
 //                                Navigation.findNavController(getView()).navigate(R.id.action_settingFragment_to_loginFragment);
                             }
                         })
-                        .setNegativeButton("취소",null)
+                        .setNegativeButton("취소", null)
                         .create()
                         .show();
                 AlertDialog alertDialog = builder.create();
@@ -140,14 +149,6 @@ public class SettingFragment extends Fragment {
             }
         });
         return view;
-    }
-
-    public void fetch() {
-        UserDTO userDTO = dbViewModel.getUserInfoLiveData().getValue();
-        name = userDTO.name;
-        email = userDTO.id;
-
-        updateUI(name, email);
     }
 
     public void updateUI(String name, String email) {

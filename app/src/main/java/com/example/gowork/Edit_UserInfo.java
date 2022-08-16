@@ -6,12 +6,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.gowork.ViewModel.AuthViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
@@ -129,6 +129,7 @@ public class Edit_UserInfo extends Fragment {
                     new_userDTO.setName(newName);
                     new_userDTO.setPhone(newPhone);
                     dbViewModel.updateUserInfo(firebaseUser, new_userDTO);
+                    Navigation.findNavController(getView()).navigate(R.id.action_edit_UserInfo_to_settingFragment);
                 }
             }
         });

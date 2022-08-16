@@ -8,6 +8,7 @@
         <entry key="app/src/main/res/drawable/progress_bg.xml" value="0.1605" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.17135416666666667" />
         <entry key="app/src/main/res/layout/dialog_progress.xml" value="0.1703125" />
+        <entry key="app/src/main/res/layout/fragment_add_work.xml" value="0.27149321266968324" />
         <entry key="app/src/main/res/layout/fragment_community.xml" value="0.17135416666666667" />
         <entry key="app/src/main/res/layout/fragment_edit__user_info.xml" value="0.15625" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.17135416666666667" />
@@ -15,6 +16,7 @@
         <entry key="app/src/main/res/layout/fragment_pay.xml" value="0.17135416666666667" />
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.17135416666666667" />
         <entry key="app/src/main/res/layout/fragment_schedule.xml" value="0.17135416666666667" />
+        <entry key="app/src/main/res/layout/fragment_search_address.xml" value="0.15625" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.15625" />
         <entry key="app/src/main/res/layout/setting_listview_item.xml" value="0.178125" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.17135416666666667" />

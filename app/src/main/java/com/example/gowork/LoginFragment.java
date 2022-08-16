@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.gowork.ViewModel.AuthViewModel;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
@@ -22,7 +23,6 @@ import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
