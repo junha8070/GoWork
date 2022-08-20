@@ -1,14 +1,17 @@
-package com.example.gowork.ViewModel;
+package com.example.gowork;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-import com.example.gowork.R;
+import com.google.android.material.textfield.TextInputEditText;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +19,10 @@ import com.example.gowork.R;
  * create an instance of this fragment.
  */
 public class SearchAddressFragment extends Fragment {
+
+    private String TAG = "SearchAddressFragment";
+
+    TextInputEditText edt_search_address;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +68,22 @@ public class SearchAddressFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_address, container, false);
+        View view = inflater.inflate(R.layout.fragment_search_address, container, false);
+
+        init(view);
+
+        edt_search_address.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                Log.d(TAG, "검색어 : " + textView + " 뭐지 : " + i + " 누른 키 : " + keyEvent);
+                return false;
+            }
+        });
+
+        return view;
+    }
+
+    private void init(View view) {
+        edt_search_address = view.findViewById(R.id.edt_search_address);
     }
 }

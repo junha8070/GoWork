@@ -98,7 +98,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchAddressFragment"
-        android:name="com.example.gowork.ViewModel.SearchAddressFragment"
+        android:name="com.example.gowork.SearchAddressFragment"
         android:label="fragment_search_address"
         tools:layout="@layout/fragment_search_address" >
         <action
