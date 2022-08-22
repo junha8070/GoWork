@@ -3,6 +3,8 @@ package com.example.gowork;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.KeyEvent;
@@ -11,6 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.gowork.DTO.KakaoAddressRequest;
+import com.example.gowork.DTO.KakaoAddressResponse;
+import com.example.gowork.ViewModel.AddressViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
 /**
@@ -23,6 +28,9 @@ public class SearchAddressFragment extends Fragment {
     private String TAG = "SearchAddressFragment";
 
     TextInputEditText edt_search_address;
+
+    private AddressViewModel addressViewModel;
+    private KakaoAddressRequest kakaoAddressRequest;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,6 +66,9 @@ public class SearchAddressFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        addressViewModel = new ViewModelProvider(requireActivity()).get(AddressViewModel.class);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -72,13 +83,30 @@ public class SearchAddressFragment extends Fragment {
 
         init(view);
 
+        addressViewModel.getAddressInfo().observe(getActivity(), new Observer<KakaoAddressResponse>() {
+            @Override
+            public void onChanged(KakaoAddressResponse kakaoAddressResponse) {
+                if (kakaoAddressResponse.getKakaoAddressDocumentsPojos().get(0) != null) {
+                    Log.d(TAG, kakaoAddressResponse.getKakaoAddressDocumentsPojos().get(0).getAddress_name());
+                }
+            }
+        });
+
         edt_search_address.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                Log.d(TAG, "검색어 : " + textView + " 뭐지 : " + i + " 누른 키 : " + keyEvent);
+                Log.d(TAG, "검색어 : " + textView.getText().toString() + " 뭐지 : " + i + " 누른 키 : " + keyEvent);
+                if (!textView.getText().toString().isEmpty()) {
+                    kakaoAddressRequest = new KakaoAddressRequest();
+                    kakaoAddressRequest.setQuery(textView.getText().toString());
+                    addressViewModel.responseAddressInfo(kakaoAddressRequest);
+                }
+
+//                addressViewModel.responseAddressInfo();
                 return false;
             }
         });
+
 
         return view;
     }

@@ -18,13 +18,12 @@ public class AddressViewModel extends AndroidViewModel {
 
     private AddressModel addressModel;
 
-    private LiveData<ArrayList<KakaoAddressResponse>> kakaoAddressResponses;
+    private LiveData<KakaoAddressResponse> kakaoAddressResponses;
 
     public AddressViewModel(@NonNull Application application) {
         super(application);
 
         addressModel = new AddressModel(application);
-
         kakaoAddressResponses = addressModel.getAddressInfo();
 
     }
@@ -33,7 +32,7 @@ public class AddressViewModel extends AndroidViewModel {
         addressModel.responseAddressInfo(kakaoAddressRequest);
     }
 
-    public LiveData<ArrayList<KakaoAddressResponse>> getAddressInfo() {
+    public LiveData<KakaoAddressResponse> getAddressInfo() {
         return kakaoAddressResponses;
     }
 }

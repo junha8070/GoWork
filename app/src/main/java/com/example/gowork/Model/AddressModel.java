@@ -24,40 +24,41 @@ public class AddressModel {
 
     private String TAG = "AddressModel";
 
-     private Application application;
+    private Application application;
 
-    private MutableLiveData<ArrayList<KakaoAddressResponse>> kakaoAddressResponses;
+    private MutableLiveData<KakaoAddressResponse> kakaoAddressResponsesData;
     private KakaoAddressInterface kakaoAddressInterface;
     private KakaoAddressRequest kakaoAddressRequest;
     private KakaoAddressResponse kakaoAddressResponse;
 
-    public AddressModel(Application application){
+    public AddressModel(Application application) {
         this.application = application;
 
-        kakaoAddressResponses = new MutableLiveData<>();
+        kakaoAddressResponsesData = new MutableLiveData<>();
     }
 
-    public void responseAddressInfo(KakaoAddressRequest kakaoAddressRequest){
+    public void responseAddressInfo(KakaoAddressRequest kakaoAddressRequest) {
+        kakaoAddressInterface = ServiceGenerator.createService(KakaoAddressInterface.class);
+//        kakaoAddressRequest = new KakaoAddressRequest();
+        kakaoAddressInterface.getAddressInfo(kakaoAddressRequest).enqueue(new Callback<KakaoAddressResponse>() {
+            @Override
+            public void onResponse(Call<KakaoAddressResponse> call, Response<KakaoAddressResponse> response) {
+                if (response.isSuccessful()) {
+                    KakaoAddressResponse result = response.body();
+                    kakaoAddressResponsesData.postValue(result);
+                } else {
 
-        kakaoAddressRequest = new KakaoAddressRequest();
-        kakaoAddressInterface.getAddressInfo(kakaoAddressRequest)
-                .enqueue(new Callback<KakaoAddressResponse>() {
-                    @Override
-                    public void onResponse(Call<KakaoAddressResponse> call, Response<KakaoAddressResponse> response) {
-                        if(response.isSuccessful()){
-                            KakaoAddressResponse result = response.body();
-//                            Log.d(TAG, result.)
-                        }
-                    }
+                }
+            }
 
-                    @Override
-                    public void onFailure(Call<KakaoAddressResponse> call, Throwable t) {
+            @Override
+            public void onFailure(Call<KakaoAddressResponse> call, Throwable t) {
 
-                    }
-                });
+            }
+        });
     }
 
-    public LiveData<ArrayList<KakaoAddressResponse>> getAddressInfo() {
-        return kakaoAddressResponses;
+    public LiveData<KakaoAddressResponse> getAddressInfo() {
+        return kakaoAddressResponsesData;
     }
 }
