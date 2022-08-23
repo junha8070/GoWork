@@ -76,8 +76,23 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.2" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <TextView
+            android:id="@+id/tv_none_result"
             android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="검색 결과가 없습니다."
+            android:gravity="center"
+            android:textSize="18dp"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_3"
+            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
+            app:layout_constraintTop_toTopOf="@+id/guideLine_hor_2" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_address"
+            android:layout_width="0dp"
+            android:visibility="gone"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_3"
             app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"

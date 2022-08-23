@@ -24,7 +24,7 @@ public class AuthenticationInterceptor implements Interceptor {
 
         Request.Builder builder = original.newBuilder()
                 // Original Token Code
-                .header("Authorization", "KakaoAK " + authToken);
+                .addHeader("Content-Type","application/json;charset=UTF-8");
                 // MockServer Token Code
 //                .header("X-Api-Key", "PMAK-62c2bb573eaf6129f000481d-7a7ec096d3dd182e419dc0fb7e0473d544");
 

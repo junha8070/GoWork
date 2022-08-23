@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ServiceGenerator {
 
     // Original Server
-    public static final String BASE_URL = "dapi.kakao.com";
+    public static final String BASE_URL = "http://dapi.kakao.com";
 
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 

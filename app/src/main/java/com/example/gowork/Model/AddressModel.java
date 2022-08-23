@@ -23,6 +23,7 @@ import retrofit2.Response;
 public class AddressModel {
 
     private String TAG = "AddressModel";
+    private String key = "KakaoAK dbfcf07ffa2f4988e3aa5784db8642df";
 
     private Application application;
 
@@ -38,22 +39,30 @@ public class AddressModel {
     }
 
     public void responseAddressInfo(KakaoAddressRequest kakaoAddressRequest) {
+        Log.d(TAG, "주소 끌고오기 1");
         kakaoAddressInterface = ServiceGenerator.createService(KakaoAddressInterface.class);
 //        kakaoAddressRequest = new KakaoAddressRequest();
-        kakaoAddressInterface.getAddressInfo(kakaoAddressRequest).enqueue(new Callback<KakaoAddressResponse>() {
+        kakaoAddressInterface.getAddressInfo(key, kakaoAddressRequest.query).enqueue(new Callback<KakaoAddressResponse>() {
             @Override
             public void onResponse(Call<KakaoAddressResponse> call, Response<KakaoAddressResponse> response) {
+                Log.d(TAG, "주소 끌고오는 중");
                 if (response.isSuccessful()) {
                     KakaoAddressResponse result = response.body();
+                    Log.d(TAG, call.request().toString());
+                    Log.d(TAG, response.message());
+                    Log.d(TAG, String.valueOf(result.getKakaoAddressDocumentsPojos().size()));
+//                    Log.d(TAG, result.getKakaoAddressDocumentsPojos().get(0).getRoad_address_name());
                     kakaoAddressResponsesData.postValue(result);
                 } else {
-
+                    Log.d(TAG, "주소 실패");
+                    Log.d(TAG, response.errorBody().toString());
+                    Log.d(TAG, response.message());
                 }
             }
 
             @Override
             public void onFailure(Call<KakaoAddressResponse> call, Throwable t) {
-
+                Log.d(TAG, t.getMessage());
             }
         });
     }

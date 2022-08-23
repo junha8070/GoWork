@@ -5,6 +5,9 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.KeyEvent;
@@ -16,6 +19,8 @@ import android.widget.TextView;
 import com.example.gowork.DTO.KakaoAddressRequest;
 import com.example.gowork.DTO.KakaoAddressResponse;
 import com.example.gowork.ViewModel.AddressViewModel;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 
 /**
@@ -27,7 +32,12 @@ public class SearchAddressFragment extends Fragment {
 
     private String TAG = "SearchAddressFragment";
 
-    TextInputEditText edt_search_address;
+    private TextInputEditText edt_search_address;
+    private RecyclerView rv_address;
+    private MaterialToolbar materialToolbar;
+    private TextView tv_none_result;
+
+    private Address_Adapter address_adapter;
 
     private AddressViewModel addressViewModel;
     private KakaoAddressRequest kakaoAddressRequest;
@@ -67,6 +77,8 @@ public class SearchAddressFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        hideBottomNavigation(true);
+
         addressViewModel = new ViewModelProvider(requireActivity()).get(AddressViewModel.class);
 
         if (getArguments() != null) {
@@ -83,11 +95,27 @@ public class SearchAddressFragment extends Fragment {
 
         init(view);
 
+        materialToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(getView()).navigate(R.id.action_searchAddressFragment_to_addWorkFragment);
+            }
+        });
+
         addressViewModel.getAddressInfo().observe(getActivity(), new Observer<KakaoAddressResponse>() {
             @Override
             public void onChanged(KakaoAddressResponse kakaoAddressResponse) {
-                if (kakaoAddressResponse.getKakaoAddressDocumentsPojos().get(0) != null) {
-                    Log.d(TAG, kakaoAddressResponse.getKakaoAddressDocumentsPojos().get(0).getAddress_name());
+                if (kakaoAddressResponse != null) {
+                    tv_none_result.setVisibility(View.GONE);
+                    rv_address.setVisibility(View.VISIBLE);
+                    address_adapter = new Address_Adapter(kakaoAddressResponse);
+
+                    rv_address.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    rv_address.setAdapter(address_adapter);
+//                    Log.d(TAG, "주소 반환" + kakaoAddressResponse.getKakaoAddressDocumentsPojos().get(0).getAddress_name());
+                } else if (kakaoAddressResponse.getKakaoAddressDocumentsPojos().size() == 0 || kakaoAddressResponse.getKakaoAddressDocumentsPojos() == null || kakaoAddressResponse.getKakaoAddressDocumentsPojos().isEmpty()) {
+                    rv_address.setVisibility(View.GONE);
+                    tv_none_result.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -97,6 +125,7 @@ public class SearchAddressFragment extends Fragment {
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 Log.d(TAG, "검색어 : " + textView.getText().toString() + " 뭐지 : " + i + " 누른 키 : " + keyEvent);
                 if (!textView.getText().toString().isEmpty()) {
+                    Log.d(TAG, "주소 끌고오는 중");
                     kakaoAddressRequest = new KakaoAddressRequest();
                     kakaoAddressRequest.setQuery(textView.getText().toString());
                     addressViewModel.responseAddressInfo(kakaoAddressRequest);
@@ -112,6 +141,24 @@ public class SearchAddressFragment extends Fragment {
     }
 
     private void init(View view) {
+        materialToolbar = view.findViewById(R.id.materialToolbar);
+        tv_none_result = view.findViewById(R.id.tv_none_result);
         edt_search_address = view.findViewById(R.id.edt_search_address);
+        rv_address = view.findViewById(R.id.rv_address);
+        rv_address.addItemDecoration(new RecyclerViewDecoration(30));
+    }
+
+    public void hideBottomNavigation(Boolean bool) {
+        BottomNavigationView bottomNavigation = getActivity().findViewById(R.id.bottomNavigationView);
+        if (bool == true)
+            bottomNavigation.setVisibility(View.GONE);
+        else
+            bottomNavigation.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        hideBottomNavigation(false);
     }
 }
