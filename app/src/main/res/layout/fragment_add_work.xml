@@ -44,7 +44,7 @@
             app:layout_constraintGuide_percent="0.1" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_id"
+            android:id="@+id/layout_place_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="근무지 이름"
@@ -58,7 +58,7 @@
             app:layout_constraintTop_toTopOf="@+id/guideLine_hor_1">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edt_id"
+                android:id="@+id/edt_place_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/textField"
@@ -148,6 +148,7 @@
             android:id="@+id/group_btn_every"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:singleSelection="true"
             app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_4"
             app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
             app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
@@ -189,7 +190,15 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.5" />
 
-
+        <Spinner
+            android:visibility="gone"
+            android:id="@+id/sp_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
+            app:layout_constraintTop_toTopOf="@+id/guideLine_hor_5"
+            />
 
 <!--        <com.google.android.material.button.MaterialButtonToggleGroup-->
 <!--            android:layout_width="0dp"-->

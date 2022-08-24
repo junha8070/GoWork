@@ -103,6 +103,8 @@
         tools:layout="@layout/fragment_search_address" >
         <action
             android:id="@+id/action_searchAddressFragment_to_addWorkFragment"
-            app:destination="@id/addWorkFragment" />
+            app:destination="@id/addWorkFragment"
+            app:popUpTo="@+id/addWorkFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>

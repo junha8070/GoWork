@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gowork.DTO.KakaoAddressRequest;
 import com.example.gowork.DTO.KakaoAddressResponse;
@@ -41,6 +42,8 @@ public class SearchAddressFragment extends Fragment {
 
     private AddressViewModel addressViewModel;
     private KakaoAddressRequest kakaoAddressRequest;
+
+    private KakaoAddressResponse kakaoAddressResponse;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -112,6 +115,23 @@ public class SearchAddressFragment extends Fragment {
 
                     rv_address.setLayoutManager(new LinearLayoutManager(getActivity()));
                     rv_address.setAdapter(address_adapter);
+
+                    address_adapter.setOnItemClickListener(new Address_Adapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View v, int position) {
+                            Toast.makeText(getContext(), "position", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, String.valueOf(position));
+                            String place_name = addressViewModel.getAddressInfo().getValue().getKakaoAddressDocumentsPojos().get(position).getPlace_name();
+                            String address = addressViewModel.getAddressInfo().getValue().getKakaoAddressDocumentsPojos().get(position).getAddress_name();
+
+                            Bundle result = new Bundle();
+                            result.putString("place_name", place_name);
+                            result.putString("address", address);
+                            getParentFragmentManager().setFragmentResult("find_address_result", result);
+
+                            Navigation.findNavController(getView()).navigate(R.id.action_searchAddressFragment_to_addWorkFragment);
+                        }
+                    });
 //                    Log.d(TAG, "주소 반환" + kakaoAddressResponse.getKakaoAddressDocumentsPojos().get(0).getAddress_name());
                 } else if (kakaoAddressResponse.getKakaoAddressDocumentsPojos().size() == 0 || kakaoAddressResponse.getKakaoAddressDocumentsPojos() == null || kakaoAddressResponse.getKakaoAddressDocumentsPojos().isEmpty()) {
                     rv_address.setVisibility(View.GONE);
@@ -141,6 +161,7 @@ public class SearchAddressFragment extends Fragment {
     }
 
     private void init(View view) {
+        address_adapter = new Address_Adapter(kakaoAddressResponse);
         materialToolbar = view.findViewById(R.id.materialToolbar);
         tv_none_result = view.findViewById(R.id.tv_none_result);
         edt_search_address = view.findViewById(R.id.edt_search_address);
@@ -156,9 +177,15 @@ public class SearchAddressFragment extends Fragment {
             bottomNavigation.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        hideBottomNavigation(false);
-    }
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        hideBottomNavigation(false);
+//    }
+//
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        hideBottomNavigation(true);
+//    }
 }
