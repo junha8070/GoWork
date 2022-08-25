@@ -78,10 +78,10 @@
             android:id="@+id/layout_work_location"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="근무지 주소(선택)"
-            android:textColor="@color/white"
             android:clickable="true"
             android:focusableInTouchMode="false"
+            android:hint="근무지 주소(선택)"
+            android:textColor="@color/white"
             android:textColorHint="@color/white"
             app:endIconMode="clear_text"
             app:endIconTint="@color/white"
@@ -139,140 +139,384 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.4" />
 
-<!--        <TextView-->
-<!--            android:text="근무 요일"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="0dp"/>-->
+        <!--        <TextView-->
+        <!--            android:text="근무 요일"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="0dp"/>-->
 
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/group_btn_every"
+        <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:singleSelection="true"
-            app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_4"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_5"
             app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
             app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
-            app:layout_constraintTop_toTopOf="@+id/guideLine_hor_5">
+            app:layout_constraintTop_toTopOf="@+id/guideLine_hor_4">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_every_month"
-                style="?attr/materialButtonOutlinedStyle"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="매달"
-                android:textColor="@color/white" />
+                android:text="근무일 설정"
+                android:textColor="@color/white"
+                android:textSize="20dp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_every_week"
-                style="?attr/materialButtonOutlinedStyle"
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/group_btn_schedule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="매주"
-                android:textColor="@color/white" />
+                app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_4"
+                app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+                app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
+                app:layout_constraintTop_toTopOf="@+id/guideLine_hor_5"
+                app:singleSelection="true">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_every_day"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="매일"
-                android:textColor="@color/white" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_every_month"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="매달"
+                    android:textColor="@color/white" />
 
-        </com.google.android.material.button.MaterialButtonToggleGroup>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_every_week"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="매주"
+                    android:textColor="@color/white" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_every_day"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="매일"
+                    android:textColor="@color/white" />
+
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        </LinearLayout>
+
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideLine_hor_5"
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.5" />
+            app:layout_constraintGuide_percent="0.53" />
 
-        <Spinner
-            android:visibility="gone"
-            android:id="@+id/sp_date"
+        <LinearLayout
+            android:id="@+id/layout_every_month"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_spinner"
             app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
             app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
-            app:layout_constraintTop_toTopOf="@+id/guideLine_hor_5"
-            />
+            app:layout_constraintTop_toTopOf="@+id/guideLine_hor_5">
 
-<!--        <com.google.android.material.button.MaterialButtonToggleGroup-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="매달 몇일에 근무하시나요?"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+
+            <Spinner
+                android:id="@+id/sp_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+                app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
+                app:layout_constraintTop_toTopOf="@+id/guideLine_hor_5" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_every_week"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_spinner"
+            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
+            app:layout_constraintTop_toTopOf="@+id/guideLine_hor_5">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="매주 언제 근무하시나요?"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/group_btn_day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_sun"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="일"
+                    android:textColor="@color/white" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_mon"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="월"
+                    android:textColor="@color/white" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_tue"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="화"
+                    android:textColor="@color/white" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_wed"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="수"
+                    android:textColor="@color/white" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_thu"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="목"
+                    android:textColor="@color/white" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_fri"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="금"
+                    android:textColor="@color/white" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_sat"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minWidth="0dp"
+                    android:padding="0dp"
+                    android:text="토"
+                    android:textColor="@color/white" />
+
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLine_hor_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.63" />
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/layout_leap_year"-->
 <!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="vertical"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_last_day"-->
 <!--            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"-->
 <!--            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/guideLine_hor_3">-->
+<!--            app:layout_constraintTop_toTopOf="@+id/guideLine_hor_spinner">-->
 
-<!--            <com.google.android.material.button.MaterialButton-->
-<!--                android:id="@+id/button_sun"-->
-<!--                style="?attr/materialButtonOutlinedStyle"-->
-<!--                android:textColor="@color/white"-->
+<!--            <TextView-->
 <!--                android:layout_width="match_parent"-->
 <!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="일" />-->
-
-<!--            <com.google.android.material.button.MaterialButton-->
-<!--                android:id="@+id/button_mon"-->
-<!--                style="?attr/materialButtonOutlinedStyle"-->
+<!--                android:text="2월에 29일이 없으면 어떡할까요?"-->
 <!--                android:textColor="@color/white"-->
+<!--                android:textSize="18dp" />-->
+
+<!--            <com.google.android.material.button.MaterialButtonToggleGroup-->
+<!--                android:id="@+id/group_btn_leap_year"-->
 <!--                android:layout_width="match_parent"-->
 <!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="월" />-->
+<!--                app:singleSelection="true">-->
 
-<!--            <com.google.android.material.button.MaterialButton-->
-<!--                android:id="@+id/button_tue"-->
-<!--                style="?attr/materialButtonOutlinedStyle"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="화" />-->
+<!--                <com.google.android.material.button.MaterialButton-->
+<!--                    style="?attr/materialButtonOutlinedStyle"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:text="28일에 근무"-->
+<!--                    android:textColor="@color/white" />-->
 
-<!--            <com.google.android.material.button.MaterialButton-->
-<!--                android:id="@+id/button_wed"-->
-<!--                style="?attr/materialButtonOutlinedStyle"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="수" />-->
+<!--                <com.google.android.material.button.MaterialButton-->
+<!--                    style="?attr/materialButtonOutlinedStyle"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:text="근무 안함"-->
+<!--                    android:textColor="@color/white" />-->
+<!--            </com.google.android.material.button.MaterialButtonToggleGroup>-->
 
-<!--            <com.google.android.material.button.MaterialButton-->
-<!--                android:id="@+id/button_thu"-->
-<!--                style="?attr/materialButtonOutlinedStyle"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="목" />-->
+<!--        </LinearLayout>-->
 
-<!--            <com.google.android.material.button.MaterialButton-->
-<!--                android:id="@+id/button_fri"-->
-<!--                style="?attr/materialButtonOutlinedStyle"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="금" />-->
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/guideLine_hor_last_day"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:orientation="horizontal"-->
+<!--            app:layout_constraintGuide_percent="0.68" />-->
 
-<!--            <com.google.android.material.button.MaterialButton-->
-<!--                android:id="@+id/button_sat"-->
-<!--                style="?attr/materialButtonOutlinedStyle"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:padding="0dp"-->
-<!--                android:minWidth="0dp"-->
-<!--                android:text="토" />-->
+        <LinearLayout
+            android:id="@+id/layout_last_day"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_leap_year"
+            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
+            app:layout_constraintTop_toTopOf="@+id/guideLine_hor_spinner">
 
-<!--        </com.google.android.material.button.MaterialButtonToggleGroup>-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="해당일이 달력에 없으면 어떡할까요?"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/group_btn_last_day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:singleSelection="true">
+
+                <com.google.android.material.button.MaterialButton
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_last_day_do"
+                    android:layout_weight="1"
+                    android:text="말일에 근무해요"
+                    android:textColor="@color/white" />
+
+                <com.google.android.material.button.MaterialButton
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/btn_last_day_not_do"
+                    android:text="근무 안해요"
+                    android:textColor="@color/white" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLine_hor_leap_year"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.74" />
+
+        <LinearLayout
+            android:id="@+id/layout_holiday"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_6"
+            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
+            app:layout_constraintTop_toTopOf="@+id/guideLine_hor_leap_year">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="공휴일에 근무 하시나요?"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/group_btn_holiday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:singleSelection="true">
+
+                <com.google.android.material.button.MaterialButton
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="근무 해요"
+                    android:id="@+id/btn_holiday_do"
+                    android:textColor="@color/white" />
+
+                <com.google.android.material.button.MaterialButton
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="근무 안해요"
+                    android:id="@+id/btn_holiday_not_do"
+                    android:textColor="@color/white" />
+
+<!--                <com.google.android.material.button.MaterialButton-->
+<!--                    style="?attr/materialButtonOutlinedStyle"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:text="유동적"-->
+<!--                    android:textColor="@color/white" />-->
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLine_hor_6"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.86" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_finish"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="추가하기"
+            app:backgroundTint="#00aca3"
+            app:cornerRadius="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_finish"
+            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLine_hor_finish"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.95" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

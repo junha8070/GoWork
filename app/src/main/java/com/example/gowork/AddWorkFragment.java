@@ -8,14 +8,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.gowork.DTO.WorkInfo;
+import com.example.gowork.DTO.WorkSchedule_Month;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -29,9 +35,13 @@ import java.lang.reflect.Array;
  */
 public class AddWorkFragment extends Fragment {
 
-    TextInputEditText edt_place_name, edt_work_location;
+    String TAG = "AddWorkFragmentTAG";
+
+    TextInputEditText edt_place_name, edt_work_location, edt_pay;
     Spinner sp_date;
-    MaterialButtonToggleGroup group_btn_every;
+    LinearLayout layout_every_month, layout_every_week, layout_last_day, layout_holiday;
+    MaterialButtonToggleGroup group_btn_schedule, group_btn_day, group_btn_last_day, group_btn_holiday;
+    MaterialButton btn_finish;
 
     String[] res_date;
     ArrayAdapter dateAdapter;
@@ -98,6 +108,11 @@ public class AddWorkFragment extends Fragment {
 
         init(view);
 
+        layout_every_month.setVisibility(View.GONE);
+        layout_every_week.setVisibility(View.GONE);
+//        layout_leap_year.setVisibility(View.GONE);
+        layout_last_day.setVisibility(View.GONE);
+
         res_date = getResources().getStringArray(R.array.date);
         dateAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, res_date);
         sp_date.setAdapter(dateAdapter);
@@ -109,7 +124,123 @@ public class AddWorkFragment extends Fragment {
             }
         });
 
-//        group_btn_every.add
+        group_btn_schedule.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
+            @Override
+            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+                switch (group.getCheckedButtonId()) {
+                    case R.id.button_every_month:
+                        layout_every_week.setVisibility(View.GONE);
+//                        layout_leap_year.setVisibility(View.GONE);
+                        layout_last_day.setVisibility(View.GONE);
+                        layout_every_month.setVisibility(View.VISIBLE);
+                        break;
+                    case R.id.button_every_week:
+                        sp_date.setSelection(0);
+                        layout_every_week.setVisibility(View.VISIBLE);
+//                        layout_leap_year.setVisibility(View.GONE);
+                        layout_last_day.setVisibility(View.GONE);
+                        layout_every_month.setVisibility(View.GONE);
+                        break;
+//                    case R.id.button_every_day:
+//                        layout_every_week.setVisibility(View.GONE);
+//                        layout_leap_year.setVisibility(View.GONE);
+//                        layout_last_day.setVisibility(View.GONE);
+//                        layout_every_month.setVisibility(View.GONE);
+//                        break;
+                    default:
+                        sp_date.setSelection(0);
+                        layout_every_week.setVisibility(View.GONE);
+//                        layout_leap_year.setVisibility(View.GONE);
+                        layout_last_day.setVisibility(View.GONE);
+                        layout_every_month.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        sp_date.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                Log.d(TAG, "i값 : " + position + "l값 : " + l);
+                if (position == 28 || position == 29 || position == 30) {
+//                    layout_leap_year.setVisibility(View.VISIBLE);
+                    layout_last_day.setVisibility(View.VISIBLE);
+                }
+//                else if (position == 29 || position == 30) {
+//                    layout_leap_year.setVisibility(View.GONE);
+//                    layout_last_day.setVisibility(View.VISIBLE);
+//                }
+                else {
+//                    layout_leap_year.setVisibility(View.GONE);
+                    layout_last_day.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        btn_finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Log.d(TAG, String.valueOf(group_btn_day.getCheckedButtonIds().));
+//                Boolean state = false;
+//                String place_name = edt_place_name.getText().toString();
+//                String place_address = edt_work_location.getText().toString();
+//                String pay = edt_pay.getText().toString();
+//                Boolean[] work_schedule = {false, false, false};
+//                String work_day;
+//                Boolean last_day = null;
+//                Boolean holiday = null;
+//
+//                switch (group_btn_holiday.getCheckedButtonId()) {
+//                    case R.id.btn_holiday_do:
+//                        holiday = true;
+//                        break;
+//                    case R.id.btn_holiday_not_do:
+//                        holiday = false;
+//                        break;
+//                    default:
+//                        Toast.makeText(getContext(), "공휴일 근무 여부를 선택해주세요.", Toast.LENGTH_SHORT).show();
+//                        break;
+//                }
+//
+//                switch (group_btn_schedule.getCheckedButtonId()) {
+//                    case R.id.button_every_month:
+//                        work_schedule[0] = true;
+//                        work_day = sp_date.getSelectedItem().toString();
+//                        if (work_day.equals("29일") || work_day.equals("30일") || work_day.equals("31일")) {
+//                            switch (group_btn_last_day.getCheckedButtonId()) {
+//                                case R.id.btn_last_day_do:
+//                                    last_day = true;
+//                                    break;
+//                                case R.id.btn_last_day_not_do:
+//                                    last_day = false;
+//                                    break;
+//                            }
+//                        }
+//                        break;
+//
+//                    case R.id.button_every_week:
+//
+//                        break;
+//
+//                    case R.id.button_every_day:
+//                        break;
+//
+//                    default:
+//                        Toast.makeText(getContext(), "근무일 설정을 해주세요.", Toast.LENGTH_SHORT).show();
+//                        break;
+//                }
+//
+//
+//                if (state == true) {
+//                    WorkInfo workInfo = new WorkInfo(place_name, place_address, pay, work_schedule);
+//                    WorkSchedule_Month workSchedule_month = new WorkSchedule_Month(workInfo, work_day, )
+//                }
+            }
+        });
 
         return view;
     }
@@ -122,11 +253,22 @@ public class AddWorkFragment extends Fragment {
             bottomNavigation.setVisibility(View.VISIBLE);
     }
 
-    private void init(View view){
-        group_btn_every = view.findViewById(R.id.group_btn_every);
+    private void init(View view) {
         edt_place_name = view.findViewById(R.id.edt_place_name);
         edt_work_location = view.findViewById(R.id.edt_work_location);
+        edt_pay = view.findViewById(R.id.edt_pay);
+        group_btn_schedule = view.findViewById(R.id.group_btn_schedule);
         sp_date = view.findViewById(R.id.sp_date);
+        layout_every_month = view.findViewById(R.id.layout_every_month);
+        layout_every_week = view.findViewById(R.id.layout_every_week);
+//        layout_leap_year = view.findViewById(R.id.layout_leap_year);
+        layout_last_day = view.findViewById(R.id.layout_last_day);
+        layout_holiday = view.findViewById(R.id.layout_holiday);
+        group_btn_day = view.findViewById(R.id.group_btn_day);
+//        group_btn_leap_year = view.findViewById(R.id.group_btn_leap_year);
+        group_btn_last_day = view.findViewById(R.id.group_btn_last_day);
+        group_btn_holiday = view.findViewById(R.id.group_btn_holiday);
+        btn_finish = view.findViewById(R.id.btn_finish);
     }
 
 //    @Override
