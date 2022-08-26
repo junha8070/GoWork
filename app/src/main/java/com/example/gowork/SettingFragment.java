@@ -14,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.gowork.ViewModel.AuthViewModel;
+import com.example.gowork.dto.UserDTO;
+import com.example.gowork.viewModel.AuthViewModel;
+import com.example.gowork.viewModel.DBViewModel;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.HashMap;
@@ -97,8 +99,8 @@ public class SettingFragment extends Fragment {
         dbViewModel.getUserInfoLiveData().observe(getActivity(), new Observer<UserDTO>() {
             @Override
             public void onChanged(UserDTO userDTO) {
-                name = userDTO.name;
-                email = userDTO.id;
+                name = userDTO.getName();
+                email = userDTO.getId();
                 updateUI(name, email);
             }
         });

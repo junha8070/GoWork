@@ -1,4 +1,6 @@
-package com.example.gowork.DTO;
+package com.example.gowork.dto;
+
+import java.util.HashMap;
 
 public class WorkInfo {
 

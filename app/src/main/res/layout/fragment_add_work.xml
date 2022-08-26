@@ -258,12 +258,12 @@
                 android:textSize="16dp" />
 
             <com.google.android.material.button.MaterialButtonToggleGroup
-                android:id="@+id/group_btn_day"
+                android:id="@+id/group_btn_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_sun"
+                    android:id="@+id/btn_sun"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -272,7 +272,7 @@
                     android:textColor="@color/white" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_mon"
+                    android:id="@+id/btn_mon"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -281,7 +281,7 @@
                     android:textColor="@color/white" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_tue"
+                    android:id="@+id/btn_tue"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -290,7 +290,7 @@
                     android:textColor="@color/white" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_wed"
+                    android:id="@+id/btn_wed"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -299,7 +299,7 @@
                     android:textColor="@color/white" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_thu"
+                    android:id="@+id/btn_thu"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -308,7 +308,7 @@
                     android:textColor="@color/white" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_fri"
+                    android:id="@+id/btn_fri"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -317,7 +317,7 @@
                     android:textColor="@color/white" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_sat"
+                    android:id="@+id/btn_sat"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

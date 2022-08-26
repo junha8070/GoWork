@@ -6,7 +6,7 @@
     <data>
         <variable
             name="DBViewModel"
-            type="com.example.gowork.DBViewModel" />
+            type="com.example.gowork.viewModel.DBViewModel" />
     </data>
 
     <FrameLayout

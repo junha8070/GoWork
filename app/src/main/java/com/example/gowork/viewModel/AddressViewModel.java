@@ -1,18 +1,14 @@
-package com.example.gowork.ViewModel;
+package com.example.gowork.viewModel;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-import com.example.gowork.DTO.KakaoAddressRequest;
-import com.example.gowork.DTO.KakaoAddressResponse;
-import com.example.gowork.Model.AddressModel;
-
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.example.gowork.dto.KakaoAddressRequest;
+import com.example.gowork.dto.KakaoAddressResponse;
+import com.example.gowork.model.AddressModel;
 
 public class AddressViewModel extends AndroidViewModel {
 

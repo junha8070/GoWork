@@ -17,9 +17,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.gowork.DTO.KakaoAddressRequest;
-import com.example.gowork.DTO.KakaoAddressResponse;
-import com.example.gowork.ViewModel.AddressViewModel;
+import com.example.gowork.dto.KakaoAddressRequest;
+import com.example.gowork.dto.KakaoAddressResponse;
+import com.example.gowork.viewModel.AddressViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputEditText;

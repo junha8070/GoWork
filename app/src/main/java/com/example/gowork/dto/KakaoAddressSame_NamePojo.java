@@ -1,4 +1,4 @@
-package com.example.gowork.DTO;
+package com.example.gowork.dto;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -1,4 +1,4 @@
-package com.example.gowork.Model;
+package com.example.gowork.model;
 
 import android.app.Application;
 import android.util.Log;
@@ -6,15 +6,9 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.gowork.DTO.KakaoAddressRequest;
-import com.example.gowork.DTO.KakaoAddressResponse;
+import com.example.gowork.dto.KakaoAddressRequest;
+import com.example.gowork.dto.KakaoAddressResponse;
 import com.example.gowork.Interface.KakaoAddressInterface;
-import com.example.gowork.SingleLiveEvent;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;

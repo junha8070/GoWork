@@ -1,12 +1,10 @@
 package com.example.gowork.Interface;
 
-import com.example.gowork.DTO.KakaoAddressRequest;
-import com.example.gowork.DTO.KakaoAddressResponse;
+import com.example.gowork.dto.KakaoAddressResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface KakaoAddressInterface {

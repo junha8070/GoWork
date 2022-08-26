@@ -1,4 +1,4 @@
-package com.example.gowork;
+package com.example.gowork.dto;
 
 public class UserDTO {
 

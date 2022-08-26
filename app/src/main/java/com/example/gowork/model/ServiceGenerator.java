@@ -1,4 +1,4 @@
-package com.example.gowork.Model;
+package com.example.gowork.model;
 
 import android.text.TextUtils;
 

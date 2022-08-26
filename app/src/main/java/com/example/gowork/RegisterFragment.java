@@ -13,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.gowork.ViewModel.AuthViewModel;
+import com.example.gowork.dto.UserDTO;
+import com.example.gowork.viewModel.AuthViewModel;
+import com.example.gowork.viewModel.DBViewModel;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -126,7 +128,7 @@ public class RegisterFragment extends Fragment {
                                         public void onChanged(FirebaseUser firebaseUser) {
                                             if (firebaseUser != null) {
                                                 Log.d(TAG, firebaseUser.getUid());
-                                                Log.d(TAG, userDTO.id);
+                                                Log.d(TAG, userDTO.getId());
                                                 dbViewModel.uploadUserInfo(firebaseUser, userDTO);
                                                 Toast.makeText(getContext(), "회원가입 성공", Toast.LENGTH_SHORT).show();
                                                 Navigation.findNavController(getView()).navigate(R.id.action_registerFragment_to_loginFragment);

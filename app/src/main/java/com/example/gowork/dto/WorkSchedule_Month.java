@@ -1,25 +1,16 @@
-package com.example.gowork.DTO;
+package com.example.gowork.dto;
 
 public class WorkSchedule_Month {
 
-    WorkInfo workInfo;
-    String work_day;
+    int work_day;
     Boolean last_day;
     Boolean holiday;
 
-    public WorkInfo getWorkInfo() {
-        return workInfo;
-    }
-
-    public void setWorkInfo(WorkInfo workInfo) {
-        this.workInfo = workInfo;
-    }
-
-    public String getWork_day() {
+    public int getWork_day() {
         return work_day;
     }
 
-    public void setWork_day(String work_day) {
+    public void setWork_day(int work_day) {
         this.work_day = work_day;
     }
 
@@ -39,8 +30,7 @@ public class WorkSchedule_Month {
         this.holiday = holiday;
     }
 
-    public WorkSchedule_Month(WorkInfo workInfo, String work_day, Boolean last_day, Boolean holiday) {
-        this.workInfo = workInfo;
+    public WorkSchedule_Month( int work_day, Boolean last_day, Boolean holiday) {
         this.work_day = work_day;
         this.last_day = last_day;
         this.holiday = holiday;

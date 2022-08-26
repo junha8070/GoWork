@@ -13,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.gowork.ViewModel.AuthViewModel;
+import com.example.gowork.dto.UserDTO;
+import com.example.gowork.viewModel.AuthViewModel;
+import com.example.gowork.viewModel.DBViewModel;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;

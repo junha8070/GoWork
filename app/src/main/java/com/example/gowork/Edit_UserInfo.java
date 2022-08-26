@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.gowork.ViewModel.AuthViewModel;
+import com.example.gowork.dto.UserDTO;
+import com.example.gowork.viewModel.AuthViewModel;
+import com.example.gowork.viewModel.DBViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
@@ -89,9 +91,9 @@ public class Edit_UserInfo extends Fragment {
 
         init(view);
 
-        id = dbViewModel.getUserInfoLiveData().getValue().id;
-        name = dbViewModel.getUserInfoLiveData().getValue().name;
-        phone = dbViewModel.getUserInfoLiveData().getValue().phone;
+        id = dbViewModel.getUserInfoLiveData().getValue().getId();
+        name = dbViewModel.getUserInfoLiveData().getValue().getName();
+        phone = dbViewModel.getUserInfoLiveData().getValue().getPhone();
 
 
         edt_id.setText(id);
