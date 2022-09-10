@@ -1,24 +1,29 @@
-package com.example.gowork;
+package com.example.gowork.model;
 
 import android.app.Application;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.gowork.dto.UserDTO;
+import com.example.gowork.dto.WorkInfo;
+import com.example.gowork.SingleLiveEvent;
+
+import com.example.gowork.dto.WorkSchedule_day;
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Transaction;
@@ -36,6 +41,8 @@ public class DBRepository {
     private SingleLiveEvent<Task> uploadUserInfoSuccessful;
     private MutableLiveData<UserDTO> userInfoLiveData;
     private SingleLiveEvent<Task> updateUserInfoTask;
+    private SingleLiveEvent<Task> uploadWorkInfoTask;
+    private MutableLiveData<WorkInfo> workInfoMutableLiveData;
 
     public DBRepository(Application application) {
         this.application = application;
@@ -46,6 +53,8 @@ public class DBRepository {
         uploadUserInfoSuccessful = new SingleLiveEvent<>();
         userInfoLiveData = new MutableLiveData<>();
         updateUserInfoTask = new SingleLiveEvent<>();
+        uploadWorkInfoTask = new SingleLiveEvent<>();
+        workInfoMutableLiveData = new MutableLiveData<>();
     }
 
     public void upLoadUserInfo(FirebaseUser user, UserDTO userDTO) {
@@ -72,7 +81,7 @@ public class DBRepository {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     UserDTO userInfo = task.getResult().toObject(UserDTO.class);
-                    Log.d(TAG, userInfo.id);
+                    Log.d(TAG, userInfo.getId());
                     userInfoLiveData.setValue(userInfo);
                 }
             }
@@ -91,8 +100,8 @@ public class DBRepository {
             @Nullable
             @Override
             public UserDTO apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
-                transaction.update(userReference, "name", userDTO.name);
-                transaction.update(userReference, "phone", userDTO.phone);
+                transaction.update(userReference, "name", userDTO.getName());
+                transaction.update(userReference, "phone", userDTO.getPhone());
                 // 새로운 값 반환
                 return userDTO;
             }
@@ -104,8 +113,8 @@ public class DBRepository {
 //                    Log.d(TAG, task.getResult().getName());
                     UserDTO updateUserDTO = new UserDTO();
                     updateUserDTO.setId(user.getEmail());
-                    updateUserDTO.setName(task.getResult().name);
-                    updateUserDTO.setPhone(task.getResult().phone);
+                    updateUserDTO.setName(task.getResult().getName());
+                    updateUserDTO.setPhone(task.getResult().getPhone());
                     userInfoLiveData.postValue(updateUserDTO);
                     updateUserInfoTask.postValue(task);
                 } else {
@@ -126,6 +135,54 @@ public class DBRepository {
         });
     }
 
+    public void upLoadWorkInfo(FirebaseUser user, WorkInfo workInfo, HashMap<String, Object> schedule_data) {
+        CollectionReference colReference = fireStore.collection("Work").document(user.getUid()).collection(workInfo.getPlace_name());
+
+
+        colReference.document("WorkInfo").set(workInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    colReference.document("Schedule").set(schedule_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                uploadWorkInfoTask.postValue(task);
+                            }else{
+                                Toast.makeText(application, "오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }).addOnCanceledListener(new OnCanceledListener() {
+                        @Override
+                        public void onCanceled() {
+                            Toast.makeText(application, "작업이 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }else{
+                    Toast.makeText(application, "오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }).addOnCanceledListener(new OnCanceledListener() {
+            @Override
+            public void onCanceled() {
+                Toast.makeText(application, "작업이 취소되었습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void getWorkInfo(FirebaseUser user) {
+        DocumentReference docReference = fireStore.collection("Work").document(user.getUid());
+
+        docReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                Log.d(TAG, String.valueOf(value.getData()));
+                WorkInfo workInfo = value.toObject(WorkInfo.class);
+                workInfoMutableLiveData.postValue(workInfo);
+            }
+        });
+    }
+
     public SingleLiveEvent<Task> getUploadUserInfoSuccessful() {
         return uploadUserInfoSuccessful;
     }
@@ -138,4 +195,11 @@ public class DBRepository {
         return updateUserInfoTask;
     }
 
+    public SingleLiveEvent<Task> getUploadWorkInfoTask() {
+        return uploadWorkInfoTask;
+    }
+
+    public MutableLiveData<WorkInfo> getWorkInfoMutableLiveData() {
+        return workInfoMutableLiveData;
+    }
 }

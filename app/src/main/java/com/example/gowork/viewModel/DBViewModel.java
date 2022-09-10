@@ -14,6 +14,8 @@ import com.example.gowork.dto.UserDTO;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.HashMap;
+
 public class DBViewModel extends AndroidViewModel {
 
     private DBRepository dbRepository;
@@ -47,8 +49,8 @@ public class DBViewModel extends AndroidViewModel {
         dbRepository.updateUserInfo(firebaseUser, userDto);
     }
 
-    public void setUploadWorkInfo(FirebaseUser user, WorkInfo workInfo){
-        dbRepository.upLoadWorkInfo(user, workInfo);
+    public void setUploadWorkInfo(FirebaseUser user, WorkInfo workInfo, HashMap<String, Object> schedule_data){
+        dbRepository.upLoadWorkInfo(user, workInfo, schedule_data);
     }
 
     public void getWorkInfoData(FirebaseUser firebaseUser){

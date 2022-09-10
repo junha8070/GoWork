@@ -2,10 +2,10 @@ package com.example.gowork;
 
 import android.os.Bundle;
 
-import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -18,15 +18,18 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.gowork.DTO.WorkInfo;
-import com.example.gowork.DTO.WorkSchedule_Month;
+import com.example.gowork.dto.WorkInfo;
+import com.example.gowork.dto.WorkSchedule_Month;
+import com.example.gowork.dto.WorkSchedule_Week;
+import com.example.gowork.dto.WorkSchedule_day;
+import com.example.gowork.viewModel.AuthViewModel;
+import com.example.gowork.viewModel.DBViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
-import java.lang.reflect.Array;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,14 +40,19 @@ public class AddWorkFragment extends Fragment {
 
     String TAG = "AddWorkFragmentTAG";
 
+    private AuthViewModel authViewModel;
+    private DBViewModel dbViewModel;
+
     TextInputEditText edt_place_name, edt_work_location, edt_pay;
     Spinner sp_date;
     LinearLayout layout_every_month, layout_every_week, layout_last_day, layout_holiday;
-    MaterialButtonToggleGroup group_btn_schedule, group_btn_day, group_btn_last_day, group_btn_holiday;
+    MaterialButtonToggleGroup group_btn_schedule, group_btn_date, group_btn_last_day, group_btn_holiday;
     MaterialButton btn_finish;
 
     String[] res_date;
     ArrayAdapter dateAdapter;
+
+    HashMap<String, Object> schedule_data;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -87,6 +95,9 @@ public class AddWorkFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        authViewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
+        dbViewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
 
         getParentFragmentManager().setFragmentResultListener("find_address_result", this, new FragmentResultListener() {
             @Override
@@ -184,61 +195,160 @@ public class AddWorkFragment extends Fragment {
         btn_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                schedule_data = new HashMap<>();
 //                Log.d(TAG, String.valueOf(group_btn_day.getCheckedButtonIds().));
-//                Boolean state = false;
-//                String place_name = edt_place_name.getText().toString();
-//                String place_address = edt_work_location.getText().toString();
-//                String pay = edt_pay.getText().toString();
-//                Boolean[] work_schedule = {false, false, false};
-//                String work_day;
-//                Boolean last_day = null;
-//                Boolean holiday = null;
+                Boolean state = false;
+                String place_name = edt_place_name.getText().toString();
+                String place_address = edt_work_location.getText().toString();
+                String pay = edt_pay.getText().toString();
+
+                Boolean[] work_schedule = {false, false, false};
+                String str_work_day;
+                int work_day;
+
+                HashMap<String, Boolean> work_date;
+                Boolean last_day = null;
+                Boolean holiday = null;
+                WorkInfo workInfo;
 //
-//                switch (group_btn_holiday.getCheckedButtonId()) {
-//                    case R.id.btn_holiday_do:
+                switch (group_btn_holiday.getCheckedButtonId()) {
+                    case R.id.btn_holiday_do:
+                        schedule_data.put("holiday", true);
 //                        holiday = true;
-//                        break;
-//                    case R.id.btn_holiday_not_do:
+                        break;
+                    case R.id.btn_holiday_not_do:
+                        schedule_data.put("holiday", false);
 //                        holiday = false;
-//                        break;
-//                    default:
-//                        Toast.makeText(getContext(), "공휴일 근무 여부를 선택해주세요.", Toast.LENGTH_SHORT).show();
-//                        break;
-//                }
+                        break;
+                    default:
+                        Toast.makeText(getContext(), "공휴일 근무 여부를 선택해주세요.", Toast.LENGTH_SHORT).show();
+                        break;
+                }
 //
-//                switch (group_btn_schedule.getCheckedButtonId()) {
-//                    case R.id.button_every_month:
-//                        work_schedule[0] = true;
-//                        work_day = sp_date.getSelectedItem().toString();
-//                        if (work_day.equals("29일") || work_day.equals("30일") || work_day.equals("31일")) {
-//                            switch (group_btn_last_day.getCheckedButtonId()) {
-//                                case R.id.btn_last_day_do:
-//                                    last_day = true;
-//                                    break;
-//                                case R.id.btn_last_day_not_do:
-//                                    last_day = false;
-//                                    break;
-//                            }
-//                        }
-//                        break;
-//
-//                    case R.id.button_every_week:
-//
-//                        break;
-//
-//                    case R.id.button_every_day:
-//                        break;
-//
-//                    default:
-//                        Toast.makeText(getContext(), "근무일 설정을 해주세요.", Toast.LENGTH_SHORT).show();
-//                        break;
-//                }
-//
-//
-//                if (state == true) {
-//                    WorkInfo workInfo = new WorkInfo(place_name, place_address, pay, work_schedule);
-//                    WorkSchedule_Month workSchedule_month = new WorkSchedule_Month(workInfo, work_day, )
-//                }
+                switch (group_btn_schedule.getCheckedButtonId()) {
+                    case R.id.button_every_month:
+                        schedule_data.put("schedule", "month");
+                        work_schedule[0] = true;
+                        str_work_day = sp_date.getSelectedItem().toString();
+
+                        if (str_work_day.equals("29일") || str_work_day.equals("30일") || str_work_day.equals("31일")) {
+                            switch (group_btn_last_day.getCheckedButtonId()) {
+                                case R.id.btn_last_day_do:
+                                    schedule_data.put("last_day", true);
+                                    last_day = true;
+                                    break;
+                                case R.id.btn_last_day_not_do:
+                                    schedule_data.put("last_day", false);
+                                    last_day = false;
+                                    break;
+                            }
+                        }
+
+                        work_day = Integer.parseInt(str_work_day.replace("일", ""));
+                        schedule_data.put("work_day", work_day);
+//                        WorkSchedule_Month workSchedule_month = new WorkSchedule_Month(work_day, last_day, holiday);
+                        workInfo = new WorkInfo(place_name, place_address, pay);
+                        dbViewModel.setUploadWorkInfo(authViewModel.getFirebaseUserLiveData().getValue(), workInfo, schedule_data);
+                        Navigation.findNavController(getView()).navigate(R.id.action_addWorkFragment_to_settingFragment);
+
+                        break;
+
+                    case R.id.button_every_week:
+                        schedule_data.put("schedule", "week");
+                        work_schedule[1] = true;
+
+                        work_date = new HashMap<>();
+                        switch (group_btn_date.getCheckedButtonId()) {
+                            case R.id.btn_sun:
+                                work_date.put("sun", true);
+                                work_date.put("mon", false);
+                                work_date.put("tue", false);
+                                work_date.put("wed", false);
+                                work_date.put("thu", false);
+                                work_date.put("fri", false);
+                                work_date.put("sat", false);
+                                break;
+                            case R.id.btn_mon:
+                                work_date.put("sun", false);
+                                work_date.put("mon", true);
+                                work_date.put("tue", false);
+                                work_date.put("wed", false);
+                                work_date.put("thu", false);
+                                work_date.put("fri", false);
+                                work_date.put("sat", false);
+                                break;
+                            case R.id.btn_tue:
+                                work_date.put("sun", false);
+                                work_date.put("mon", false);
+                                work_date.put("tue", true);
+                                work_date.put("wed", false);
+                                work_date.put("thu", false);
+                                work_date.put("fri", false);
+                                work_date.put("sat", false);
+                                break;
+                            case R.id.btn_wed:
+                                work_date.put("sun", false);
+                                work_date.put("mon", false);
+                                work_date.put("tue", false);
+                                work_date.put("wed", true);
+                                work_date.put("thu", false);
+                                work_date.put("fri", false);
+                                work_date.put("sat", false);
+                                break;
+                            case R.id.btn_thu:
+                                work_date.put("sun", false);
+                                work_date.put("mon", false);
+                                work_date.put("tue", false);
+                                work_date.put("wed", false);
+                                work_date.put("thu", true);
+                                work_date.put("fri", false);
+                                work_date.put("sat", false);
+                                break;
+                            case R.id.btn_fri:
+                                work_date.put("sun", false);
+                                work_date.put("mon", false);
+                                work_date.put("tue", false);
+                                work_date.put("wed", false);
+                                work_date.put("thu", false);
+                                work_date.put("fri", true);
+                                work_date.put("sat", false);
+                                break;
+                            case R.id.btn_sat:
+                                work_date.put("sun", false);
+                                work_date.put("mon", false);
+                                work_date.put("tue", false);
+                                work_date.put("wed", false);
+                                work_date.put("thu", false);
+                                work_date.put("fri", false);
+                                work_date.put("sat", true);
+                                break;
+                        }
+
+                        schedule_data.put("work_date", work_date);
+//                        WorkSchedule_Week workSchedule_week = new WorkSchedule_Week(work_date, holiday);
+                        workInfo = new WorkInfo(place_name, place_address, pay);
+                        dbViewModel.setUploadWorkInfo(authViewModel.getFirebaseUserLiveData().getValue(), workInfo, schedule_data);
+                        Navigation.findNavController(getView()).navigate(R.id.action_addWorkFragment_to_settingFragment);
+
+                        break;
+
+                    case R.id.button_every_day:
+                        schedule_data.put("schedule", "Everyday");
+                        work_schedule[2] = true;
+
+//                        WorkSchedule_day workSchedule_day = new WorkSchedule_day(holiday);
+                        workInfo = new WorkInfo(place_name, place_address, pay);
+                        dbViewModel.setUploadWorkInfo(authViewModel.getFirebaseUserLiveData().getValue(), workInfo, schedule_data);
+                        Navigation.findNavController(getView()).navigate(R.id.action_addWorkFragment_to_settingFragment);
+
+                        break;
+
+                    default:
+                        Toast.makeText(getContext(), "근무일 설정을 해주세요.", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+
+
             }
         });
 
@@ -264,16 +374,10 @@ public class AddWorkFragment extends Fragment {
 //        layout_leap_year = view.findViewById(R.id.layout_leap_year);
         layout_last_day = view.findViewById(R.id.layout_last_day);
         layout_holiday = view.findViewById(R.id.layout_holiday);
-        group_btn_day = view.findViewById(R.id.group_btn_day);
+        group_btn_date = view.findViewById(R.id.group_btn_date);
 //        group_btn_leap_year = view.findViewById(R.id.group_btn_leap_year);
         group_btn_last_day = view.findViewById(R.id.group_btn_last_day);
         group_btn_holiday = view.findViewById(R.id.group_btn_holiday);
         btn_finish = view.findViewById(R.id.btn_finish);
     }
-
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        hideBottomNavigation(false);
-//    }
 }

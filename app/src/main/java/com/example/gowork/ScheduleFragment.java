@@ -4,9 +4,12 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +17,8 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class ScheduleFragment extends Fragment {
+
+    private String TAG = "ScheduleFragmentTAG";
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,6 +64,17 @@ public class ScheduleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_schedule, container, false);
+        View view = inflater.inflate(R.layout.fragment_schedule, container, false);
+
+        Calendar c = Calendar.getInstance();
+
+//        c.set(c.getTime().);
+
+        Log.d(TAG, String.valueOf(c.getActualMaximum(Calendar.WEEK_OF_MONTH)));
+
+//        Log.d(TAG, String.valueOf(c.getActualMaximum(c.DAY_OF_MONTH)));
+//        Log.d(TAG, String.valueOf(c.getActualMaximum(c.WEEK_OF_MONTH)));
+
+        return view;
     }
 }
