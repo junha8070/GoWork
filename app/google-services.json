@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "390448733790",
+    "project_id": "gowork-c499c",
+    "storage_bucket": "gowork-c499c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:390448733790:android:368aacdf43faa6eb0c1ecf",
+        "android_client_info": {
+          "package_name": "com.example.gowork"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "390448733790-1nq0g73fe3q3sgre143ithqlsd59v93j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDT9HDEJFaeEPo5wIDWWt3-9-yMxLyTh-Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "390448733790-1nq0g73fe3q3sgre143ithqlsd59v93j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
