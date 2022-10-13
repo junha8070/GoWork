@@ -1,6 +1,7 @@
 package com.example.gowork.model;
 
 import android.app.Application;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -9,11 +10,15 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.gowork.dto.PostDTO;
+import com.example.gowork.dto.PostDTO_Upload;
+import com.example.gowork.dto.MyPostDTO_Upload_NoUrl;
+import com.example.gowork.dto.PostDTO_Upload_NoUrl;
 import com.example.gowork.dto.UserDTO;
 import com.example.gowork.dto.WorkInfo;
 import com.example.gowork.SingleLiveEvent;
 
-import com.example.gowork.dto.WorkSchedule_day;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,8 +31,15 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DBRepository {
@@ -37,24 +49,35 @@ public class DBRepository {
 
     private FirebaseDatabase realTime;
     private FirebaseFirestore fireStore;
+    private FirebaseStorage storage;
+    private UploadTask uploadTask;
+    int photoCount = 0;
 
     private SingleLiveEvent<Task> uploadUserInfoSuccessful;
     private MutableLiveData<UserDTO> userInfoLiveData;
     private SingleLiveEvent<Task> updateUserInfoTask;
     private SingleLiveEvent<Task> uploadWorkInfoTask;
+    private SingleLiveEvent<Task> getPostTask;
     private MutableLiveData<WorkInfo> workInfoMutableLiveData;
+    private MutableLiveData<ArrayList<PostDTO>> postMutableLiveData;
+
+    private ArrayList<String> url;
+    private ArrayList<PostDTO> arr_post;
 
     public DBRepository(Application application) {
         this.application = application;
 
         realTime = FirebaseDatabase.getInstance();
         fireStore = FirebaseFirestore.getInstance();
+        storage = FirebaseStorage.getInstance();
 
         uploadUserInfoSuccessful = new SingleLiveEvent<>();
         userInfoLiveData = new MutableLiveData<>();
         updateUserInfoTask = new SingleLiveEvent<>();
         uploadWorkInfoTask = new SingleLiveEvent<>();
+        getPostTask = new SingleLiveEvent<>();
         workInfoMutableLiveData = new MutableLiveData<>();
+        postMutableLiveData = new MutableLiveData<>();
     }
 
     public void upLoadUserInfo(FirebaseUser user, UserDTO userDTO) {
@@ -148,7 +171,7 @@ public class DBRepository {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 uploadWorkInfoTask.postValue(task);
-                            }else{
+                            } else {
                                 Toast.makeText(application, "오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -158,7 +181,7 @@ public class DBRepository {
                             Toast.makeText(application, "작업이 취소되었습니다.", Toast.LENGTH_SHORT).show();
                         }
                     });
-                }else{
+                } else {
                     Toast.makeText(application, "오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -183,6 +206,84 @@ public class DBRepository {
         });
     }
 
+    public void uploadPost(FirebaseUser user, PostDTO_Upload postDTO_upload) {
+
+        url = new ArrayList();
+
+        CollectionReference PostColReference = fireStore.collection("Post");
+        DocumentReference myPostDocReference = fireStore.collection("myPost").document(user.getUid());
+
+
+        StorageReference storageRef = storage.getReference();
+        StorageReference riversRef = storageRef.child("post_images/" + user.getUid());
+        uploadTask = riversRef.putFile(postDTO_upload.getPhoto());
+
+        uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+                // Continue with the task to get the download URL
+                Log.d(TAG, "사진 업로드 완료 후 링크123 " + riversRef.getDownloadUrl());
+                return riversRef.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    postDTO_upload.setPhoto(downloadUri);
+                    PostColReference.add(postDTO_upload).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                            if (task.isSuccessful()) {
+                                PostDTO postDTO = new PostDTO(task.getResult().getId(), postDTO_upload.getName(), postDTO_upload.getTitle(), postDTO_upload.getContents(), downloadUri, postDTO_upload.getTime());
+                                myPostDocReference.set(postDTO).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(application, "게시물을 올렸습니다.", Toast.LENGTH_SHORT).show();
+                                            getPost();
+                                        }
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(application, "게시물 올리는데 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void getPost(){
+        arr_post = new ArrayList<>();
+        CollectionReference postColReference = fireStore.collection("Post");
+
+        postColReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for(QueryDocumentSnapshot document : task.getResult()){
+                        Log.d(TAG, document.getId() + " => " + document.getData());
+
+                        PostDTO data = new PostDTO(document.getId(), String.valueOf(document.get("name")), String.valueOf(document.get("title")), String.valueOf(document.get("contents")), Uri.parse(String.valueOf(document.get("photo"))), String.valueOf(document.get("time")));
+                        arr_post.add(data);
+                    }
+                    getPostTask.postValue(task);
+                    postMutableLiveData.postValue(arr_post);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG+" getPost() 함수 요류", e.getMessage());
+            }
+        });
+    }
+
     public SingleLiveEvent<Task> getUploadUserInfoSuccessful() {
         return uploadUserInfoSuccessful;
     }
@@ -199,7 +300,15 @@ public class DBRepository {
         return uploadWorkInfoTask;
     }
 
+    public SingleLiveEvent<Task> getGetPostTask() {
+        return getPostTask;
+    }
+
     public MutableLiveData<WorkInfo> getWorkInfoMutableLiveData() {
         return workInfoMutableLiveData;
+    }
+
+    public MutableLiveData<ArrayList<PostDTO>> getPostMutableLiveData() {
+        return postMutableLiveData;
     }
 }

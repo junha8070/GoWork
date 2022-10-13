@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view_Community.PostFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:navigationIconTint="@color/white"
+            app:title="글쓰기"
+            app:titleCentered="true"
+            app:titleTextColor="@color/white">
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:id="@+id/btn_finish"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:text="완료" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLine_ver_1"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLine_ver_2"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLine_hor_1"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.1" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_title"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/white"
+            android:hint="제목"
+            android:textColorHint="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_2"
+            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
+            app:layout_constraintTop_toTopOf="@+id/guideLine_hor_1" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLine_hor_2"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.2" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:hint="내용"
+            android:textColor="@color/white"
+            android:inputType="text|textMultiLine"
+            android:lines="7"
+            android:textColorHint="@color/white"
+            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
+            app:layout_constraintTop_toBottomOf="@+id/guideLine_hor_2" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_photo"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
+            app:layout_constraintTop_toBottomOf="@+id/edt_content" />
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/textField"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_gallery"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="0dp"
+                android:backgroundTint="@color/textField"
+                android:gravity="center"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:padding="0dp"
+                app:icon="@drawable/ic_add_photo_24" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="0dp"
+                android:backgroundTint="@color/textField"
+                android:gravity="center"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:padding="0dp"
+                app:icon="@drawable/ic_camera_24" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

@@ -7,6 +7,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.gowork.dto.PostDTO;
+import com.example.gowork.dto.PostDTO_Upload;
 import com.example.gowork.dto.WorkInfo;
 import com.example.gowork.model.DBRepository;
 import com.example.gowork.SingleLiveEvent;
@@ -14,6 +16,7 @@ import com.example.gowork.dto.UserDTO;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DBViewModel extends AndroidViewModel {
@@ -24,7 +27,9 @@ public class DBViewModel extends AndroidViewModel {
     private LiveData<UserDTO> userInfoData;
     private SingleLiveEvent<Task> updateUserInfoTask;
     private SingleLiveEvent<Task> uploadWorkInfoTask;
+    private SingleLiveEvent<Task> getPostTask;
     private MutableLiveData<WorkInfo> workInfoMutableLiveData;
+    private MutableLiveData<ArrayList<PostDTO>> postMutableLiveData;
 
     public DBViewModel(@NonNull Application application) {
         super(application);
@@ -34,7 +39,9 @@ public class DBViewModel extends AndroidViewModel {
         userInfoData = dbRepository.getUserInfoLiveData();
         updateUserInfoTask = dbRepository.getUpdateUserInfoTask();
         uploadWorkInfoTask = dbRepository.getUploadWorkInfoTask();
+        getPostTask = dbRepository.getGetPostTask();
         workInfoMutableLiveData = dbRepository.getWorkInfoMutableLiveData();
+        postMutableLiveData = dbRepository.getPostMutableLiveData();
     }
 
     public void uploadUserInfo(FirebaseUser user, UserDTO userDTO) {
@@ -57,6 +64,14 @@ public class DBViewModel extends AndroidViewModel {
         dbRepository.getWorkInfoMutableLiveData();
     }
 
+    public void getPost(){
+        dbRepository.getPost();
+    }
+
+    public void uploadPost(FirebaseUser user, PostDTO_Upload postDTO_upload){
+        dbRepository.uploadPost(user, postDTO_upload);
+    }
+
     public SingleLiveEvent<Task> getUploadUserInfoSuccessful() {
         return uploadUserInfoSuccessful;
     }
@@ -73,7 +88,15 @@ public class DBViewModel extends AndroidViewModel {
         return uploadWorkInfoTask;
     }
 
+    public SingleLiveEvent<Task> getGetPostTask() {
+        return getPostTask;
+    }
+
     public MutableLiveData<WorkInfo> getWorkInfoMutableLiveData() {
         return workInfoMutableLiveData;
+    }
+
+    public MutableLiveData<ArrayList<PostDTO>> postMutableLiveData() {
+        return postMutableLiveData;
     }
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ScheduleFragment">
+    tools:context=".view_Schedule.ScheduleFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -115,6 +115,7 @@
                 app:layout_constraintGuide_percent="0.1" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_calendar"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"

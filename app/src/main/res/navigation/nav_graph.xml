@@ -7,17 +7,24 @@
 
     <fragment
         android:id="@+id/communityFragment"
-        android:name="com.example.gowork.CommunityFragment"
+        android:name="com.example.gowork.view_Community.CommunityFragment"
         android:label="fragment_community"
-        tools:layout="@layout/fragment_community" />
+        tools:layout="@layout/fragment_community" >
+        <action
+            android:id="@+id/action_communityFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+        <action
+            android:id="@+id/action_communityFragment_to_post_View_Fragment"
+            app:destination="@id/post_View_Fragment" />
+    </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.gowork.HomeFragment"
+        android:name="com.example.gowork.view_Home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.gowork.LoginFragment"
+        android:name="com.example.gowork.view_Init.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
@@ -36,12 +43,12 @@
     </fragment>
     <fragment
         android:id="@+id/payFragment"
-        android:name="com.example.gowork.PayFragment"
+        android:name="com.example.gowork.view_Pay.PayFragment"
         android:label="fragment_pay"
         tools:layout="@layout/fragment_pay" />
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.example.gowork.RegisterFragment"
+        android:name="com.example.gowork.view_Init.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register">
         <action
@@ -52,12 +59,12 @@
     </fragment>
     <fragment
         android:id="@+id/scheduleFragment"
-        android:name="com.example.gowork.ScheduleFragment"
+        android:name="com.example.gowork.view_Schedule.ScheduleFragment"
         android:label="fragment_schedule"
         tools:layout="@layout/fragment_schedule" />
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.example.gowork.SettingFragment"
+        android:name="com.example.gowork.view_Setting.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" >
         <action
@@ -74,7 +81,7 @@
     </fragment>
     <fragment
         android:id="@+id/edit_UserInfo"
-        android:name="com.example.gowork.Edit_UserInfo"
+        android:name="com.example.gowork.view_Setting.Edit_UserInfo"
         android:label="fragment_edit__user_info"
         tools:layout="@layout/fragment_edit__user_info" >
         <action
@@ -86,19 +93,22 @@
     </fragment>
     <fragment
         android:id="@+id/addWorkFragment"
-        android:name="com.example.gowork.AddWorkFragment"
+        android:name="com.example.gowork.view_Setting.AddWork_PlaceInfo_Fragment"
         android:label="fragment_add_work"
-        tools:layout="@layout/fragment_add_work" >
+        tools:layout="@layout/fragment_add_work__placeinfo" >
         <action
             android:id="@+id/action_addWorkFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
         <action
             android:id="@+id/action_addWorkFragment_to_searchAddressFragment"
             app:destination="@id/searchAddressFragment" />
+        <action
+            android:id="@+id/action_addWorkFragment_to_addWork_JoinResign_Fragment"
+            app:destination="@id/addWork_JoinResign_Fragment" />
     </fragment>
     <fragment
         android:id="@+id/searchAddressFragment"
-        android:name="com.example.gowork.SearchAddressFragment"
+        android:name="com.example.gowork.view_Setting.SearchAddressFragment"
         android:label="fragment_search_address"
         tools:layout="@layout/fragment_search_address" >
         <action
@@ -106,5 +116,47 @@
             app:destination="@id/addWorkFragment"
             app:popUpTo="@+id/addWorkFragment"
             app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/addWork_JoinResign_Fragment"
+        android:name="com.example.gowork.view_Setting.AddWork_JoinResign_Fragment"
+        android:label="fragment_add_work__join_resign_"
+        tools:layout="@layout/fragment_add_work__join_resign_" >
+        <action
+            android:id="@+id/action_addWork_JoinResign_Fragment_to_addWorkFragment"
+            app:destination="@id/addWorkFragment" />
+        <action
+            android:id="@+id/action_addWork_JoinResign_Fragment_to_addWork_Schedule_Fragment"
+            app:destination="@id/addWork_Schedule_Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addWork_Schedule_Fragment"
+        android:name="com.example.gowork.view_Setting.AddWork_Schedule_Fragment"
+        android:label="fragment_add_work__schedule_"
+        tools:layout="@layout/fragment_add_work__schedule_" >
+        <action
+            android:id="@+id/action_addWork_Schedule_Fragment_to_addWork_JoinResign_Fragment"
+            app:destination="@id/addWork_JoinResign_Fragment" />
+        <action
+            android:id="@+id/action_addWork_Schedule_Fragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postFragment"
+        android:name="com.example.gowork.view_Community.PostFragment"
+        android:label="fragment_post"
+        tools:layout="@layout/fragment_post" >
+        <action
+            android:id="@+id/action_postFragment_to_communityFragment"
+            app:destination="@id/communityFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/post_View_Fragment"
+        android:name="com.example.gowork.view_Community.Post_View_Fragment"
+        android:label="fragment_post__view_"
+        tools:layout="@layout/fragment_post__view_" >
+        <action
+            android:id="@+id/action_post_View_Fragment_to_communityFragment"
+            app:destination="@id/communityFragment" />
     </fragment>
 </navigation>
