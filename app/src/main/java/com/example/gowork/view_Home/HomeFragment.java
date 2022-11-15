@@ -167,7 +167,7 @@ public class HomeFragment extends Fragment
             public void onChanged(ArrayList<HashMap<String, Object>> hashMaps) {
                 if (hashMaps != null) {
                     hashMaps_receive.addAll(hashMaps);
-                    Log.d(TAG, "hashMaps_receive"+String.valueOf(hashMaps_receive));
+                    Log.d(TAG, "hashMaps_receive" + String.valueOf(hashMaps_receive));
                     for (int i = 0; i < hashMaps.size(); i++) {
                         if (hashMaps.get(i).get("week_day") != null) {
                             HashMap dayDetect = (HashMap) hashMaps.get(i).get("week_day");
@@ -187,10 +187,11 @@ public class HomeFragment extends Fragment
         this.context = getContext();
 
         if (stateViewModel.getWorkingState() == null || !stateViewModel.getWorkingState()) {
-            btn_goWork.setText("출근 하기");
+            btn_goWork.setText("출근\n하기");
             btn_goWork.setBackgroundColor(getResources().getColor(R.color.point_color, getActivity().getTheme()));
         } else {
-            btn_goWork.setText("퇴근 하기");
+            btn_goWork.setText("퇴근\n하기");
+            btn_working_place.setText(stateViewModel.getWorkingPlace());
             btn_goWork.setBackgroundColor(Color.GRAY);
         }
 
@@ -214,6 +215,9 @@ public class HomeFragment extends Fragment
                 builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        if (!btn_working_place.getText().toString().equals("근무지를 선택해주세요")) {
+                            btn_goWork.setEnabled(true);
+                        }
                         btn_working_place.setText(adapter.getItem(i));
                     }
                 });
@@ -227,27 +231,31 @@ public class HomeFragment extends Fragment
         btn_goWork.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (stateViewModel.getWorkingState() == null || stateViewModel.getWorkingState() == false) {
-                    Toast.makeText(getContext(), "출근", Toast.LENGTH_SHORT).show();
-                    btn_goWork.setText("퇴근 하기");
-                    btn_goWork.setBackgroundColor(Color.GRAY);
-                    stateViewModel.setWorkingState(true);
-                    stateViewModel.setWorkingPlace(btn_working_place.getText().toString());
-                    stateViewModel.setStartWorkingTime(getCurrentTime());
-                    Toast.makeText(getContext(), getCurrentTime(), Toast.LENGTH_SHORT).show();
+                if (btn_working_place.getText().toString().equals("근무지를 선택해주세요")) {
+                    Toast.makeText(getContext(), "근무지를 선택해주세요", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), "퇴근", Toast.LENGTH_SHORT).show();
-                    btn_goWork.setText("출근 하기");
-                    btn_goWork.setBackgroundColor(getResources().getColor(R.color.point_color, getActivity().getTheme()));
-                    stateViewModel.setWorkingState(false);
-                    stateViewModel.setFinishWorkingTime(getCurrentTime());
-                    HashMap<String, String> Working_Time = new LinkedHashMap<>();
-                    Working_Time.put("Start_Time", stateViewModel.getStartWorkingTime());
-                    Working_Time.put("Finish_Time", stateViewModel.getFinishWorkingTime());
-                    Log.d(TAG, "출근지 : " + stateViewModel.getWorkingPlace() + " 시작시간: " + stateViewModel.getStartWorkingTime() + "퇴근 시간: " + stateViewModel.getFinishWorkingTime());
-                    WorkingTimeDTO workingTimeDTO = new WorkingTimeDTO(stateViewModel.getWorkingPlace(), Working_Time);
-                    stateViewModel.setWorkingTime(authViewModel.getFirebaseUserLiveData().getValue(), workingTimeDTO);
-                    Toast.makeText(getContext(), getCurrentTime(), Toast.LENGTH_SHORT).show();
+                    if (stateViewModel.getWorkingState() == null || stateViewModel.getWorkingState() == false) {
+                        Toast.makeText(getContext(), "출근", Toast.LENGTH_SHORT).show();
+                        btn_goWork.setText("퇴근\n하기");
+                        btn_goWork.setBackgroundColor(Color.GRAY);
+                        stateViewModel.setWorkingState(true);
+                        stateViewModel.setWorkingPlace(btn_working_place.getText().toString());
+                        stateViewModel.setStartWorkingTime(getCurrentTime());
+                        Toast.makeText(getContext(), getCurrentTime(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "퇴근", Toast.LENGTH_SHORT).show();
+                        btn_goWork.setText("출근\n하기");
+                        btn_goWork.setBackgroundColor(getResources().getColor(R.color.point_color, getActivity().getTheme()));
+                        stateViewModel.setWorkingState(false);
+                        stateViewModel.setFinishWorkingTime(getCurrentTime());
+                        HashMap<String, String> Working_Time = new LinkedHashMap<>();
+                        Working_Time.put("Start_Time", stateViewModel.getStartWorkingTime());
+                        Working_Time.put("Finish_Time", stateViewModel.getFinishWorkingTime());
+                        Log.d(TAG, "출근지 : " + stateViewModel.getWorkingPlace() + " 시작시간: " + stateViewModel.getStartWorkingTime() + "퇴근 시간: " + stateViewModel.getFinishWorkingTime());
+                        WorkingTimeDTO workingTimeDTO = new WorkingTimeDTO(stateViewModel.getWorkingPlace(), Working_Time);
+                        stateViewModel.setWorkingTime(authViewModel.getFirebaseUserLiveData().getValue(), workingTimeDTO);
+                        Toast.makeText(getContext(), getCurrentTime(), Toast.LENGTH_SHORT).show();
+                    }
                 }
                 return false;
             }

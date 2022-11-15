@@ -85,32 +85,25 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.95" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout2"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_comment"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_height="match_parent"
             android:background="@color/basic"
             android:hint="댓글을 달아보세요!"
+            android:textColor="@color/white"
             android:textColorHint="@color/white"
-            app:hintAnimationEnabled="false"
+            android:textSize="13dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_send"
             app:layout_constraintHorizontal_bias="0.1"
             app:layout_constraintHorizontal_weight="6"
             app:layout_constraintStart_toStartOf="@+id/guideLine_ver_3"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edt_comment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/basic"
-                android:textColor="@color/white"
-                android:textSize="13dp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_send"
@@ -125,7 +118,7 @@
             app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_4"
             app:layout_constraintHorizontal_bias="0.9"
             app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/textInputLayout2"
+            app:layout_constraintStart_toEndOf="@+id/edt_comment"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
