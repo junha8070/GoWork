@@ -1,5 +1,6 @@
 package com.example.gowork.view_Community;
 
+import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +21,7 @@ import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
-public class Community_Adapter extends RecyclerView.Adapter<Community_Adapter.ViewHolder>{
+public class Community_Adapter extends RecyclerView.Adapter<Community_Adapter.ViewHolder> {
 
     // 아이템 클릭 리스터 인터페이스
     interface OnItemClickListener {

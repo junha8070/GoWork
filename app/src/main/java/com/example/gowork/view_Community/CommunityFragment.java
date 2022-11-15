@@ -65,7 +65,7 @@ public class CommunityFragment extends Fragment {
         });
 
 
-        Log.d("CommunityFragment", dbViewModel.postMutableLiveData().getValue().get(0).getTitle());
+//        Log.d("CommunityFragment", dbViewModel.postMutableLiveData().getValue().get(0).getTitle());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rv_post.setLayoutManager(linearLayoutManager);  // LayoutManager 설정

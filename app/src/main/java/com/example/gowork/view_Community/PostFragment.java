@@ -167,7 +167,13 @@ public class PostFragment extends Fragment {
 //                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 //                System.out.println(sdf.format(timestamp)); // format을 사용해 출력
 
-                PostDTO_Upload postData = new PostDTO_Upload(dbViewModel.getUserInfoLiveData().getValue().getName(), title, content, uri_photo_data.get(0), formatedNow);
+                PostDTO_Upload postData;
+                if(uri_photo_data.size()>0){
+                     postData= new PostDTO_Upload(dbViewModel.getUserInfoLiveData().getValue().getName(), title, content, uri_photo_data.get(0), formatedNow);
+                }else{
+                     postData= new PostDTO_Upload(dbViewModel.getUserInfoLiveData().getValue().getName(), title, content, null, formatedNow);
+                }
+
 
                 dbViewModel.uploadPost(authViewModel.getFirebaseUserLiveData().getValue(), postData);
 

@@ -1,14 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view_Home.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="home" />
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLine_ver_1"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLine_ver_2"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_toolbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="브리핑 Note"
+            app:titleMargin="10dp"
+            app:titleTextColor="@color/white" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLine_hor_toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.1" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_pay"
+            android:layout_width="0dp"
+            android:layout_height="180dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_card_1"
+            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLine_hor_card_1"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="0dp"
+            android:layout_height="180dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_card_2"
+            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLine_hor_card_2"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.77" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.8" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:backgroundTint="@color/textField"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline3"
+            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
+            app:layout_constraintTop_toTopOf="@+id/guideline2">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:autoSizeMaxTextSize="20dp"
+                    android:autoSizeMinTextSize="10dp"
+                    android:autoSizeTextType="uniform"
+                    android:gravity="bottom|center_horizontal"
+                    android:padding="10dp"
+                    android:text="오른쪽 버튼 길게 눌러 출퇴근하기"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/btn_working_place"
+                    app:layout_constraintEnd_toStartOf="@+id/guideLine_hor_btn"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_weight="1" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_working_place"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:hint="근무지를 선택해주세요"
+                    android:textColorHint="@color/white"
+                    app:boxBackgroundColor="@color/textField"
+                    app:boxStrokeColor="@color/textField"
+                    app:boxStrokeWidth="0dp"
+                    android:layout_margin="10dp"
+                    app:endIconTint="@color/white"
+                    app:hintTextColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideLine_hor_btn"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6"
+                    app:layout_constraintVertical_weight="1"/>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideLine_hor_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.7" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_goWork"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_margin="10dp"
+                    android:backgroundTint="@color/point_color"
+                    android:elevation="20dp"
+                    android:text="출근\n하기"
+                    android:textColor="@color/white"
+                    app:cornerRadius="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/guideLine_hor_btn"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <!--        <com.google.android.material.button.MaterialButtonToggleGroup-->
+        <!--            android:id="@+id/toggleButton"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            app:layout_constraintBottom_toTopOf="@+id/guideline3"-->
+        <!--            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"-->
+        <!--            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"-->
+        <!--            app:layout_constraintTop_toTopOf="@+id/guideline2"-->
+        <!--            app:singleSelection="true">-->
+
+        <!--            <com.google.android.material.button.MaterialButton-->
+        <!--                android:id="@+id/button1"-->
+        <!--                style="?attr/materialButtonOutlinedStyle"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:text="퇴근"-->
+        <!--                app:cornerRadius="20dp" />-->
+
+        <!--            <com.google.android.material.button.MaterialButton-->
+        <!--                android:id="@+id/button2"-->
+        <!--                style="?attr/materialButtonOutlinedStyle"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:text="출근"-->
+        <!--                app:cornerRadius="20dp" />-->
+        <!--        </com.google.android.material.button.MaterialButtonToggleGroup>-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

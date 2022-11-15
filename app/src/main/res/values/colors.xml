@@ -10,4 +10,5 @@
 
     <color name="basic">#33333c</color>
     <color name="textField">#25282f</color>
+    <color name="point_color">#00aca3</color>
 </resources>

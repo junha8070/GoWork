@@ -31,6 +31,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -279,6 +280,8 @@ public class AddWork_Schedule_Fragment extends Fragment {
 
                 workInfo = new WorkInfo(place_name, address, kind, pay, join, resign, probation, start_time, end_time, holiday_allowance, sameTime_5upper, work_holiday);
 
+                HashMap<String, Object> map_size;
+
                 switch (group_btn_schedule.getCheckedButtonId()) {
                     case R.id.button_every_month:
                         String date = sp_date.getSelectedItem().toString();
@@ -287,45 +290,49 @@ public class AddWork_Schedule_Fragment extends Fragment {
                         schedule.put("type", "monthly");
                         schedule.put("date", date);
                         if (btn_last_day_do.isChecked()) {
-                            schedule.put("last_day", true);
+                            schedule.put("last_day", "true");
                         } else {
-                            schedule.put("last_day", false);
+                            schedule.put("last_day", "false");
                         }
+
+//                        schedule.add(map_size);
 
                         dbViewModel.setUploadWorkInfo(authViewModel.getFirebaseUserLiveData().getValue(), workInfo, schedule);
                         break;
                     case R.id.button_every_week:
                         schedule = new HashMap<>();
+                        map_size = new HashMap<>();
                         schedule.put("type", "weekly");
-                        schedule.put("sun", false);
-                        schedule.put("mon", false);
-                        schedule.put("tue", false);
-                        schedule.put("wed", false);
-                        schedule.put("thu", false);
-                        schedule.put("fri", false);
-                        schedule.put("sat", false);
+                        map_size.put("sun", false);
+                        map_size.put("mon", false);
+                        map_size.put("tue", false);
+                        map_size.put("wed", false);
+                        map_size.put("thu", false);
+                        map_size.put("fri", false);
+                        map_size.put("sat", false);
 
                         if (btn_sun.isChecked()) {
-                            schedule.put("sun", true);
+                            map_size.put("sun", true);
                         }
                         if (btn_mon.isChecked()) {
-                            schedule.put("mon", true);
+                            map_size.put("mon", true);
                         }
                         if (btn_tue.isChecked()) {
-                            schedule.put("tue", true);
+                            map_size.put("tue", true);
                         }
                         if (btn_wed.isChecked()) {
-                            schedule.put("wed", true);
+                            map_size.put("wed", true);
                         }
                         if (btn_thu.isChecked()) {
-                            schedule.put("thu", true);
+                            map_size.put("thu", true);
                         }
                         if (btn_fri.isChecked()) {
-                            schedule.put("fri", true);
+                            map_size.put("fri", true);
                         }
                         if (btn_sat.isChecked()) {
-                            schedule.put("sat", true);
+                            map_size.put("sat", true);
                         }
+                        schedule.put("week_day",map_size);
 
                         dbViewModel.setUploadWorkInfo(authViewModel.getFirebaseUserLiveData().getValue(), workInfo, schedule);
                         break;

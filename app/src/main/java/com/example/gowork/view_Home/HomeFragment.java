@@ -1,18 +1,58 @@
 package com.example.gowork.view_Home;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavGraph;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.gowork.MainActivity;
 import com.example.gowork.R;
+import com.example.gowork.dto.WorkInfo;
+import com.example.gowork.dto.WorkingTimeDTO;
+import com.example.gowork.viewModel.AuthViewModel;
 import com.example.gowork.viewModel.DBViewModel;
+import com.example.gowork.viewModel.WorkingViewModel;
+import com.example.gowork.view_Community.Community_Adapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputLayout;
+
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,11 +63,30 @@ public class HomeFragment extends Fragment
 //        implements OnBackPressedListener
 {
 
-    DBViewModel dbViewModel;
+    private String TAG = "HomeFragmentTAG";
 
+    Context context;
+
+    MaterialButton btn_working_place, btn_goWork;
+    RecyclerView rv;
+//    TextInputLayout sp_working_place;
+//    AutoCompleteTextView autoCompleteTextView;
+
+    DBViewModel dbViewModel;
+    AuthViewModel authViewModel;
     MainActivity mainActivity;
 
+    Boolean workingState;
+
+    WorkingViewModel stateViewModel;
+
+    Home_Rv_Adapter home_rv_adapter;
+
     long backKeyPressedTime;
+
+    ArrayList<WorkInfo> workInfo_receive;
+    ArrayList<HashMap<String, Object>> hashMaps_receive;
+    List<String> spinnerArray;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,11 +124,16 @@ public class HomeFragment extends Fragment
         super.onCreate(savedInstanceState);
 
         dbViewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
+        authViewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
+        stateViewModel = new ViewModelProvider(requireActivity()).get(WorkingViewModel.class);
 
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        workInfo_receive = new ArrayList<>();
+        hashMaps_receive = new ArrayList<>();
+
+        dbViewModel.getWorkInfoData(authViewModel.getFirebaseUserLiveData().getValue());
+        dbViewModel.getScheduleData();
+
+
     }
 
     @Override
@@ -80,9 +144,142 @@ public class HomeFragment extends Fragment
 
         mainActivity = (MainActivity) getActivity();
 
-//        Log.d("TAG",dbViewModel.getUserInfoLiveData().getValue().phone);
+        init(view);
+
+        // TODO: 리사이클러뷰 중복으로 뜨는거 해결
+
+        dbViewModel.getWorkInfoMutableLiveData().observe(getActivity(), new Observer<ArrayList<WorkInfo>>() {
+            @Override
+            public void onChanged(ArrayList<WorkInfo> workInfo) {
+                if (workInfo != null) {
+                    workInfo_receive.addAll(workInfo);
+                    spinnerArray = new ArrayList<String>();
+                    for (int q = 0; q < workInfo.size(); q++) {
+                        spinnerArray.add(workInfo.get(q).getPlace_name());
+                        Log.d(TAG, "스피너 갯수" + String.valueOf(workInfo.size()));
+                    }
+                }
+            }
+        });
+
+        dbViewModel.getScheduleMutableLiveData().observe(getActivity(), new Observer<ArrayList<HashMap<String, Object>>>() {
+            @Override
+            public void onChanged(ArrayList<HashMap<String, Object>> hashMaps) {
+                if (hashMaps != null) {
+                    hashMaps_receive.addAll(hashMaps);
+                    Log.d(TAG, "hashMaps_receive"+String.valueOf(hashMaps_receive));
+                    for (int i = 0; i < hashMaps.size(); i++) {
+                        if (hashMaps.get(i).get("week_day") != null) {
+                            HashMap dayDetect = (HashMap) hashMaps.get(i).get("week_day");
+//                                        if (!(Boolean) dayDetect.get(todayDate())) {
+//                                            workInfo_receive.remove(i);
+//                                            hashMaps_receive.remove(i);
+//                                            Log.d(TAG, String.valueOf(workInfo_receive));
+//                                        }
+                        }
+                    }
+                    home_rv_adapter = new Home_Rv_Adapter(workInfo_receive, hashMaps_receive);
+                    rv.setAdapter(home_rv_adapter); // 어댑터 설정
+                }
+            }
+        });
+
+        this.context = getContext();
+
+        if (stateViewModel.getWorkingState() == null || !stateViewModel.getWorkingState()) {
+            btn_goWork.setText("출근 하기");
+            btn_goWork.setBackgroundColor(getResources().getColor(R.color.point_color, getActivity().getTheme()));
+        } else {
+            btn_goWork.setText("퇴근 하기");
+            btn_goWork.setBackgroundColor(Color.GRAY);
+        }
+
+        btn_working_place.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("근무지를 선택해주세요.");
+
+
+                final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.select_dialog_item);
+                adapter.addAll(spinnerArray);
+
+                builder.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+                builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        btn_working_place.setText(adapter.getItem(i));
+                    }
+                });
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+        });
+
+
+        btn_goWork.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if (stateViewModel.getWorkingState() == null || stateViewModel.getWorkingState() == false) {
+                    Toast.makeText(getContext(), "출근", Toast.LENGTH_SHORT).show();
+                    btn_goWork.setText("퇴근 하기");
+                    btn_goWork.setBackgroundColor(Color.GRAY);
+                    stateViewModel.setWorkingState(true);
+                    stateViewModel.setWorkingPlace(btn_working_place.getText().toString());
+                    stateViewModel.setStartWorkingTime(getCurrentTime());
+                    Toast.makeText(getContext(), getCurrentTime(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "퇴근", Toast.LENGTH_SHORT).show();
+                    btn_goWork.setText("출근 하기");
+                    btn_goWork.setBackgroundColor(getResources().getColor(R.color.point_color, getActivity().getTheme()));
+                    stateViewModel.setWorkingState(false);
+                    stateViewModel.setFinishWorkingTime(getCurrentTime());
+                    HashMap<String, String> Working_Time = new LinkedHashMap<>();
+                    Working_Time.put("Start_Time", stateViewModel.getStartWorkingTime());
+                    Working_Time.put("Finish_Time", stateViewModel.getFinishWorkingTime());
+                    Log.d(TAG, "출근지 : " + stateViewModel.getWorkingPlace() + " 시작시간: " + stateViewModel.getStartWorkingTime() + "퇴근 시간: " + stateViewModel.getFinishWorkingTime());
+                    WorkingTimeDTO workingTimeDTO = new WorkingTimeDTO(stateViewModel.getWorkingPlace(), Working_Time);
+                    stateViewModel.setWorkingTime(authViewModel.getFirebaseUserLiveData().getValue(), workingTimeDTO);
+                    Toast.makeText(getContext(), getCurrentTime(), Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+        });
+
+        rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        SnapHelper snapHelper = new PagerSnapHelper();
+        if (rv.getOnFlingListener() == null)
+            snapHelper.attachToRecyclerView(rv);
+
+        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager layoutManager =
+                        LinearLayoutManager.class.cast(recyclerView.getLayoutManager());
+            }
+        });
 
         return view;
+    }
+
+    public void init(View view) {
+        rv = view.findViewById(R.id.rv);
+        btn_working_place = view.findViewById(R.id.btn_working_place);
+        btn_goWork = view.findViewById(R.id.btn_goWork);
     }
 
 //    @Override
@@ -118,5 +315,26 @@ public class HomeFragment extends Fragment
             bottomNavigation.setVisibility(View.GONE);
         else
             bottomNavigation.setVisibility(View.VISIBLE);
+    }
+
+    public String getCurrentTime() {
+        Calendar calendar = Calendar.getInstance();       // 포맷 정의
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");        // 포맷 적용
+        String currentTime = formatter.format(calendar.getTime());
+        return currentTime;
+    }
+
+    public String getCurrentDate() {
+        Calendar calendar = Calendar.getInstance();       // 포맷 정의
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");        // 포맷 적용
+        String currentTime = formatter.format(calendar.getTime());
+        return currentTime;
+    }
+
+    public String todayDate() {
+        LocalDate date = LocalDate.now();
+        System.out.println(date);
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+        return dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.US).toLowerCase(Locale.ROOT);
     }
 }

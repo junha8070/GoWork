@@ -18,6 +18,7 @@ import com.example.gowork.R;
 import com.example.gowork.dto.UserDTO;
 import com.example.gowork.viewModel.AuthViewModel;
 import com.example.gowork.viewModel.DBViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.HashMap;
@@ -77,6 +78,8 @@ public class SettingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        hideBottomNavigation(false);
 
 //        dbViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())).get(DBViewModel.class);
         // new ViewModelProvider(requireActivity()).get(DBViewModel.class);로 해야 viewmodel 공유 가능
@@ -168,5 +171,19 @@ public class SettingFragment extends Fragment {
         btn_edit_work = view.findViewById(R.id.btn_edit_work);
         btn_edit_profile = view.findViewById(R.id.btn_edit_profile);
         btn_logout = view.findViewById(R.id.btn_logout);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        hideBottomNavigation(false);
+    }
+
+    public void hideBottomNavigation(Boolean bool) {
+        BottomNavigationView bottomNavigation = getActivity().findViewById(R.id.bottomNavigationView);
+        if (bool == true)
+            bottomNavigation.setVisibility(View.GONE);
+        else
+            bottomNavigation.setVisibility(View.VISIBLE);
     }
 }

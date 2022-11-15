@@ -5,7 +5,11 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,8 +21,10 @@ import com.example.gowork.ProgressDialog;
 import com.example.gowork.R;
 import com.example.gowork.dto.PostDTO;
 import com.example.gowork.dto.UserDTO;
+import com.example.gowork.dto.WorkInfo;
 import com.example.gowork.viewModel.AuthViewModel;
 import com.example.gowork.viewModel.DBViewModel;
+import com.example.gowork.view_Home.HomeFragment;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
@@ -50,6 +56,9 @@ public class LoginFragment extends Fragment {
 
     private AuthViewModel authViewModel;
     private DBViewModel dbViewModel;
+
+    private NavHostFragment navHostFragment;
+    private NavController navController;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -174,20 +183,31 @@ public class LoginFragment extends Fragment {
                                         @Override
                                         public void onChanged(UserDTO userDTO) {
                                             if (userDTO != null) {
+                                                dbViewModel.getWorkInfoData(authViewModel.getFirebaseUserLiveData().getValue());
+                                                dbViewModel.getScheduleData();
                                                 dbViewModel.getPost();
                                                 dbViewModel.postMutableLiveData().observe(getActivity(), new Observer<ArrayList<PostDTO>>() {
                                                     @Override
                                                     public void onChanged(ArrayList<PostDTO> postDTOS) {
-                                                        if (postDTOS!=null){
-                                                            Log.d("무슨 값이냐 ?", postDTOS.get(0).getTitle());
+                                                        if (postDTOS != null) {
+//                                                            Log.d("무슨 값이냐 ?", postDTOS.get(0).getTitle());
                                                             loadingDialog.cancel();
                                                         }
                                                     }
                                                 });
+
+
 //                                                            Toast.makeText(getContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
+//                                    navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+//                                    navController = navHostFragment.getNavController();
+//                                    NavGraph navGraph = navController.getGraph();
+//                                    Log.d(TAG, String.valueOf(navGraph.getStartDestinationId()));
+//                                    navGraph.setStartDestination(R.id.homeFragment);
+//                                    navController.setGraph(navGraph);
+                                    //2131362195
                                     Navigation.findNavController(getView()).navigate(R.id.action_loginFragment_to_homeFragment);
                                 }
                             }

@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.gowork.dto.CommentDTO;
 import com.example.gowork.dto.PostDTO;
 import com.example.gowork.dto.PostDTO_Upload;
 import com.example.gowork.dto.WorkInfo;
@@ -23,25 +24,37 @@ public class DBViewModel extends AndroidViewModel {
 
     private DBRepository dbRepository;
 
+    // Task
     private SingleLiveEvent<Task> uploadUserInfoSuccessful;
-    private LiveData<UserDTO> userInfoData;
     private SingleLiveEvent<Task> updateUserInfoTask;
     private SingleLiveEvent<Task> uploadWorkInfoTask;
     private SingleLiveEvent<Task> getPostTask;
-    private MutableLiveData<WorkInfo> workInfoMutableLiveData;
+    private SingleLiveEvent<Task> uploadCommentTask;
+
+    // Value
+    private LiveData<UserDTO> userInfoData;
     private MutableLiveData<ArrayList<PostDTO>> postMutableLiveData;
+    private MutableLiveData<ArrayList<CommentDTO>> commentMutableLiveData;
+    private MutableLiveData<ArrayList<WorkInfo>> workInfoMutableLiveData;
+    private MutableLiveData<ArrayList<HashMap<String, Object>>> scheduleMutableLiveData;
 
     public DBViewModel(@NonNull Application application) {
         super(application);
 
         dbRepository = new DBRepository(application);
+
+        // Task init
         uploadUserInfoSuccessful = dbRepository.getUploadUserInfoSuccessful();
-        userInfoData = dbRepository.getUserInfoLiveData();
         updateUserInfoTask = dbRepository.getUpdateUserInfoTask();
         uploadWorkInfoTask = dbRepository.getUploadWorkInfoTask();
         getPostTask = dbRepository.getGetPostTask();
-        workInfoMutableLiveData = dbRepository.getWorkInfoMutableLiveData();
+
+        // Value init
+        userInfoData = dbRepository.getUserInfoLiveData();
         postMutableLiveData = dbRepository.getPostMutableLiveData();
+        commentMutableLiveData = dbRepository.getCommentMutableLiveData();
+        workInfoMutableLiveData = dbRepository.getWorkInfoMutableLiveData();
+        scheduleMutableLiveData = dbRepository.getScheduleMutableLiveData();
     }
 
     public void uploadUserInfo(FirebaseUser user, UserDTO userDTO) {
@@ -61,7 +74,11 @@ public class DBViewModel extends AndroidViewModel {
     }
 
     public void getWorkInfoData(FirebaseUser firebaseUser){
-        dbRepository.getWorkInfoMutableLiveData();
+        dbRepository.getWorkInfo(firebaseUser);
+    }
+
+    public void getScheduleData(){
+        dbRepository.getScheduleMutableLiveData();
     }
 
     public void getPost(){
@@ -72,12 +89,20 @@ public class DBViewModel extends AndroidViewModel {
         dbRepository.uploadPost(user, postDTO_upload);
     }
 
-    public SingleLiveEvent<Task> getUploadUserInfoSuccessful() {
-        return uploadUserInfoSuccessful;
+    public void uploadComment(FirebaseUser user, CommentDTO commentData){
+        dbRepository.upload_comment(user, commentData);
     }
 
-    public LiveData<UserDTO> getUserInfoLiveData(){
-        return userInfoData;
+    public void getComment(PostDTO postDTO){
+        dbRepository.get_comment(postDTO);
+    }
+
+    public void isUploadCommentSuccessful(){
+
+    }
+
+    public SingleLiveEvent<Task> getUploadUserInfoSuccessful() {
+        return uploadUserInfoSuccessful;
     }
 
     public SingleLiveEvent<Task> getUpdateUserInfoTask(){
@@ -92,11 +117,23 @@ public class DBViewModel extends AndroidViewModel {
         return getPostTask;
     }
 
-    public MutableLiveData<WorkInfo> getWorkInfoMutableLiveData() {
+    public MutableLiveData<ArrayList<WorkInfo>> getWorkInfoMutableLiveData() {
         return workInfoMutableLiveData;
+    }
+
+    public MutableLiveData<ArrayList<HashMap<String, Object>>> getScheduleMutableLiveData(){
+        return scheduleMutableLiveData;
+    }
+
+    public LiveData<UserDTO> getUserInfoLiveData(){
+        return userInfoData;
     }
 
     public MutableLiveData<ArrayList<PostDTO>> postMutableLiveData() {
         return postMutableLiveData;
+    }
+
+    public MutableLiveData<ArrayList<CommentDTO>> getCommentLiveData(){
+        return commentMutableLiveData;
     }
 }

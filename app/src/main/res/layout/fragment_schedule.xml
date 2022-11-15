@@ -31,8 +31,67 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="9월 일정"
+            app:title="일정"
             app:titleTextColor="@color/white" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_upper_calendar"
+            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
+            app:layout_constraintTop_toBottomOf="@+id/materialToolbar2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_prev"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:paddingLeft="0dp"
+                    app:icon="@drawable/ic_arrow_left_24"
+                    app:iconPadding="0dp"
+                    app:iconSize="30dp"
+                    app:rippleColor="@null" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:text="월"
+                    android:textColor="@color/white"
+                    android:textSize="20dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    app:icon="@drawable/ic_arrow_right_24"
+                    app:iconPadding="0dp"
+                    app:iconSize="30dp"
+                    app:rippleColor="@null" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLine_hor_upper_calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.13" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
@@ -41,14 +100,21 @@
             app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_entire"
             app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
             app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
-            app:layout_constraintTop_toBottomOf="@+id/materialToolbar2">
+            app:layout_constraintTop_toTopOf="@+id/guideLine_hor_upper_calendar">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideLine_hor_1"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.1" />
 
             <LinearLayout
                 android:id="@+id/linearLayout3"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:orientation="horizontal"
                 android:gravity="center"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -106,13 +172,6 @@
                     android:textColor="#0000FF" />
 
             </LinearLayout>
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideLine_hor_1"
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.1" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_calendar"

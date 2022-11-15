@@ -11,35 +11,42 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.17135416666666667" />
         <entry key="app/src/main/res/layout/dialog_progress.xml" value="0.1703125" />
         <entry key="app/src/main/res/layout/fragment_add_work.xml" value="0.27149321266968324" />
-        <entry key="app/src/main/res/layout/fragment_add_work__join_resign_.xml" value="0.39095662434895834" />
+        <entry key="app/src/main/res/layout/fragment_add_work__join_resign_.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_add_work__placeinfo.xml" value="0.19427083333333334" />
         <entry key="app/src/main/res/layout/fragment_add_work__schedule_.xml" value="0.23958333333333334" />
         <entry key="app/src/main/res/layout/fragment_calendar__bottom_sheet.xml" value="0.19427083333333334" />
         <entry key="app/src/main/res/layout/fragment_community.xml" value="0.17135416666666667" />
         <entry key="app/src/main/res/layout/fragment_edit__user_info.xml" value="0.15625" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.17135416666666667" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.23958333333333334" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.3296296296296296" />
-        <entry key="app/src/main/res/layout/fragment_pay.xml" value="0.17135416666666667" />
+        <entry key="app/src/main/res/layout/fragment_pay.xml" value="0.3307291666666667" />
         <entry key="app/src/main/res/layout/fragment_post.xml" value="0.16875" />
-        <entry key="app/src/main/res/layout/fragment_post__view_.xml" value="0.5858347574869793" />
+        <entry key="app/src/main/res/layout/fragment_post__view_.xml" value="0.3182291666666667" />
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.17135416666666667" />
-        <entry key="app/src/main/res/layout/fragment_schedule.xml" value="0.26099853515625004" />
+        <entry key="app/src/main/res/layout/fragment_schedule.xml" value="0.28777139707315486" />
         <entry key="app/src/main/res/layout/fragment_search_address.xml" value="0.25460357666015637" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.15625" />
         <entry key="app/src/main/res/layout/item_calendar.xml" value="0.2949900309244792" />
         <entry key="app/src/main/res/layout/item_calendar_day.xml" value="0.1859375" />
-        <entry key="app/src/main/res/layout/item_calender_day.xml" value="0.17135416666666667" />
+        <entry key="app/src/main/res/layout/item_calender_day.xml" value="0.832787577311198" />
         <entry key="app/src/main/res/layout/item_calender_week.xml" value="0.18802083333333333" />
         <entry key="app/src/main/res/layout/item_community.xml" value="0.29106699625651056" />
         <entry key="app/src/main/res/layout/item_community_normal.xml" value="0.4410715738932292" />
         <entry key="app/src/main/res/layout/item_community_photo.xml" value="0.175" />
+        <entry key="app/src/main/res/layout/item_home_rv.xml" value="0.4604583740234376" />
+        <entry key="app/src/main/res/layout/item_pay.xml" value="0.4635416666666667" />
         <entry key="app/src/main/res/layout/item_post_photo_add.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/item_post_view_comment.xml" value="0.23958333333333334" />
+        <entry key="app/src/main/res/layout/item_post_view_top.xml" value="0.23958333333333334" />
         <entry key="app/src/main/res/layout/item_rv_photo.xml" value="0.6374608357747396" />
-        <entry key="app/src/main/res/layout/item_schedule_info.xml" value="0.18802083333333333" />
+        <entry key="app/src/main/res/layout/item_schedule_info.xml" value="0.46073811848958335" />
         <entry key="app/src/main/res/layout/item_search_address.xml" value="0.33229166666666665" />
+        <entry key="app/src/main/res/layout/post_view_top.xml" value="0.3171875" />
         <entry key="app/src/main/res/layout/setting_listview_item.xml" value="0.178125" />
+        <entry key="app/src/main/res/layout/spinner_list_item.xml" value="0.2015625" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.17135416666666667" />
         <entry key="app/src/main/res/menu/menu_selector_color.xml" value="0.33229166666666665" />
+        <entry key="app/src/main/res/menu/post_view_menu.xml" value="0.3171875" />
         <entry key="app/src/main/res/xml/network_security_config.xml" value="0.11927083333333334" />
       </map>
     </option>

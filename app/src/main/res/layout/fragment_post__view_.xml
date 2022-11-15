@@ -1,247 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view_Community.Post_View_Fragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/post_view_menu"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:navigationIconTint="@color/white"
+        app:subtitle="주나님의 글"
+        app:subtitleTextColor="@color/white"
+        app:title="커뮤니티"
+        app:titleMargin="10dp"
+        app:titleTextColor="@color/white">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="?attr/homeAsUpIndicator"
-            app:navigationIconTint="@color/white"
-            app:subtitle="주나님의 글"
-            app:subtitleTextColor="@color/white"
-            app:title="커뮤니티"
-            app:titleMargin="10dp"
-            app:titleTextColor="@color/white">
+    </com.google.android.material.appbar.MaterialToolbar>
 
-        </com.google.android.material.appbar.MaterialToolbar>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLine_ver_1"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLine_ver_2"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLine_hor_1"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_4"
+        app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
+        app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLine_hor_4"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.92" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/textField"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideLine_hor_4">
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideLine_ver_1"
+            android:id="@+id/guideLine_ver_3"
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.05" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideLine_ver_2"
+            android:id="@+id/guideLine_ver_4"
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.95" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideLine_hor_1"
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.1" />
-
-        <TextView
-            android:id="@+id/tv_title"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout2"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:text="제목"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/guideLine_hor_2"
-            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
-            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
-            app:layout_constraintTop_toTopOf="@+id/guideLine_hor_1" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideLine_hor_2"
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.15" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideLine_hor_3"
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.16" />
-
-        <TextView
-            android:id="@+id/tv_contents"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="내용내용내용내용내용내용내용내용"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
-            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
-            app:layout_constraintTop_toTopOf="@+id/guideLine_hor_3" />
-
-        <ImageView
-            android:id="@+id/iv_photo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
-            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
-            app:layout_constraintTop_toBottomOf="@+id/tv_contents" />
-
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/div_1"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            app:dividerColor="@color/white"
-            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
-            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
-            app:layout_constraintTop_toBottomOf="@+id/iv_photo" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
-            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
-            app:layout_constraintTop_toBottomOf="@+id/div_1">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_up"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:elevation="10dp"
-                android:text="UP"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/div_btn"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.divider.MaterialDivider
-                android:id="@+id/div_btn"
-                android:layout_width="1dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                app:dividerColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btn_scrap"
-                app:layout_constraintStart_toEndOf="@+id/btn_up"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_scrap"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:elevation="10dp"
-                android:text="scrap"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/div_btn"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/div_2"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            app:dividerColor="@color/white"
-            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
-            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
-            app:layout_constraintTop_toBottomOf="@+id/layout_btn" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_2"
-            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_1"
-            app:layout_constraintTop_toBottomOf="@+id/div_2" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideLine_hor_4"
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.92" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@color/textField"
+            android:layout_margin="10dp"
+            android:background="@color/basic"
+            android:hint="댓글을 달아보세요!"
+            android:textColorHint="@color/white"
+            app:hintAnimationEnabled="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideLine_hor_4">
+            app:layout_constraintEnd_toStartOf="@+id/btn_send"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintHorizontal_weight="6"
+            app:layout_constraintStart_toStartOf="@+id/guideLine_ver_3"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideLine_ver_3"
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.05" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideLine_ver_4"
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.95" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout2"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_margin="10dp"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_comment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:background="@color/basic"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/materialButton"
-                app:layout_constraintHorizontal_bias="0.1"
-                app:layout_constraintHorizontal_weight="6"
-                app:hintAnimationEnabled="false"
-                android:hint="댓글을 달아보세요!"
-                android:textColorHint="@color/white"
-                app:layout_constraintStart_toStartOf="@+id/guideLine_ver_3"
-                app:layout_constraintTop_toTopOf="parent">
+                android:textColor="@color/white"
+                android:textSize="13dp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textColor="@color/white"
-                    android:textSize="13dp"
-                    android:background="@color/basic" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.button.MaterialButton
-                app:icon="@drawable/ic_send_24"
-                android:layout_margin="10dp"
-                style="@style/Widget.Material3.Button.Icon"
-                app:iconTint="#00aca3"
-                android:id="@+id/materialButton"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_4"
-                app:layout_constraintHorizontal_bias="0.9"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toEndOf="@+id/textInputLayout2"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_send"
+            style="@style/Widget.Material3.Button.Icon"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            app:icon="@drawable/ic_send_24"
+            app:iconTint="#00aca3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideLine_ver_4"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/textInputLayout2"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
