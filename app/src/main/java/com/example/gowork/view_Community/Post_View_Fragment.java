@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.fragment.app.FragmentTransaction;
@@ -183,6 +184,22 @@ public class Post_View_Fragment extends Fragment {
                 NavController navController = Navigation.findNavController(view);
                 AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
                 NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
+            }
+        });
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.update:
+                        Toast.makeText(getContext(), postId, Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.delete:
+                        dbViewModel.delPost(postId);
+                        Toast.makeText(getContext(), "삭제", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return false;
             }
         });
 

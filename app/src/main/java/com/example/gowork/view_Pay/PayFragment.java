@@ -112,6 +112,11 @@ public class PayFragment extends Fragment {
         authViewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
         dbViewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
         workingViewModel = new ViewModelProvider(requireActivity()).get(WorkingViewModel.class);
+
+        now = LocalDate.now();
+        yearMonth = String.valueOf(now.getYear()) + "-" + String.valueOf(now.getMonth().getValue());
+        workingViewModel.getWorkingTime(authViewModel.getFirebaseUserLiveData().getValue(), yearMonth);
+
     }
 
     @Override
@@ -131,16 +136,15 @@ public class PayFragment extends Fragment {
         work_per_pay = new LinkedHashMap<>();
         entire_Start_Time_HashMap = new LinkedHashMap<>();
         entire_End_Time_HashMap = new LinkedHashMap<>();
-        arr_payRvDTO = new ArrayList<>();
         arr_totalPay = new ArrayList();
 
-        Log.d(TAG, "PayFragment" + authViewModel.getFirebaseUserLiveData().getValue().getUid());
-        workingViewModel.getWorkingTime(authViewModel.getFirebaseUserLiveData().getValue(), yearMonth);
         workingViewModel.getWorkingTimeMutableLiveData().observe(getActivity(), new Observer<HashMap<String, HashMap>>() {
             @Override
             public void onChanged(HashMap<String, HashMap> timeValues) {
 
-//                payAdapter = new Pay_Adapter(timeValues);
+                int sumTotalPay = 0;
+                arr_payRvDTO = new ArrayList<>();
+                arr_totalPay = new ArrayList<>();
 
                 workTitle = new ArrayList(timeValues.get("startTime").keySet());
 
@@ -153,9 +157,9 @@ public class PayFragment extends Fragment {
                     work_per_pay.put(title, pay);
                 }
 
-                entire_Start_Time_HashMap = new LinkedHashMap<>();
+                HashMap<String, ArrayList> entire_Start_Time_HashMap = new LinkedHashMap<>();
                 entire_Start_Time_HashMap.putAll(timeValues.get("startTime"));
-                entire_End_Time_HashMap = new LinkedHashMap<>();
+                HashMap<String, ArrayList> entire_End_Time_HashMap = new LinkedHashMap<>();
                 entire_End_Time_HashMap.putAll(timeValues.get("finishTime"));
 
                 for (String work_title : workTitle) {
@@ -189,24 +193,10 @@ public class PayFragment extends Fragment {
                     tv_total_pay.setText(String.valueOf(sumTotalPay));
                 }
 
-                payAdapter = new Pay_Adapter(arr_payRvDTO);
+                Pay_Adapter payAdapter = new Pay_Adapter(arr_payRvDTO);
 
                 rv_pay.setLayoutManager(new LinearLayoutManager(getActivity()));
                 rv_pay.setAdapter(payAdapter);
-
-//                timeDuration(startTime, );
-
-//                timeValues.get()
-
-//                Log.d(TAG, String.valueOf());
-//
-//
-                Log.d(TAG, timeValues.toString());
-//                Log.d(TAG, timeValues.get("startTime").get("함평육회 본점").toString());
-//                Log.d(TAG, timeValues.get("startTime").get("강남대학교").toString());
-//                Log.d(TAG, timeValues.get("finishTime").get("함평육회 본점").toString());
-//                Log.d(TAG, timeValues.get("finishTime").get("강남대학교").toString());
-//                Log.d(TAG, timeValues.get("startTime").keySet().toString());
             }
         });
 
@@ -249,6 +239,10 @@ public class PayFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         btn_set_month.setText(adapter.getItem(i));
+                        String yearMonth = adapter.getItem(i);
+                        yearMonth = yearMonth.replace("년 ", "-");
+                        yearMonth = yearMonth.replace("월달", "");
+                        workingViewModel.getWorkingTime(authViewModel.getFirebaseUserLiveData().getValue(), yearMonth);
                     }
                 });
 

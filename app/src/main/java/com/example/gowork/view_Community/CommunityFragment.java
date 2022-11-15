@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import com.example.gowork.R;
 import com.example.gowork.dto.PostDTO;
@@ -23,15 +24,18 @@ import com.example.gowork.viewModel.AuthViewModel;
 import com.example.gowork.viewModel.DBViewModel;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
 public class CommunityFragment extends Fragment {
+    private String TAG = "CommunityFragmentTAG";
 
     private FloatingActionButton btn_post;
     private RecyclerView rv_post;
-    private SwipeRefreshLayout sr_layout;
+    private MaterialButton btn_refresh;
+//    private SwipeRefreshLayout sr_layout;
 
     AuthViewModel authViewModel;
     DBViewModel dbViewModel;
@@ -75,58 +79,78 @@ public class CommunityFragment extends Fragment {
 
         rv_post.addItemDecoration(new DividerItemDecoration(view.getContext(), 1));
 
-        sr_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//        sr_layout.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+//            @Override
+//            public void onScrollChanged() {
+//                if(rv_post.getScrollY() == 0){
+//                    sr_layout.isEnabled();
+//                }
+//            }
+//        });
+
+
+//        sr_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                dbViewModel.getPost();
+//                dbViewModel.getGetPostTask().observe(getActivity(), new Observer<Task>() {
+//                    @Override
+//                    public void onChanged(Task task) {
+//                        if(task.isSuccessful()){
+//                            sr_layout.setRefreshing(false);
+//                        }
+//                    }
+//                });
+//            }
+//        });
+
+        btn_refresh.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRefresh() {
+            public void onClick(View view) {
                 dbViewModel.getPost();
-                dbViewModel.getGetPostTask().observe(getActivity(), new Observer<Task>() {
-                    @Override
-                    public void onChanged(Task task) {
-                        if(task.isSuccessful()){
-                            sr_layout.setRefreshing(false);
-                        }
-                    }
-                });
             }
         });
 
         dbViewModel.postMutableLiveData().observe(getActivity(), new Observer<ArrayList<PostDTO>>() {
             @Override
             public void onChanged(ArrayList<PostDTO> postDTOS) {
-                community_adapter = new Community_Adapter(dbViewModel.postMutableLiveData().getValue());
+                Community_Adapter community_adapter = new Community_Adapter(dbViewModel.postMutableLiveData().getValue());
                 rv_post.setAdapter(community_adapter);
                 community_adapter.notifyDataSetChanged();
+
+                community_adapter.setOnItemClickListener(new Community_Adapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View v, int position) {
+                        Log.d(TAG, String.valueOf(position));
+                        String postId = dbViewModel.postMutableLiveData().getValue().get(position).getPostId();
+                        String name = dbViewModel.postMutableLiveData().getValue().get(position).getName();
+                        String title = dbViewModel.postMutableLiveData().getValue().get(position).getTitle();
+                        String contents = dbViewModel.postMutableLiveData().getValue().get(position).getContents();
+                        String photo = String.valueOf(dbViewModel.postMutableLiveData().getValue().get(position).getPhoto());
+                        String timestamp = dbViewModel.postMutableLiveData().getValue().get(position).getTimestamp();
+
+                        Bundle result = new Bundle();
+                        result.putString("postId", postId);
+                        result.putString("name", name);
+                        result.putString("title", title);
+                        result.putString("contents", contents);
+                        result.putString("photo", photo);
+                        result.putString("timestamp", timestamp);
+                        getParentFragmentManager().setFragmentResult("post_data", result);
+
+                        Navigation.findNavController(getView()).navigate(R.id.action_communityFragment_to_post_View_Fragment);
+                    }
+                });
             }
         });
 
-        community_adapter.setOnItemClickListener(new Community_Adapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                String postId = dbViewModel.postMutableLiveData().getValue().get(position).getPostId();
-                String name = dbViewModel.postMutableLiveData().getValue().get(position).getName();
-                String title = dbViewModel.postMutableLiveData().getValue().get(position).getTitle();
-                String contents = dbViewModel.postMutableLiveData().getValue().get(position).getContents();
-                String photo = String.valueOf(dbViewModel.postMutableLiveData().getValue().get(position).getPhoto());
-                String timestamp = dbViewModel.postMutableLiveData().getValue().get(position).getTimestamp();
-
-                Bundle result = new Bundle();
-                result.putString("postId", postId);
-                result.putString("name", name);
-                result.putString("title", title);
-                result.putString("contents", contents);
-                result.putString("photo", photo);
-                result.putString("timestamp", timestamp);
-                getParentFragmentManager().setFragmentResult("post_data", result);
-
-                Navigation.findNavController(getView()).navigate(R.id.action_communityFragment_to_post_View_Fragment);
-            }
-        });
 
         return view;
     }
 
     private void init(View view) {
-        sr_layout = view.findViewById(R.id.sr_layout);
+//        sr_layout = view.findViewById(R.id.sr_layout);
+        btn_refresh = view.findViewById(R.id.btn_refresh);
         rv_post = view.findViewById(R.id.rv_post);
         btn_post = view.findViewById(R.id.btn_post);
     }

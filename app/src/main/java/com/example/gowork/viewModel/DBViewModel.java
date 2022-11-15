@@ -89,6 +89,10 @@ public class DBViewModel extends AndroidViewModel {
         dbRepository.uploadPost(user, postDTO_upload);
     }
 
+    public void delPost(String postId){
+        dbRepository.delPost(postId);
+    }
+
     public void uploadComment(FirebaseUser user, CommentDTO commentData){
         dbRepository.upload_comment(user, commentData);
     }

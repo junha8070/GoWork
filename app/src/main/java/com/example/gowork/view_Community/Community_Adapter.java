@@ -2,12 +2,14 @@ package com.example.gowork.view_Community;
 
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
@@ -54,6 +56,24 @@ public class Community_Adapter extends RecyclerView.Adapter<Community_Adapter.Vi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+//                    String postId = dataSet.get(getAdapterPosition()).getPostId();
+//                    String name = dataSet.get(getAdapterPosition()).getName();
+//                    String title = dataSet.get(getAdapterPosition()).getTitle();
+//                    String contents = dataSet.get(getAdapterPosition()).getContents();
+//                    String photo = String.valueOf(dataSet.get(getAdapterPosition()).getPhoto());
+//                    String timestamp = dataSet.get(getAdapterPosition()).getTimestamp();
+//
+//                    Bundle result = new Bundle();
+//                    result.putString("postId", postId);
+//                    result.putString("name", name);
+//                    result.putString("title", title);
+//                    result.putString("contents", contents);
+//                    result.putString("photo", photo);
+//                    result.putString("timestamp", timestamp);
+//
+//                    getParentFragmentManager().setFragmentResult("post_data", result);
+//
+//                Navigation.findNavController(getView()).navigate(R.id.action_communityFragment_to_post_View_Fragment);
                     int position = getAdapterPosition();
 //                    Toast.makeText(itemView.getContext(), position, Toast.LENGTH_SHORT).show();
                     if (position != RecyclerView.NO_POSITION) {

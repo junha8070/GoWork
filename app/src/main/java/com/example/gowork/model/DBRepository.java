@@ -412,6 +412,26 @@ public class DBRepository {
         });
     }
 
+    public void delPost(String postId){
+        DocumentReference postDocReference = fireStore.collection("Post").document(postId);
+        CollectionReference commentColReference = postDocReference.collection("Comment");
+
+        commentColReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    if(!task.getResult().isEmpty()){
+                        for(int i = 0; i<task.getResult().getDocuments().size();i++){
+                            commentColReference.document(task.getResult().getDocuments().get(i).getId()).delete();
+                        }
+                        postDocReference.delete();
+                    }
+                }
+            }
+        });
+
+    }
+
     public void upload_comment(FirebaseUser user, CommentDTO commentDTO) {
         DocumentReference postDocReference = fireStore.collection("Post").document(commentDTO.getPostId());
 
